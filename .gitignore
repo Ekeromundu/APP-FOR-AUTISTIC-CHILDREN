@@ -1,0 +1,37 @@
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/.idea/misc.xml
+/.idea/gradle.xml
+/.app/app.iml
+/.app/*.iml
+.DS_Store
+/build
+*.apk
+*.iml
+.idea
+# Firebase
+.firebaserc
+firebase.json
+firestore-debug.log
+firebase-debug.log
+storage.rules
+
+# Logs
+*.log
+
+# Secrets
+app/src/main/res/values/strings.xml
+
+# Android / Gradle
+.gradle/
+local.properties
+build/
+*/build/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
