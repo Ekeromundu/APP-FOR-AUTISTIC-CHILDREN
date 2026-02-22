@@ -26,14 +26,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.perf.metrics.AddTrace;
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.Interfaces.Make_Click_At_Time;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.RecyclerViews.Picto_Recycler_View_Sort;
 import com.stonefacesoft.ottaa.RecyclerViews.Picto_Recycler_view;
 import com.stonefacesoft.ottaa.RecyclerViews.Picto_Vincular_Recycler_View;
 import com.stonefacesoft.ottaa.Viewpagers.viewpager_galeria_pictos;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.GaleriaPictosControls;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.scrollActions.ScrollFunctionGaleriaPictos;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
@@ -54,7 +54,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
     //Common Objects
     protected Json json;
     private FirebaseAuth mAuth;
-    private SubirArchivosFirebase uploadFile;
+    private UploadFilesToFirebase uploadFile;
     protected boolean esVincular;
     protected boolean showViewPager;
     protected boolean isSorter;
@@ -85,7 +85,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
     private ImageButton previous, foward, exit, edit_button;
     private Button btnBarrido;
     private FloatingActionButton btnTalk;
-    private BarridoPantalla barridoPantalla;
+    private ScreenScroll screenScroll;
     protected ScrollFunctionGaleriaPictos function_scroll;
     private AnalyticsFirebase analyticsFirebase;
     private GaleriaPictosControls navigationControl;
@@ -197,18 +197,18 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
                        bundle.putString(FirebaseAnalytics.Param.ACHIEVEMENT_ID, "Nuevo Picto");
                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.UNLOCK_ACHIEVEMENT, bundle);
 
-                       Intent intent = new Intent(GaleriaPictos3.this, Edit_Picto_Visual.class);
+                       Intent intent = new Intent(GaleriaPictos3.this, Edit_Visual_Picto.class);
                        intent.putExtra("esNuevo", true);
                        intent.putExtra("Padre", boton);
                        intent.putExtra("esGrupo", false);
                        intent.putExtra("Texto","");
-                       myTTS.hablar(getString(R.string.add_pictograma));
+                       myTTS.speak(getString(R.string.add_pictograma));
                        Log.d(TAG, "onOptionsItemSelected: Creando un nuevo picto");
 
-                       startActivityForResult(intent, IntentCode.EDITARPICTO.getCode());
+                       startActivityForResult(intent, IntentCode.EDIT_PICTO.getCode());
                        return true;
                    } else {
-                       Intent i = new Intent(GaleriaPictos3.this, LicenciaExpirada.class);
+                       Intent i = new Intent(GaleriaPictos3.this, LicenseExpired.class);
                        startActivity(i);
                   }
                 }
@@ -232,7 +232,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
 
                      startActivityForResult(intent2, IntentCode.VINCULAR.getCode());
                  } else {
-                         Intent i = new Intent(GaleriaPictos3.this, LicenciaExpirada.class);
+                         Intent i = new Intent(GaleriaPictos3.this, LicenseExpired.class);
                       startActivity(i);
                  }
                 }
@@ -253,7 +253,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
 
                     startActivityForResult(intent2, IntentCode.ORDENAR.getCode());
                 } else {
-                    Intent i = new Intent(GaleriaPictos3.this, LicenciaExpirada.class);
+                    Intent i = new Intent(GaleriaPictos3.this, LicenseExpired.class);
                     startActivity(i);
                 }
                 return true;
@@ -277,7 +277,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IntentCode.VINCULAR.getCode() || requestCode == IntentCode.ORDENAR.getCode() || requestCode == IntentCode.EDITARPICTO.getCode()) {
+        if (requestCode == IntentCode.VINCULAR.getCode() || requestCode == IntentCode.ORDENAR.getCode() || requestCode == IntentCode.EDIT_PICTO.getCode()) {
             mPictoRecyclerView.sincronizeData();
             mPictoRecyclerView.changeData();
             mPictoRecyclerView.guardarDatosGrupo();
@@ -290,7 +290,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.edit_button:
-                if (barridoPantalla.isBarridoActivado()) {
+                if (screenScroll.isBarridoActivado()) {
                     analyticsFirebase.customEvents("Accessibility", "Galeria Pictos", "Edit Pictogram");
                 }
                 if (isSorter) {
@@ -317,7 +317,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
                 scrollNextButton(true);
                 break;
             case R.id.back_button:
-                if (barridoPantalla.isBarridoActivado())
+                if (screenScroll.isBarridoActivado())
                     analyticsFirebase.customEvents("Accessibility", "Galeria Pictos", "Backpress Button");
                 else
                     analyticsFirebase.customEvents("Touch", "Galeria Pictos", "Backpress Button");
@@ -325,7 +325,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.btnTalk:
                 if (showViewPager) {
-                    if (!barridoPantalla.isBarridoActivado())
+                    if (!screenScroll.isBarridoActivado())
                         analyticsFirebase.customEvents("Touch", "Galeria Pictos", "Select Pictogram with button talk");
                     else
                         analyticsFirebase.customEvents("Accessibility", "Galeria Pictos", "Select Pictogram with button talk");
@@ -334,13 +334,13 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.btnBarrido:
-                if (barridoPantalla.isBarridoActivado() && barridoPantalla.isAvanzarYAceptar()) {
+                if (screenScroll.isBarridoActivado() && screenScroll.isAvanzarYAceptar()) {
                     Log.d(TAG, "onClick() returned: Barrido Pantalla");
 
-                } else if (barridoPantalla.isBarridoActivado() && !barridoPantalla.isAvanzarYAceptar()) {
-                    int position = barridoPantalla.getPosicionBarrido();
+                } else if (screenScroll.isBarridoActivado() && !screenScroll.isAvanzarYAceptar()) {
+                    int position = screenScroll.getPosicionBarrido();
                     if (position != -1)
-                        barridoPantalla.getmListadoVistas().get(position).callOnClick();
+                        screenScroll.getmListadoVistas().get(position).callOnClick();
                 }
                 break;
         }
@@ -348,7 +348,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
 
     protected void initComponents() {
         mAuth = FirebaseAuth.getInstance();
-        uploadFile = new SubirArchivosFirebase(getApplicationContext());
+        uploadFile = new UploadFilesToFirebase(getApplicationContext());
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         json = Json.getInstance();
         json.setmContext(this);
@@ -417,7 +417,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
             }
         }
         json.setmJSONArrayTodosLosGrupos(todosLosGrupos);
-        if (!json.guardarJson(Constants.ARCHIVO_GRUPOS))
+        if (!json.guardarJson(Constants.GROUPS_FILE))
             Log.d(TAG, "guardarVincular: ");
         Intent databack = new Intent();
         databack.putExtra("nuevosPictos", mSelectedPictos.length());
@@ -449,8 +449,8 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
             listadoObjetosBarrido.add(btnTalk);
             listadoObjetosBarrido.add(foward);
         }
-        barridoPantalla = new BarridoPantalla(this, listadoObjetosBarrido);
-        if (barridoPantalla.isBarridoActivado() && barridoPantalla.devolverpago()) {
+        screenScroll = new ScreenScroll(this, listadoObjetosBarrido);
+        if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
 
                 @Override
@@ -477,10 +477,10 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void OnClickBarrido() {
-        if (function_scroll.isClickEnabled() && barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).getId() == R.id.btnTodosLosPictos)
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+        if (function_scroll.isClickEnabled() && screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).getId() == R.id.btnTodosLosPictos)
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         else if (!function_scroll.isClickEnabled()) {
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
 
@@ -490,15 +490,15 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
 
-                    if (barridoPantalla.isScrollMode() || barridoPantalla.isScrollModeClicker()) {
+                    if (screenScroll.isScrollMode() || screenScroll.isScrollModeClicker()) {
                         if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f) {
-                            if (barridoPantalla.isScrollMode())
+                            if (screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.avanzarBarrido();
+                            screenScroll.avanzarBarrido();
                         } else {
-                            if (barridoPantalla.isScrollMode())
+                            if (screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.volverAtrasBarrido();
+                            screenScroll.volverAtrasBarrido();
 
                         }
                     }
@@ -517,8 +517,8 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
             view.setVisibility(View.INVISIBLE);
     }
 
-    public BarridoPantalla getBarridoPantalla() {
-        return barridoPantalla;
+    public ScreenScroll getBarridoPantalla() {
+        return screenScroll;
     }
 
     public ScrollFunctionGaleriaPictos getFunction_scroll() {
@@ -596,7 +596,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
 
 
     public GaleriaPictos3 isNextButton(boolean nextButton) {
-        if (barridoPantalla.isBarridoActivado()) {
+        if (screenScroll.isBarridoActivado()) {
             analyticsFirebase.customEvents("Touch", "Galeria Pictos", "Next Button");
         } else {
             analyticsFirebase.customEvents("Touch", "Galeria Pictos", "Previous Button");
@@ -606,7 +606,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (barridoPantalla.isBarridoActivado()) {
+        if (screenScroll.isBarridoActivado()) {
 
             if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
                 event.startTracking();
@@ -623,7 +623,7 @@ public class GaleriaPictos3 extends AppCompatActivity implements View.OnClickLis
             }
             if(keyCode == KeyEvent.KEYCODE_BACK){
                 if(event.getSource() == InputDevice.SOURCE_MOUSE)
-                    barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                    screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 else
                     onBackPressed();
                 return true;

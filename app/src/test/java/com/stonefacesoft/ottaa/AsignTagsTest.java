@@ -18,7 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -81,7 +80,7 @@ public class AsignTagsTest implements DialogInterfaceTags, TagInterfazJson {
             ArrayList<JSONObject> selectedTags = new ArrayList<>();
             asignTags.cargarTags(Constants.EDAD);
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(0));
-            asignTags.cargarTags(Constants.SEXO);
+            asignTags.cargarTags(Constants.SEX);
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(2));
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(0));
             asignTags.cargarTags(Constants.UBICACION);
@@ -93,7 +92,7 @@ public class AsignTagsTest implements DialogInterfaceTags, TagInterfazJson {
             asignTags.setmArrayListSelectedTAGS(selectedTags);
             asignTags.setTagsToPicto(object);
             Json json =Json.getInstance();
-            assertTrue(object.has(Constants.SEXO)&&object.has(Constants.EDAD)&&object.has(Constants.UBICACION));
+            assertTrue(object.has(Constants.SEX)&&object.has(Constants.EDAD)&&object.has(Constants.UBICACION));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -107,7 +106,7 @@ public class AsignTagsTest implements DialogInterfaceTags, TagInterfazJson {
             ArrayList<JSONObject> selectedTags = new ArrayList<>();
             asignTags.cargarTags(Constants.EDAD);
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(0));
-            asignTags.cargarTags(Constants.SEXO);
+            asignTags.cargarTags(Constants.SEX);
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(2));
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(0));
             asignTags.cargarTags(Constants.UBICACION);
@@ -116,7 +115,7 @@ public class AsignTagsTest implements DialogInterfaceTags, TagInterfazJson {
             asignTags.setmArrayListSelectedTAGS(selectedTags);
             asignTags.setTagsToPicto(object);
             object.remove(Constants.UBICACION);
-            assertTrue(object.has(Constants.SEXO)&&object.has(Constants.EDAD)&&!object.has(Constants.UBICACION));
+            assertTrue(object.has(Constants.SEX)&&object.has(Constants.EDAD)&&!object.has(Constants.UBICACION));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -131,7 +130,7 @@ public class AsignTagsTest implements DialogInterfaceTags, TagInterfazJson {
             ArrayList<JSONObject> selectedTags = new ArrayList<>();
             asignTags.cargarTags(Constants.EDAD);
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(0));
-            asignTags.cargarTags(Constants.SEXO);
+            asignTags.cargarTags(Constants.SEX);
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(2));
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(0));
             asignTags.cargarTags(Constants.UBICACION);

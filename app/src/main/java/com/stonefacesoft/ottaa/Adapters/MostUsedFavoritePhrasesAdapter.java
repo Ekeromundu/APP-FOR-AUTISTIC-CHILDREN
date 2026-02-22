@@ -99,10 +99,10 @@ public class MostUsedFavoritePhrasesAdapter extends RecyclerView.Adapter<MostUse
         @Override
         public void onClick(View v) {
             if (myTTs != null)
-                myTTs.hablar(imagFav);// the system talk and say the phrases selected by the user
+                myTTs.speak(imagFav);// the system talk and say the phrases selected by the user
             else if (myTTs == null && mContext != null) {
                 myTTs = textToSpeech.getInstance(mContext);
-                myTTs.hablar(imagFav);
+                myTTs.speak(imagFav);
             }
         }
     }

@@ -14,14 +14,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
 import com.stonefacesoft.ottaa.idioma.myContextWrapper;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 
 
 import java.util.ArrayList;
 
 public class GeneralClassWithScreenScanning extends AppCompatActivity {
     private SharedPreferences sharedPrefsDefault;
-    private BarridoPantalla barridoPantalla;
+    private ScreenScroll screenScroll;
     private FloatingActionButton btnBarrido;
 
 
@@ -43,8 +43,8 @@ public class GeneralClassWithScreenScanning extends AppCompatActivity {
         super.attachBaseContext(myContextWrapper.wrap(newBase, preferences.getString(newBase.getString(R.string.str_idioma), "en")));
     }
     private void iniciarBarrido(ArrayList<View> list) {
-        barridoPantalla = new BarridoPantalla(this, list);
-        if (barridoPantalla.isBarridoActivado() && barridoPantalla.devolverpago()) {
+        screenScroll = new ScreenScroll(this, list);
+        if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
 
                 @Override

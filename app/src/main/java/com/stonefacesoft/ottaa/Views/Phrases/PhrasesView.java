@@ -22,7 +22,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stonefacesoft.ottaa.Interfaces.Make_Click_At_Time;
 import com.stonefacesoft.ottaa.R;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.PhrasesViewControls;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.scrollActions.ScrollFunction;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.scrollActions.ScrollFunctionPhraseView;
@@ -40,7 +40,7 @@ public class PhrasesView extends AppCompatActivity implements View.OnClickListen
     protected FloatingActionButton btnTalk;
     protected Toolbar toolbar;
     protected SearchView mSearchView;
-    protected BarridoPantalla barridoPantalla;
+    protected ScreenScroll screenScroll;
     protected ImageButton foward;
     protected ImageButton previous;
     protected ImageButton exit;
@@ -94,7 +94,7 @@ public class PhrasesView extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.btnBarrido){
-            barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+            screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
         }
 
     }
@@ -119,7 +119,7 @@ public class PhrasesView extends AppCompatActivity implements View.OnClickListen
             }
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 if (event.getSource() == InputDevice.SOURCE_MOUSE)
-                    barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                    screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 else
                     onBackPressed();
                 return true;
@@ -151,16 +151,16 @@ public class PhrasesView extends AppCompatActivity implements View.OnClickListen
         listadoObjetosBarrido.add(btnTalk);
         listadoObjetosBarrido.add(btnEditar);
         listadoObjetosBarrido.add(foward);
-        barridoPantalla = new BarridoPantalla(this, listadoObjetosBarrido);
-        if (barridoPantalla.isBarridoActivado() && barridoPantalla.devolverpago()) {
+        screenScroll = new ScreenScroll(this, listadoObjetosBarrido);
+        if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
 
                 @Override
                 public void run() {
                     // Stuff that updates the UI
                     btnBarrido.setVisibility(View.VISIBLE);
-                    if(barridoPantalla.isBarridoActivado())
-                        barridoPantalla.changeButtonVisibility();
+                    if(screenScroll.isBarridoActivado())
+                        screenScroll.changeButtonVisibility();
                 }
             });
         }else{
@@ -170,10 +170,10 @@ public class PhrasesView extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void OnClickBarrido() {
-        if(function_scroll.isClickEnabled()&&barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+        if(function_scroll.isClickEnabled()&& screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         else if(!function_scroll.isClickEnabled()){
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
 
@@ -188,16 +188,16 @@ public class PhrasesView extends AppCompatActivity implements View.OnClickListen
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
 
-                    if(barridoPantalla.isScrollMode()||barridoPantalla.isScrollModeClicker()){
+                    if(screenScroll.isScrollMode()|| screenScroll.isScrollModeClicker()){
                         if(event.getAxisValue(MotionEvent.AXIS_VSCROLL)<0.0f){
-                            if(barridoPantalla.isScrollMode())
+                            if(screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.avanzarBarrido();
+                            screenScroll.avanzarBarrido();
                         }
                         else{
-                            if(barridoPantalla.isScrollMode())
+                            if(screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.volverAtrasBarrido();
+                            screenScroll.volverAtrasBarrido();
 
                         }
                     }
@@ -207,8 +207,8 @@ public class PhrasesView extends AppCompatActivity implements View.OnClickListen
         return super.onGenericMotionEvent(event);
     }
 
-    public BarridoPantalla getBarridoPantalla() {
-        return barridoPantalla;
+    public ScreenScroll getBarridoPantalla() {
+        return screenScroll;
     }
 
     public ScrollFunction getFunction_scroll() {
@@ -216,8 +216,8 @@ public class PhrasesView extends AppCompatActivity implements View.OnClickListen
     }
 
     private boolean requestScreenScanningIsEnabled(){
-        if(barridoPantalla != null)
-            return barridoPantalla.isBarridoActivado();
+        if(screenScroll != null)
+            return screenScroll.isBarridoActivado();
         return false;
     }
 }

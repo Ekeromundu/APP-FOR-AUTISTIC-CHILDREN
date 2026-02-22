@@ -22,10 +22,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.perf.metrics.AddTrace;
-import com.stonefacesoft.ottaa.Edit_Picto_Visual;
-import com.stonefacesoft.ottaa.GaleriaPictos3;
+import com.stonefacesoft.ottaa.Edit_Visual_Picto;
 import com.stonefacesoft.ottaa.JSONutils.Json;
-import com.stonefacesoft.ottaa.LicenciaExpirada;
+import com.stonefacesoft.ottaa.LicenseExpired;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.Views.PictogramsGalleryGames;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
@@ -117,7 +116,7 @@ public class viewpager_game_filter_view {
     public void editItem(boolean isPremium) {
 
         if (isPremium) {
-            Intent intent = new Intent(mActivity, Edit_Picto_Visual.class);
+            Intent intent = new Intent(mActivity, Edit_Visual_Picto.class);
             int id = 0;
             try {
                 id = array.getJSONObject(viewPager.getCurrentItem()).getInt("id");
@@ -129,10 +128,10 @@ public class viewpager_game_filter_view {
             intent.putExtra("PictoID", id);
             intent.putExtra("esGrupo", true);
             Log.d(TAG, "editItem: Editando un picto");
-            myTTS.hablar(mActivity.getString(R.string.editar_group));
-            mActivity.startActivityForResult(intent, IntentCode.EDITARPICTO.getCode());
+            myTTS.speak(mActivity.getString(R.string.editar_group));
+            mActivity.startActivityForResult(intent, IntentCode.EDIT_PICTO.getCode());
         } else {
-            Intent i = new Intent(mActivity, LicenciaExpirada.class);
+            Intent i = new Intent(mActivity, LicenseExpired.class);
             mActivity.startActivity(i);
         }
     }
@@ -153,7 +152,7 @@ public class viewpager_game_filter_view {
 
     public void hablar() {
         try {
-            myTTS.hablar(JSONutils.getNombre(array.getJSONObject(viewPager.getCurrentItem()),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+            myTTS.speak(JSONutils.getName(array.getJSONObject(viewPager.getCurrentItem()),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
         } catch (JSONException e) {
             Log.e(TAG, "hablar: Error" + e.getMessage());
         }
@@ -196,7 +195,7 @@ public class viewpager_game_filter_view {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            myTTS.hablarSinMostrarFrase(JSONutils.getNombre(object, sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+            myTTS.hablarSinMostrarFrase(JSONutils.getName(object, sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
         }
         mActivity.startActivityForResult(intent, IntentCode.GALERIA_PICTOS.getCode());
     }
@@ -253,7 +252,7 @@ public class viewpager_game_filter_view {
                     grupo.setUpGlideAttatcher(mActivity);
                     grupo.setPictogramsLibraryGroup(group);
                     grupo.loadAgeIcon(json.tieneTag(aux, Constants.EDAD));
-                    grupo.loadGenderIcon(json.tieneTag(aux, Constants.SEXO));
+                    grupo.loadGenderIcon(json.tieneTag(aux, Constants.SEX));
                     grupo.loadLocationIcon(json.tieneTag(aux, Constants.UBICACION));
                     grupo.loadHourIcon(json.tieneTag(aux, Constants.HORA));
                 }
@@ -273,8 +272,8 @@ public class viewpager_game_filter_view {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            myTTS.hablarSinMostrarFrase(JSONutils.getNombre(object, sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
-                            intent.putExtra("Nombre", JSONutils.getNombre(object, sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+                            myTTS.hablarSinMostrarFrase(JSONutils.getName(object, sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+                            intent.putExtra("Nombre", JSONutils.getName(object, sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
                             mActivity.startActivityForResult(intent, IntentCode.GALERIA_PICTOS.getCode());
                         }
                     }

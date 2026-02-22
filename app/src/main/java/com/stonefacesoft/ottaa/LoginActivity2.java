@@ -41,10 +41,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.stonefacesoft.ottaa.FirebaseRequests.BajarJsonFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.DownloadJsonFromDatabase;
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseDatabaseRequest;
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.Interfaces.ActivityListener;
 import com.stonefacesoft.ottaa.Interfaces.FirebaseSuccessListener;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
@@ -55,13 +55,8 @@ import com.stonefacesoft.ottaa.utils.IntentCode;
 import com.stonefacesoft.ottaa.utils.ObservableInteger;
 import com.stonefacesoft.ottaa.utils.RemoteConfigUtils;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
-import com.stonefacesoft.ottaa.welcome.SplashActivity;
 import com.stonefacesoft.pictogramslibrary.utils.ValidateContext;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 
-import java.io.File;
 import java.util.Locale;
 
 //Code source https://developers.google.com/identity/sign-in/android/sign-in
@@ -83,7 +78,7 @@ public class LoginActivity2 extends AppCompatActivity implements View.OnClickLis
     private com.google.android.gms.common.SignInButton signInButton;
 
     private ObservableInteger observableInteger;
-    private BajarJsonFirebase mBajarJsonFirebase;
+    private DownloadJsonFromDatabase mDownloadJsonFromDatabase;
     private SharedPreferences sharedPrefsDefault;
     private ProgressDialog dialog;
     private String locale;
@@ -357,35 +352,35 @@ public class LoginActivity2 extends AppCompatActivity implements View.OnClickLis
 
     private void uploadFiles(){
         try{
-            SubirArchivosFirebase subirArchivosFirebase = new SubirArchivosFirebase(LoginActivity2.this);
-            subirArchivosFirebase.subirPictosFirebase(subirArchivosFirebase.getmDatabase(mAuth, Constants.PICTOS), subirArchivosFirebase.getmStorageRef(mAuth, Constants.PICTOS));
-            subirArchivosFirebase.subirGruposFirebase(subirArchivosFirebase.getmDatabase(mAuth, Constants.Grupos), subirArchivosFirebase.getmStorageRef(mAuth, Constants.Grupos));
+            UploadFilesToFirebase uploadFilesToFirebase = new UploadFilesToFirebase(LoginActivity2.this);
+            uploadFilesToFirebase.subirPictosFirebase(uploadFilesToFirebase.getmDatabase(mAuth, Constants.Pictures), uploadFilesToFirebase.getmStorageRef(mAuth, Constants.Pictures));
+            uploadFilesToFirebase.subirGruposFirebase(uploadFilesToFirebase.getmDatabase(mAuth, Constants.Groups), uploadFilesToFirebase.getmStorageRef(mAuth, Constants.Groups));
 
         }catch (Exception ex){}
     }
 
     @Override
-    public void onDescargaCompleta(int descargaCompleta) {
+    public void onDownloadComplete(int descargaCompleta) {
 
     }
 
     @Override
-    public void onDatosEncontrados(int datosEncontrados) {
+    public void onDataFound(int datosEncontrados) {
 
     }
 
     @Override
-    public void onFotoDescargada(int fotosDescargadas) {
+    public void onPhotoDownloaded(int fotosDescargadas) {
 
     }
 
     @Override
-    public void onArchivosSubidos(boolean subidos) {
+    public void onFilesUploaded(boolean subidos) {
 
     }
 
     @Override
-    public void onPictosSugeridosBajados(boolean descargado) {
+    public void onSuggestedPictosDownloaded(boolean descargado) {
         Log.d(TAG, "onIntegerChanged: Se bajaron las sugerencias");
         dialog.dismiss();
         animateTransition();
@@ -398,9 +393,9 @@ public class LoginActivity2 extends AppCompatActivity implements View.OnClickLis
 
         StorageReference mStorageRefUsuariosGruposOld = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child("grupos_" + mAuth.getCurrentUser().getEmail() + "." + "txt");
 
-        mBajarJsonFirebase.bajarPictos(locale, observableInteger);
-        mBajarJsonFirebase.bajarGrupos(locale, observableInteger);
-        mBajarJsonFirebase.bajarFrases(locale, observableInteger);
+        mDownloadJsonFromDatabase.bajarPictos(locale, observableInteger);
+        mDownloadJsonFromDatabase.bajarGrupos(locale, observableInteger);
+        mDownloadJsonFromDatabase.bajarFrases(locale, observableInteger);
 
     }
 
@@ -415,8 +410,8 @@ public class LoginActivity2 extends AppCompatActivity implements View.OnClickLis
                         sharedPrefsDefault.edit().putString(getString(R.string.str_userMail), mAuth.getCurrentUser().getEmail()).apply();
                         sharedPrefsDefault = getSharedPreferences(sharedPrefsDefault.getString(getString(R.string.str_userMail), "error"), Context.MODE_PRIVATE);
 
-                        mBajarJsonFirebase = new BajarJsonFirebase(sharedPrefsDefault, mAuth, getApplicationContext());
-                        mBajarJsonFirebase.setInterfaz(LoginActivity2.this);
+                        mDownloadJsonFromDatabase = new DownloadJsonFromDatabase(sharedPrefsDefault, mAuth, getApplicationContext());
+                        mDownloadJsonFromDatabase.setInterfaz(LoginActivity2.this);
                         locale = Locale.getDefault().getLanguage();
                         if(ValidateContext.isValidContext(getApplicationContext()))
                             new CloudFunctionHTTPRequest(LoginActivity2.this,TAG).doHTTPRequest("https://us-central1-ottaa-project.cloudfunctions.net/add2listwelcome");

@@ -21,7 +21,6 @@ import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.utils.Phrases.CustomFavoritePhrases;
 import com.stonefacesoft.ottaa.utils.textToSpeech;
 import com.stonefacesoft.pictogramslibrary.utils.GlideAttatcher;
-import com.stonefacesoft.pictogramslibrary.utils.ValidateContext;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -205,7 +204,7 @@ public class PhrasesAdapter extends RecyclerView.Adapter<PhrasesAdapter.PhraseAd
 
     public void itemAction(JSONObject phrase,View v){
         try {
-            myTTs.hablar(phrase.getString("frase"));
+            myTTs.speak(phrase.getString("frase"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

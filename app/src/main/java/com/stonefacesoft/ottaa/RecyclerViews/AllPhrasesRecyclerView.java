@@ -106,7 +106,7 @@ public class AllPhrasesRecyclerView extends Custom_recyclerView {
             if(createReturnPositionItem()){
               int value = getPositionItem.getPosition();
               if(validatePosition(value))
-                myTTS.hablar(adapter.getUserPhrases().getJSONObject(value).getString("frase"));
+                myTTS.speak(adapter.getUserPhrases().getJSONObject(value).getString("frase"));
             }
         } catch (Exception e) {
             e.printStackTrace();

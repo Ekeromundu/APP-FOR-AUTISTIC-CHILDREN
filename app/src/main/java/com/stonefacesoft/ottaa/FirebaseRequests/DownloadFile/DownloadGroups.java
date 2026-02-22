@@ -14,19 +14,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.stonefacesoft.ottaa.FirebaseRequests.BajarJsonFirebase;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
 import com.stonefacesoft.ottaa.utils.Firebase.CrashlyticsUtils;
 import com.stonefacesoft.ottaa.utils.ObservableInteger;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.File;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 public class DownloadGroups extends DownloadFile{
     public DownloadGroups(Context mContext, DatabaseReference mDatabase, StorageReference mStorageReference, SharedPreferences sharedPreferences, ObservableInteger observableInteger,String locale) {
@@ -36,12 +30,12 @@ public class DownloadGroups extends DownloadFile{
     }
 
     public void syncGroups(){
-        final File gruposUsuarioFile = new File(rootPath, Constants.ARCHIVO_GRUPOS);
+        final File gruposUsuarioFile = new File(rootPath, Constants.GROUPS_FILE);
 
-        mDatabase.child(Constants.Grupos).child(uid).child("URL_grupos_" + sharedPrefsDefault.getString(mContext.getString(R.string.str_idioma), locale)).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.Groups).child(uid).child("URL_grupos_" + sharedPrefsDefault.getString(mContext.getString(R.string.str_idioma), locale)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child("Grupos").child("grupos_" + email + "_" + ConfigurarIdioma.getLanguaje()+ "." + "txt");
+                mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child("Groups").child("grupos_" + email + "_" + ConfigurarIdioma.getLanguaje()+ "." + "txt");
 
 
                 mStorageReference.getFile(gruposUsuarioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -52,7 +46,7 @@ public class DownloadGroups extends DownloadFile{
 
                         boolean areSamefile = false;
                         try {
-                            areSamefile = json.verifyFiles(Constants.ARCHIVO_GRUPOS,gruposUsuarioFile);
+                            areSamefile = json.verifyFiles(Constants.GROUPS_FILE,gruposUsuarioFile);
                             Log.d(TAG, "onSuccess: are the same file"+areSamefile);
 
                         } catch (Exception ex){
@@ -66,7 +60,7 @@ public class DownloadGroups extends DownloadFile{
                                         .getAbsolutePath()).equals("[]") &&
                                         gruposUsuarioFile.length() > 0 ) {
                                     json.setmJSONArrayTodosLosGrupos(json.readJSONArrayFromFile(gruposUsuarioFile.getAbsolutePath()));
-                                    if (!json.guardarJson(Constants.ARCHIVO_GRUPOS))
+                                    if (!json.guardarJson(Constants.GROUPS_FILE))
                                         Log.e(TAG, "Error al guardar Json");
                                 }
                             } catch (Exception e) {
@@ -91,24 +85,24 @@ public class DownloadGroups extends DownloadFile{
     }
 
     public void downloadOldOrNewGroups(){
-        mDatabase.child(Constants.Grupos).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.Groups).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.e(TAG, "bajarGrupos: entrando " );
-                String child = "URL_" + Constants.Grupos.toLowerCase() + "_" + locale;
+                String child = "URL_" + Constants.Groups.toLowerCase() + "_" + locale;
                 Log.e(TAG, "DownloadGroups child " + child);
                 if (dataSnapshot.hasChild(child)) {
                     Log.e(TAG, "There is a child, DownloadGroups" );
-                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.Grupos).child(Constants.Grupos.toLowerCase() + "_" +email + "_" + locale + "." + "txt");
+                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.Groups).child(Constants.Groups.toLowerCase() + "_" +email + "_" + locale + "." + "txt");
                     Log.e(TAG, "DownloadGroups mStorageReference" + mStorageReference);
-                    final File gruposUsuarioFile = new File(rootPath, Constants.ARCHIVO_GRUPOS);
+                    final File gruposUsuarioFile = new File(rootPath, Constants.GROUPS_FILE);
                     mStorageReference.getFile(gruposUsuarioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             try {
                                 Log.e(TAG, "Successful DownloadGroups" );
                                 json.setmJSONArrayTodosLosGrupos(json.readJSONArrayFromFile(gruposUsuarioFile.getAbsolutePath()));
-                                if (!json.guardarJson(Constants.ARCHIVO_GRUPOS)) {
+                                if (!json.guardarJson(Constants.GROUPS_FILE)) {
                                     Log.e(TAG, "Fallo al guardar json");
                                 }else{
                                     Log.e(TAG, "Groups saved");
@@ -126,13 +120,13 @@ public class DownloadGroups extends DownloadFile{
                 }
                 else {
                     mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Paises/grupos/" + "grupos_" + locale + "." + "txt");
-                    final File gruposUsuarioFile = new File(rootPath, Constants.ARCHIVO_GRUPOS);
+                    final File gruposUsuarioFile = new File(rootPath, Constants.GROUPS_FILE);
                     mStorageReference.getFile(gruposUsuarioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             try {
                                 json.setmJSONArrayTodosLosGrupos(json.readJSONArrayFromFile(gruposUsuarioFile.getAbsolutePath()));
-                                if (!json.guardarJson(Constants.ARCHIVO_GRUPOS)) {
+                                if (!json.guardarJson(Constants.GROUPS_FILE)) {
                                     Log.e(TAG, "Fallo al guardar json");
                                 }else
                                     Log.e(TAG, "Grupo json");

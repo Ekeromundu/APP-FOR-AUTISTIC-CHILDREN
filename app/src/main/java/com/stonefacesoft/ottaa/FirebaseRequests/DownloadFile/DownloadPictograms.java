@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,13 +15,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
 import com.stonefacesoft.ottaa.utils.Firebase.CrashlyticsUtils;
 import com.stonefacesoft.ottaa.utils.ObservableInteger;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.File;
 
@@ -34,13 +29,13 @@ public class DownloadPictograms extends DownloadFile implements OnFailureListene
     }
 
     public void syncPictograms() {
-        mDatabase.child(Constants.PICTOS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.Pictures).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String child = "URL_pictos_"+locale;
                 if(snapshot.hasChild(child)){;
-                    final File pictosUsuarioFile = new File(rootPath,Constants.ARCHIVO_PICTOS);
-                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.PICTOS).child(Constants.PICTOS.toLowerCase() + "_" + email+ "_" + locale + "." + "txt");
+                    final File pictosUsuarioFile = new File(rootPath,Constants.PICTOS_FILE);
+                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.Pictures).child(Constants.Pictures.toLowerCase() + "_" + email+ "_" + locale + "." + "txt");
                     mStorageReference.getFile(pictosUsuarioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -50,7 +45,7 @@ public class DownloadPictograms extends DownloadFile implements OnFailureListene
                             Log.d("BAF_descGYPN", "Tama&ntildeoArchivoss :" + pictosUsuarioFile.length());
                             boolean aresamefile = false;
                             try {
-                                 aresamefile = json.verifyFiles(Constants.ARCHIVO_PICTOS,pictosUsuarioFile);
+                                 aresamefile = json.verifyFiles(Constants.PICTOS_FILE,pictosUsuarioFile);
                             } catch (Exception e) {
                                 Log.d(TAG, "onSuccess: " + e.getMessage());
                                 e.printStackTrace();
@@ -64,7 +59,7 @@ public class DownloadPictograms extends DownloadFile implements OnFailureListene
                                             getStringFromFile(pictosUsuarioFile.getAbsolutePath()
                                             ) != null) {
                                         json.setmJSONArrayTodosLosPictos(json.readJSONArrayFromFile(pictosUsuarioFile.getAbsolutePath()));
-                                        if (!json.guardarJson(Constants.ARCHIVO_PICTOS))
+                                        if (!json.guardarJson(Constants.PICTOS_FILE))
                                             Log.e(TAG, "Error al guardar Json");
                                         else {
                                             Log.d(TAG, "Pictogram Saved");
@@ -93,18 +88,18 @@ public class DownloadPictograms extends DownloadFile implements OnFailureListene
     }
 
     public void downloadPictogramsWithNullOption(){
-        mDatabase.child(Constants.PICTOS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.Pictures).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String child = "URL_" + Constants.PICTOS.toLowerCase() + "_" + locale;
+                String child = "URL_" + Constants.Pictures.toLowerCase() + "_" + locale;
                 Log.e(TAG, "bajar Pictos: "+ child );
 
                 if (dataSnapshot.hasChild(child)) {
                     Log.e(TAG, "bajar Pictos: Has child" );
-                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.PICTOS).child(Constants.PICTOS.toLowerCase() + "_" + email+ "_" + locale + "." + "txt");
+                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.Pictures).child(Constants.Pictures.toLowerCase() + "_" + email+ "_" + locale + "." + "txt");
                     Log.e(TAG, "Email: "+ email );
                     Log.e(TAG, "mStorageReference: "+ mStorageReference );
-                    final File pictosUsuariosFile = new File(rootPath, Constants.ARCHIVO_PICTOS);
+                    final File pictosUsuariosFile = new File(rootPath, Constants.PICTOS_FILE);
                     Log.e(TAG, "rootPath:"+ rootPath );
                     Log.e(TAG, "pictosUsuariosFile:"+ pictosUsuariosFile );
                     mStorageReference.getFile(pictosUsuariosFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -114,7 +109,7 @@ public class DownloadPictograms extends DownloadFile implements OnFailureListene
                             try {
                                 json.setmJSONArrayTodosLosPictos(json.readJSONArrayFromFile(pictosUsuariosFile.getAbsolutePath()));
                                 Log.e(TAG, "File stored at:" + pictosUsuariosFile.getAbsolutePath());
-                                if (!json.guardarJson(Constants.ARCHIVO_PICTOS)) {
+                                if (!json.guardarJson(Constants.PICTOS_FILE)) {
                                     Log.e(TAG, "Fallo al guardar json");
                                 }else
                                     Log.e(TAG, "Pictos Usuarios json");
@@ -136,7 +131,7 @@ public class DownloadPictograms extends DownloadFile implements OnFailureListene
                     if(locale.equals("es"))
                         mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Paises/pictos/es/pictos_es_"+gender+".txt");
 
-                    final File pictosUsuariosFile = new File(rootPath, Constants.ARCHIVO_PICTOS);
+                    final File pictosUsuariosFile = new File(rootPath, Constants.PICTOS_FILE);
                     mStorageReference.getFile(pictosUsuariosFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -144,7 +139,7 @@ public class DownloadPictograms extends DownloadFile implements OnFailureListene
                                 Log.d(TAG, "Download successful");
 
                                 json.setmJSONArrayTodosLosPictos(json.readJSONArrayFromFile(pictosUsuariosFile.getAbsolutePath()));
-                                if (!json.guardarJson(Constants.ARCHIVO_PICTOS)) {
+                                if (!json.guardarJson(Constants.PICTOS_FILE)) {
                                     Log.e(TAG, "Fallo al guardar json");
                                 }else{
                                     Log.d(TAG,"Pictogram Saved");
@@ -172,7 +167,7 @@ public class DownloadPictograms extends DownloadFile implements OnFailureListene
     }
 
     private String getGenderByValue(){
-        String value = sharedPrefsDefault.getString(Constants.GENERO,"other");
+        String value = sharedPrefsDefault.getString(Constants.GENDER,"other");
         Log.d(TAG, "getGenderByValue: "+value);
         switch (value.toLowerCase()){
             case "femenino":

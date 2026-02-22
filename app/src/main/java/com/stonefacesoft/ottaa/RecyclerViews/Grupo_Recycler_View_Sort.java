@@ -48,16 +48,16 @@ public class Grupo_Recycler_View_Sort extends Custom_recyclerView {
 
     public void guardarOrden() {
         json.setmJSONArrayTodosLosGrupos(mGaleriaGruposAdapter.getmArrayGrupos());
-        if (!json.guardarJson(Constants.Grupos))
+        if (!json.guardarJson(Constants.Groups))
             Log.e(TAG, "Error al guardar los grupos guardarOrden: ");
-        uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Grupos), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Grupos));
+        uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Groups), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Groups));
     }
 
     public void cancelOrder() {
         json.setmJSONArrayTodosLosGrupos(arrayAux);
-        if (!json.guardarJson(Constants.Grupos))
+        if (!json.guardarJson(Constants.Groups))
             Log.e(TAG, "Error al guardar los grupos guardarOrden: ");
-        uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Grupos), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Grupos));
+        uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Groups), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Groups));
     }
 
 

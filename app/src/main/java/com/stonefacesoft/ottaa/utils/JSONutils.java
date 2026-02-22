@@ -75,7 +75,7 @@ public class JSONutils {
      * @param object pictogram or group
      * @return  The name of a pictogram or group
      * */
-    public static String getNombre(JSONObject object, String lang) {
+    public static String getName(JSONObject object, String lang) {
         try {
             return object.getJSONObject("texto").getString(lang);
         } catch (Exception e) {
@@ -328,15 +328,15 @@ public class JSONutils {
     public static void setSexo(JSONObject ob, Sexo sexo) {
         JSONArray arraySexo = new JSONArray();
         try {
-            if (ob.has(Constants.SEXO)) {
-                arraySexo = ob.getJSONArray(Constants.SEXO);
+            if (ob.has(Constants.SEX)) {
+                arraySexo = ob.getJSONArray(Constants.SEX);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
             arraySexo.put(arraySexo.length(), sexo);
-            ob.put(Constants.SEXO, arraySexo);
+            ob.put(Constants.SEX, arraySexo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -680,8 +680,8 @@ public class JSONutils {
         try {
             if(json == null)
                 return 0;
-            if(json.has(Constants.SEXO)){
-                JSONArray array = json.getJSONArray(Constants.SEXO);
+            if(json.has(Constants.SEX)){
+                JSONArray array = json.getJSONArray(Constants.SEX);
                 for (int i = 0; i < array.length(); i++) {
                     if (sexo.equalsIgnoreCase(array.get(i).toString())) {
                         return 1;

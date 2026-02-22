@@ -34,7 +34,7 @@ import com.stonefacesoft.ottaa.Adapters.Item_adapter;
 import com.stonefacesoft.ottaa.Dialogos.DialogUtils.Devices_Version_Dialog;
 import com.stonefacesoft.ottaa.Dialogos.DialogUtils.Progress_dialog_options;
 import com.stonefacesoft.ottaa.Dialogos.custom_dialog_option_item;
-import com.stonefacesoft.ottaa.FirebaseRequests.BajarJsonFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.DownloadJsonFromDatabase;
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
 import com.stonefacesoft.ottaa.Interfaces.EstaConectada;
 import com.stonefacesoft.ottaa.Interfaces.FirebaseSuccessListener;
@@ -145,13 +145,13 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
     private custom_dialog_option_item customDialogOptionItem;
 
 
-    // private BajarJsonFirebase bajarJsonFirebase;
+    // private DownloadJsonFromDatabase downloadJsonFromDatabase;
     private Json json;
     private boolean cambioIdioma;
     private boolean cambioDeLado;
     private boolean cambioBarrido;
     private textToSpeech myTTS;
-    private BajarJsonFirebase bajarJsonFirebase;
+    private DownloadJsonFromDatabase downloadJsonFromDatabase;
     private HandlerComunicationClass handlerComunicationClass;
     private String message = "";
     private FirebaseUtils firebaseUtils;
@@ -171,8 +171,8 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
             mBoolUbicacion.setChecked(false);
 
         }
-        bajarJsonFirebase = new BajarJsonFirebase(sharedPrefsDefault, mAuth, getApplicationContext());
-        bajarJsonFirebase.setInterfaz(this);
+        downloadJsonFromDatabase = new DownloadJsonFromDatabase(sharedPrefsDefault, mAuth, getApplicationContext());
+        downloadJsonFromDatabase.setInterfaz(this);
         firebaseDialog = new Progress_dialog_options(this);
         handlerComunicationClass = new HandlerComunicationClass(this);
 
@@ -307,7 +307,7 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
                 Log.d(TAG, "onIntegerChanged: Picto is downloaded");
                 if (obsInt.get() == 2) {
                     Log.d(TAG, "onIntegerChanged: obsInt 2");
-                    Log.d(TAG, "onIntegerChanged: Grupos is downloaded");
+                    Log.d(TAG, "onIntegerChanged: Groups is downloaded");
                     handlerComunicationClass.sendMessage(
                             Message.obtain(handlerComunicationClass, HandlerComunicationClass.DISMISSDIALOG, ""));
                     obsInt.set(0);
@@ -482,30 +482,30 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
         }
         Log.d(TAG, "DescargarArchivosPais: Locale: " + locale);
 
-        bajarJsonFirebase.bajarGrupos(s, obsInt);
-        bajarJsonFirebase.bajarPictos(s, obsInt);
+        downloadJsonFromDatabase.bajarGrupos(s, obsInt);
+        downloadJsonFromDatabase.bajarPictos(s, obsInt);
         sharedPrefsDefault.edit().putString(getString(R.string.str_idioma), locale).apply();
 
     }
 
     @Override
-    public void onDescargaCompleta(int descargaCompleta) {
+    public void onDownloadComplete(int descargaCompleta) {
 
     }
 
     @Override
-    public void onDatosEncontrados(int datosEncontrados) {
+    public void onDataFound(int datosEncontrados) {
 
     }
 
     @Override
-    public void onFotoDescargada(int fotosDescargadas) {
+    public void onPhotoDownloaded(int fotosDescargadas) {
 
     }
 
 
     @Override
-    public void onPictosSugeridosBajados(boolean descargado) {
+    public void onSuggestedPictosDownloaded(boolean descargado) {
         if (descargado) {
             handlerComunicationClass.sendMessage(
                     Message.obtain(handlerComunicationClass, HandlerComunicationClass.DISMISSDIALOG, ""));
@@ -518,7 +518,7 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
     public void isconnected(boolean b) {
         if (!b) {
             if (firebaseDialog != null && firebaseDialog.isShowing()) {
-                firebaseDialog.destruirDialogo();
+                firebaseDialog.destroyDialog();
             }
         }
 
@@ -571,7 +571,7 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
     }
 
     @Override
-    public void onArchivosSubidos(boolean subidos) {
+    public void onFilesUploaded(boolean subidos) {
 
     }
 
@@ -634,7 +634,7 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
                     return true;
                 case "sexo":
                     analyticsFirebase.customEvents(ConstantsAnalyticsValues.SETTINGEVENT, ConstantsAnalyticsValues.PREFSCLASSNAME, getString(R.string.GenderUserAnalyticsValue));
-                    showDialogOptionsDownloadFile(getResources().getString(R.string.gender_string), Constants.GENERO, sharedPrefsDefault.getString(Constants.GENERO, "MASCULINO"), R.array.listSexo, R.array.list_sexo_valores, "pref_sexo");
+                    showDialogOptionsDownloadFile(getResources().getString(R.string.gender_string), Constants.GENDER, sharedPrefsDefault.getString(Constants.GENDER, "MASCULINO"), R.array.listSexo, R.array.list_sexo_valores, "pref_sexo");
                     //  new ordenarPictos().execute();
                     return true;
                 case "edad":
@@ -691,7 +691,7 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
     private void showPaymentMessage(PersonalSwitchPreferences preference){
         if(sharedPrefsDefault.getInt("premium", 0) == 0){
             preference.setChecked(false);
-            Intent i = new Intent(preference.getContext(), LicenciaExpirada.class);
+            Intent i = new Intent(preference.getContext(), LicenseExpired.class);
             startActivity(i);
         }
 
@@ -727,7 +727,7 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
 
     public void cancelarDialogo() {
         if (firebaseDialog != null)
-            firebaseDialog.destruirDialogo();
+            firebaseDialog.destroyDialog();
         if(customDialogOptionItem != null)
             customDialogOptionItem.DissmisDialog();
     }
@@ -793,7 +793,7 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
                     sharedPrefsDefault.edit().putString(preferences, value).apply();
                     message = "Bajando sugerencias";
                     final StorageReference mPredictionRef = mStorageRef.child("Archivos_Sugerencias").child("pictos_" + sharedPrefsDefault.getString("prefSexo", "FEMENINO") + "_" + sharedPrefsDefault.getString("prefEdad", "JOVEN") + ".txt");
-                    bajarJsonFirebase.descargarPictosDatabase(mPredictionRef);
+                    downloadJsonFromDatabase.descargarPictosDatabase(mPredictionRef);
                     handlerComunicationClass.sendMessage(
                             Message.obtain(handlerComunicationClass, HandlerComunicationClass.SHOWDIALOG, ""));
                 }
@@ -815,7 +815,7 @@ public class prefs extends PreferenceActivity implements SharedPreferences.OnSha
                     sharedPrefsDefault.edit().putString(preference, value).apply();
                     message = "Bajando sugerencias";
                     final StorageReference mPredictionRef = mStorageRef.child("Archivos_Sugerencias").child("pictos_" + sharedPrefsDefault.getString("prefSexo", "FEMENINO") + "_" + sharedPrefsDefault.getString("prefEdad", "JOVEN") + ".txt");
-                    bajarJsonFirebase.descargarPictosDatabase(mPredictionRef);
+                    downloadJsonFromDatabase.descargarPictosDatabase(mPredictionRef);
                     handlerComunicationClass.sendMessage(
                             Message.obtain(handlerComunicationClass, HandlerComunicationClass.SHOWDIALOG, ""));
                 }

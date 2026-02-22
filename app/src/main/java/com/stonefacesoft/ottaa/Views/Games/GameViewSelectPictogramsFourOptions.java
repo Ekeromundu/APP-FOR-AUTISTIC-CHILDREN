@@ -21,7 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.stonefacesoft.ottaa.Interfaces.Lock_Unlocked_Pictograms;
 import com.stonefacesoft.ottaa.Interfaces.Make_Click_At_Time;
 import com.stonefacesoft.ottaa.R;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.GameControl;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.scrollActions.ScrollFuntionGames;
 import com.stonefacesoft.ottaa.utils.Audio.MediaPlayerAudio;
@@ -65,7 +65,7 @@ public class GameViewSelectPictogramsFourOptions extends AppCompatActivity imple
 
     protected SharedPreferences sharedPrefsDefault;
 
-    protected BarridoPantalla barridoPantalla;
+    protected ScreenScroll screenScroll;
 
     protected Juego game;
 
@@ -171,8 +171,8 @@ public class GameViewSelectPictogramsFourOptions extends AppCompatActivity imple
         game.startUseTime();
     }
 
-    public BarridoPantalla getBarridoPantalla() {
-        return barridoPantalla;
+    public ScreenScroll getBarridoPantalla() {
+        return screenScroll;
     }
 
 }

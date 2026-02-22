@@ -30,22 +30,22 @@ public class DownloadFavoritePhrases extends DownloadFile{
 
     public void DownloadFavoritePhrases(){
         Log.e(TAG, "bajarFavoriteFrases: " );
-        mDatabase.child(Constants.FrasesFavoritas).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.FavoritePhrases).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e(TAG, "FrasesFavoritas exists" );
-                String child = "URL_" + Constants.FrasesFavoritas.toLowerCase() + "_" + locale;
+                Log.e(TAG, "FavoritePhrases exists" );
+                String child = "URL_" + Constants.FavoritePhrases.toLowerCase() + "_" + locale;
                 if (dataSnapshot.hasChild(child)) {
                     Log.e(TAG, "Favorite has child: " );
-                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.FrasesFavoritas).child(Constants.FrasesFavoritas.toLowerCase() + "_" + email + "_" + locale + "." + "txt");
-                    final File frasesUsuario = new File(rootPath, Constants.ARCHIVO_FRASES_FAVORITAS);
+                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.FavoritePhrases).child(Constants.FavoritePhrases.toLowerCase() + "_" + email + "_" + locale + "." + "txt");
+                    final File frasesUsuario = new File(rootPath, Constants.FAVORITE_PHRASES_FILE);
                     mStorageReference.getFile(frasesUsuario).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             Log.e(TAG, "Favorite frase downloaded" );
                             try {
                                 json.setmJSonArrayFrasesFavoritas(json.readJSONArrayFromFile(frasesUsuario.getAbsolutePath()));
-                                if (!json.guardarJson(Constants.ARCHIVO_FRASES_FAVORITAS)) {
+                                if (!json.guardarJson(Constants.FAVORITE_PHRASES_FILE)) {
 
                                     Log.e(TAG, "Fallo al guardar json");
                                 }
@@ -65,7 +65,7 @@ public class DownloadFavoritePhrases extends DownloadFile{
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e(TAG, "onCancelled: "+ databaseError.getMessage() );
-                Log.e(TAG, "bajar Frases: failure" );
+                Log.e(TAG, "bajar Phrases: failure" );
             }
         });
     }

@@ -26,7 +26,7 @@ public class UploadingFavoritePhrases extends UploadFile {
     @Override
     protected void openFile() {
         try {
-            fis=mContext.openFileInput(Constants.ARCHIVO_FRASES_FAVORITAS);
+            fis=mContext.openFileInput(Constants.FAVORITE_PHRASES_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

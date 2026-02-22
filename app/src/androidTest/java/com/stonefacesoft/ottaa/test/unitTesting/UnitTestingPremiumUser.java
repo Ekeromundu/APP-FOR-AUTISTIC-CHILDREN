@@ -7,7 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
 import com.stonefacesoft.ottaa.utils.UserLicence.LicenciaUsuario;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
 import com.stonefacesoft.ottaa.utils.preferences.User;
 import com.stonefacesoft.ottaa.test.Components.Preferences;
@@ -29,7 +29,7 @@ public class UnitTestingPremiumUser extends TestCase {
     private User user;
     private Preferences preferences;
     private LicenciaUsuario licenciaUsuario;
-    private BarridoPantalla barridoPantalla;
+    private ScreenScroll screenScroll;
     @Before
     public void setUpUnitTesting(){
             user=new User(mContext);
@@ -39,7 +39,7 @@ public class UnitTestingPremiumUser extends TestCase {
             ////firebaseUtils.setmContext(mContext);
             firebaseUtils.initFirebaseAndEmulator();
             preferences.editBoolean(Constants.BARRIDO_BOOL,true);
-            preferences.editBoolean(Constants.SUGERENCIA_BOOL,true);
+            preferences.editBoolean(Constants.SCANNING_ENABLED,true);
             licenciaUsuario=new LicenciaUsuario(mContext);
             //activar Sugerencias
             //activar barrido
@@ -52,15 +52,15 @@ public class UnitTestingPremiumUser extends TestCase {
         System.out.println("Preferences:"+ preferences.getPreferences().getInt(Constants.PREMIUM,0));
         if(preferences.getPreferences().getInt(Constants.PREMIUM,0)==0){
             preferences.editBoolean(Constants.BARRIDO_BOOL,false);
-            preferences.editBoolean(Constants.SUGERENCIA_BOOL,false);
+            preferences.editBoolean(Constants.SCANNING_ENABLED,false);
         }
         if(preferences.getPreferences().getInt(Constants.PREMIUM,0)==1) {
             Assert.assertTrue("IsEnabled", preferences.getPreferences().getBoolean(Constants.BARRIDO_BOOL, true));
-            Assert.assertTrue("IsEnabled", preferences.getPreferences().getBoolean(Constants.SUGERENCIA_BOOL, true));
+            Assert.assertTrue("IsEnabled", preferences.getPreferences().getBoolean(Constants.SCANNING_ENABLED, true));
         }
         else {
             Assert.assertTrue("IsEnabled", !preferences.getPreferences().getBoolean(Constants.BARRIDO_BOOL, false));
-            Assert.assertTrue("IsEnabled", !preferences.getPreferences().getBoolean(Constants.SUGERENCIA_BOOL, false));
+            Assert.assertTrue("IsEnabled", !preferences.getPreferences().getBoolean(Constants.SCANNING_ENABLED, false));
         }
         if(preferences.getPreferences().getInt(Constants.PREMIUM,0)==1)
         inhabilitarUsuario();

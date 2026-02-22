@@ -3,8 +3,6 @@ package com.stonefacesoft.ottaa.Views;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -15,7 +13,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
@@ -30,7 +27,7 @@ import com.stonefacesoft.ottaa.Helper.RecyclerViewItemClickInterface;
 import com.stonefacesoft.ottaa.Interfaces.FallanDatosDelUsuario;
 import com.stonefacesoft.ottaa.Interfaces.Make_Click_At_Time;
 import com.stonefacesoft.ottaa.R;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.GaleriaGruposControls;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.scrollActions.ScrollFunctionGaleriaGrupos;
 import com.stonefacesoft.ottaa.utils.IntentCode;
@@ -41,7 +38,7 @@ import java.util.ArrayList;
 public class GroupGalleryNavigator extends AppCompatActivity implements OnStartDragListener,
         RecyclerViewItemClickInterface, FallanDatosDelUsuario, View.OnClickListener, View.OnTouchListener, Make_Click_At_Time {
 
-    protected BarridoPantalla barridoPantalla;
+    protected ScreenScroll screenScroll;
     protected ImageButton previous, foward,editButton, exit;
     protected Button btnBarrido;
     protected FloatingActionButton btnTalk;
@@ -135,16 +132,16 @@ public class GroupGalleryNavigator extends AppCompatActivity implements OnStartD
         if (0 != (event.getSource() & InputDevice.SOURCE_CLASS_POINTER)) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
-                    if(barridoPantalla.isScrollMode()||barridoPantalla.isScrollModeClicker()){
+                    if(screenScroll.isScrollMode()|| screenScroll.isScrollModeClicker()){
                         if(event.getAxisValue(MotionEvent.AXIS_VSCROLL)<0.0f){
-                            if(barridoPantalla.isScrollMode())
+                            if(screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.avanzarBarrido();
+                            screenScroll.avanzarBarrido();
                         }
                         else{
-                            if(barridoPantalla.isScrollMode())
+                            if(screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.volverAtrasBarrido();
+                            screenScroll.volverAtrasBarrido();
 
                         }
                     }
@@ -156,7 +153,7 @@ public class GroupGalleryNavigator extends AppCompatActivity implements OnStartD
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (barridoPantalla.isBarridoActivado()) {
+        if (screenScroll.isBarridoActivado()) {
 
             if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
                 event.startTracking();
@@ -173,7 +170,7 @@ public class GroupGalleryNavigator extends AppCompatActivity implements OnStartD
             }
             if(keyCode == KeyEvent.KEYCODE_BACK){
                 if(event.getSource() == InputDevice.SOURCE_MOUSE)
-                    barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                    screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 else
                     onBackPressed();
                 return true;
@@ -183,8 +180,8 @@ public class GroupGalleryNavigator extends AppCompatActivity implements OnStartD
         return false;
     }
 
-    public BarridoPantalla getBarridoPantalla() {
-        return barridoPantalla;
+    public ScreenScroll getBarridoPantalla() {
+        return screenScroll;
     }
 
     public ScrollFunctionGaleriaGrupos getFunction_scroll(){
@@ -198,8 +195,8 @@ public class GroupGalleryNavigator extends AppCompatActivity implements OnStartD
         listadoObjetosBarrido.add(btnTalk);
         listadoObjetosBarrido.add(foward);
         //  listadoObjetosBarrido.add(editButton);
-        barridoPantalla = new BarridoPantalla(this, listadoObjetosBarrido);
-        if (barridoPantalla.isBarridoActivado() && barridoPantalla.devolverpago()) {
+        screenScroll = new ScreenScroll(this, listadoObjetosBarrido);
+        if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
 
                 @Override
@@ -207,8 +204,8 @@ public class GroupGalleryNavigator extends AppCompatActivity implements OnStartD
                     // Stuff that updates the UI
                     showViewPager=true;
                     btnBarrido.setVisibility(View.VISIBLE);
-                    if(barridoPantalla.isAvanzarYAceptar())
-                        barridoPantalla.changeButtonVisibility();
+                    if(screenScroll.isAvanzarYAceptar())
+                        screenScroll.changeButtonVisibility();
                 }
             });
         }else{

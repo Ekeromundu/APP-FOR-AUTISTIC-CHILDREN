@@ -1,6 +1,5 @@
 package com.stonefacesoft.ottaa.utils.Accesibilidad.devices;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.MotionEvent;
@@ -12,7 +11,7 @@ import com.stonefacesoft.ottaa.Games.TellAStory;
 import com.stonefacesoft.ottaa.Views.MatchPictograms;
 import com.stonefacesoft.ottaa.Games.WhichIsThePicto;
 import com.stonefacesoft.ottaa.MainJuegos;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.Views.Games.GameViewSelectPictograms;
 
 public class GameControl extends Controls{
@@ -121,7 +120,7 @@ public class GameControl extends Controls{
         return true;
     }
 
-    private BarridoPantalla getBarridoPantalla(){
+    private ScreenScroll getBarridoPantalla(){
         if(mainJuegos!=null)
             return mainJuegos.getBarridoPantalla();
         else if(whichIsThePicto!=null)

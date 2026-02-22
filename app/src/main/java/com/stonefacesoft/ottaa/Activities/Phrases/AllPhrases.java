@@ -32,7 +32,7 @@ public class AllPhrases extends PhrasesView {
         btnEditar.setVisibility(View.INVISIBLE);
         allPhrasesRecyclerView.setMyTTS(myTTS);
         allPhrasesRecyclerView.setOnClickListener();
-        if(barridoPantalla.isBarridoActivado())
+        if(screenScroll.isBarridoActivado())
             allPhrasesRecyclerView.setScrollVertical(false);
         TAG ="AllPhrases";
     }

@@ -28,7 +28,7 @@ import com.stonefacesoft.ottaa.Interfaces.Make_Click_At_Time;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.GameControl;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.scrollActions.ScrollFuntionGames;
 import com.stonefacesoft.ottaa.utils.Audio.MediaPlayerAudio;
@@ -105,7 +105,7 @@ public class GameViewSelectPictograms extends AppCompatActivity implements View.
 
     protected Handler handlerHablar;
     protected AnalyticsFirebase analyticsFirebase;
-    protected BarridoPantalla barridoPantalla;
+    protected ScreenScroll screenScroll;
     protected Button btnBarrido;
     protected GameControl gameControl;
     protected Intent intent;
@@ -460,8 +460,8 @@ public class GameViewSelectPictograms extends AppCompatActivity implements View.
         listadoObjetosBarrido.add(guess3);
         listadoObjetosBarrido.add(guess4);
         //  listadoObjetosBarrido.add(editButton);
-        barridoPantalla = new BarridoPantalla(this, listadoObjetosBarrido);
-        if (barridoPantalla.isBarridoActivado() && barridoPantalla.devolverpago()) {
+        screenScroll = new ScreenScroll(this, listadoObjetosBarrido);
+        if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
 
                 @Override
@@ -478,10 +478,10 @@ public class GameViewSelectPictograms extends AppCompatActivity implements View.
 
     @Override
     public void OnClickBarrido() {
-        if(function_scroll.isClickEnabled()&&barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+        if(function_scroll.isClickEnabled()&& screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         else if(!function_scroll.isClickEnabled()){
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
 
@@ -502,16 +502,16 @@ public class GameViewSelectPictograms extends AppCompatActivity implements View.
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
 
-                    if(barridoPantalla.isScrollMode()||barridoPantalla.isScrollModeClicker()){
+                    if(screenScroll.isScrollMode()|| screenScroll.isScrollModeClicker()){
                         if(event.getAxisValue(MotionEvent.AXIS_VSCROLL)<0.0f){
-                            if(barridoPantalla.isScrollMode())
+                            if(screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.avanzarBarrido();
+                            screenScroll.avanzarBarrido();
                         }
                         else{
-                            if(barridoPantalla.isScrollMode())
+                            if(screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.volverAtrasBarrido();
+                            screenScroll.volverAtrasBarrido();
 
                         }
                     }
@@ -520,8 +520,8 @@ public class GameViewSelectPictograms extends AppCompatActivity implements View.
         }
         return super.onGenericMotionEvent(event);    }
 
-    public BarridoPantalla getBarridoPantalla() {
-        return barridoPantalla;
+    public ScreenScroll getBarridoPantalla() {
+        return screenScroll;
     }
     protected void setGuessDrawable(PictoView view){
         Drawable drawable=getDrawable(R.drawable.ic_help_outline_black_24dp);
@@ -635,7 +635,7 @@ public class GameViewSelectPictograms extends AppCompatActivity implements View.
         if(object!=null){
             option.setCustom_Img(json.getIcono(object));
             option.setInvisibleCustomTexto();
-            option.setCustom_Texto(JSONutils.getNombre(object, ConfigurarIdioma.getLanguaje()));
+            option.setCustom_Texto(JSONutils.getName(object, ConfigurarIdioma.getLanguaje()));
         }
     }
 

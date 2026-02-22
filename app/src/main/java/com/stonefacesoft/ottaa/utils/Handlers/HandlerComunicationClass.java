@@ -38,24 +38,24 @@ public class HandlerComunicationClass extends HandlerUtils {
                 break;
             case CARGARJSON :
                 if(principal!=null)
-                    principal.CargarJson();
+                    principal.LoadJson();
                 break;
             case ERRORCARGARJSON:
                 if(principal!=null){
                     fallasLeerJson++;
                     if(fallasLeerJson==1)
-                        principal.CargarJson();
+                        principal.LoadJson();
 
                 }
                 break;
             case TRANSLATEDPHRASE:
                 if (principal != null) {
-                    principal.setOracion((String) msg.obj);
+                    principal.setSentence((String) msg.obj);
                     principal.speak();
                 }
                 break;
             case SHAREACTION:
-                principal.setOracion((String) msg.obj);
+                principal.setSentence((String) msg.obj);
                 principal.shareText();
                 break;
             case TEXTNOTTRANSLATED:

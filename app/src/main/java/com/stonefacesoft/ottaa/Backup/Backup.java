@@ -58,7 +58,7 @@ public class Backup {
       //preguntamos si paso 7 dias , si no pasaron no se hace nada, sino se hace backup
       if (ultimoDatoLocal + Constants.UNA_SEMANA < lastConnection) {
          Log.d("Principal_GuardLoc", "Pasaron 7 dias haciendo backup local");
-         final File pictosUsuarioBackupFilasde = new File(myDiasgr, Constants.ARCHIVO_PICTOS);
+         final File pictosUsuarioBackupFilasde = new File(myDiasgr, Constants.PICTOS_FILE);
 
          //Nos fijamos si el permiso de escribir en el storage esta dado para hacer el backup local.
          if (ContextCompat.checkSelfPermission(mContext,

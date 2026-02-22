@@ -1,14 +1,12 @@
 package com.stonefacesoft.ottaa.utils;
 
-import com.stonefacesoft.ottaa.Games.TellAStory;
-
 /**
  * Created by Cristian on 3/4/2016.
  */
 public enum IntentCode {
     MY_DATA_CHECK_CODE(0),
     CONFIG_SCREEN(1),
-    EDITARPICTO(2),
+    EDIT_PICTO(2),
     RC_SIGN_IN(3),
     LOGIN_ACTIVITY(4),
     PLAY_SERVICES_RESOLUTION_REQUEST(5),

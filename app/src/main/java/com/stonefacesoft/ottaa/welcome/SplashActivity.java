@@ -21,8 +21,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.stonefacesoft.ottaa.FirebaseRequests.BajarJsonFirebase;
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.DownloadJsonFromDatabase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.LoginActivity2;
 import com.stonefacesoft.ottaa.Principal;
@@ -52,7 +52,7 @@ public class SplashActivity extends Activity {
     private TextView txtCargando;
     private Animation beat;
     private FirebaseAuth mAuth;
-    private BajarJsonFirebase mDownloadJsonFirebase;
+    private DownloadJsonFromDatabase mDownloadJsonFirebase;
     private ChangeText changeName;
 
 
@@ -198,18 +198,18 @@ public class SplashActivity extends Activity {
                 Log.e(TAG, "borrarPictosViejos: Error" + ex.getMessage());
             }
             Json.getInstance().setmJSONArrayTodosLosPictos(pictosUsuario);
-            Json.getInstance().setmJSONArrayPictosSugeridos(pictosSugeridos);
+            Json.getInstance().setSuggestedPictosJSONArray(pictosSugeridos);
             Json.getInstance().setmJSONArrayTodosLosGrupos(gruposAux);
-            Json.getInstance().guardarJson(Constants.ARCHIVO_PICTOS);
-            Json.getInstance().guardarJson(Constants.ARCHIVO_GRUPOS);
-            Json.getInstance().guardarJson(Constants.ARCHIVO_PICTOS_DATABASE);
+            Json.getInstance().guardarJson(Constants.PICTOS_FILE);
+            Json.getInstance().guardarJson(Constants.GROUPS_FILE);
+            Json.getInstance().guardarJson(Constants.PICTOS_DATABASE_FILE);
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
             mAuth.addAuthStateListener(firebaseAuth -> {
                 if (firebaseAuth.getCurrentUser() != null) {
-                    SubirArchivosFirebase subirArchivosFirebase = new SubirArchivosFirebase(SplashActivity.this);
-                    subirArchivosFirebase.subirPictosFirebase(subirArchivosFirebase.getmDatabase(mAuth, Constants.PICTOS), subirArchivosFirebase.getmStorageRef(mAuth, Constants.PICTOS));
-                    subirArchivosFirebase.subirGruposFirebase(subirArchivosFirebase.getmDatabase(mAuth, Constants.Grupos), subirArchivosFirebase.getmStorageRef(mAuth, Constants.Grupos));
+                    UploadFilesToFirebase uploadFilesToFirebase = new UploadFilesToFirebase(SplashActivity.this);
+                    uploadFilesToFirebase.subirPictosFirebase(uploadFilesToFirebase.getmDatabase(mAuth, Constants.Pictures), uploadFilesToFirebase.getmStorageRef(mAuth, Constants.Pictures));
+                    uploadFilesToFirebase.subirGruposFirebase(uploadFilesToFirebase.getmDatabase(mAuth, Constants.Groups), uploadFilesToFirebase.getmStorageRef(mAuth, Constants.Groups));
                     sharedPrefsDefault.edit().putBoolean("pictosEliminados", true).apply();
 
                 }

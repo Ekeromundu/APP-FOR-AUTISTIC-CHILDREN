@@ -3,7 +3,6 @@ package com.stonefacesoft.ottaa.utils.Pictures;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,7 +52,7 @@ public class DownloadFirebasePictures {
         showDismissDialog.sendMessage(1);
         String uid = firebaseUser.getUserUid();
         if(uid !=null ||uid.isEmpty()){
-            firebaseUtils.getmDatabase().child(Constants.FOTOSUSUARIO).child(firebaseUser.getUserUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            firebaseUtils.getmDatabase().child(Constants.USER_PHOTOS).child(firebaseUser.getUserUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     int size = (int) dataSnapshot.getChildrenCount();

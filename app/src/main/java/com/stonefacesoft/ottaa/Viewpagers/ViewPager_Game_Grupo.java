@@ -117,7 +117,7 @@ public class ViewPager_Game_Grupo {
      */
     public void hablar() {
         try {
-            myTTS.hablar(JSONutils.getNombre(array.getJSONObject(viewPager.getCurrentItem()),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+            myTTS.speak(JSONutils.getName(array.getJSONObject(viewPager.getCurrentItem()),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
             OnClickItem();
         } catch (JSONException e) {
             Log.e(TAG, "hablar: Error: " + e.getMessage());
@@ -170,7 +170,7 @@ public class ViewPager_Game_Grupo {
         Intent intent = null;
         int position = viewPager.getCurrentItem();
         try {
-            myTTS.hablarSinMostrarFrase(JSONutils.getNombre(array.getJSONObject(position),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+            myTTS.hablarSinMostrarFrase(JSONutils.getName(array.getJSONObject(position),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
             switch (id) {
                 case 0:
                     intent = new Intent(mActivity, WhichIsThePicto.class);
@@ -268,7 +268,7 @@ public class ViewPager_Game_Grupo {
                            // intent.putExtra("Boton", position);
                             positionItem=position;
                             try {
-                                myTTS.hablarSinMostrarFrase(JSONutils.getNombre(array.getJSONObject(position),ConfigurarIdioma.getLanguaje()));
+                                myTTS.hablarSinMostrarFrase(JSONutils.getName(array.getJSONObject(position),ConfigurarIdioma.getLanguaje()));
                                 switch (id){
                                     case 0:
                                         intent = new Intent(mActivity, WhichIsThePicto.class);

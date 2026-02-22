@@ -3,7 +3,6 @@ package com.stonefacesoft.ottaa.Adapters;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.ListPreloader;
 import com.bumptech.glide.RequestBuilder;
 import com.google.firebase.auth.FirebaseAuth;
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.Helper.ItemTouchHelperAdapter;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.R;
@@ -39,7 +38,7 @@ public class GaleriaPictosAdapter extends RecyclerView.Adapter<GaleriaPictosAdap
     private final int layoutID;
     private JSONArray mArrayPictos;
     private Json json;
-    private final SubirArchivosFirebase uploadFirebaseFile;
+    private final UploadFilesToFirebase uploadFirebaseFile;
     private final FirebaseAuth mAuth;
     private static final String TAG = "GaleriaPictosAdapter";
     private int cantCambios;
@@ -50,7 +49,7 @@ public class GaleriaPictosAdapter extends RecyclerView.Adapter<GaleriaPictosAdap
         this.mContext = mContext;
         this.layoutID = layoutID;
         this.mArrayPictos = mArrayPictos;
-        this.uploadFirebaseFile = new SubirArchivosFirebase(mContext);
+        this.uploadFirebaseFile = new UploadFilesToFirebase(mContext);
         this.mAuth = auth;
         removeOldFiles();
     }
@@ -162,7 +161,7 @@ public class GaleriaPictosAdapter extends RecyclerView.Adapter<GaleriaPictosAdap
 
 
     public void onDropItem() {
-        uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Grupos), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Grupos));
+        uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Groups), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Groups));
     }
 
 

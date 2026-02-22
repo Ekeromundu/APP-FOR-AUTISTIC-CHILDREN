@@ -46,7 +46,7 @@ public class Picto_Recycler_View_Sort extends Custom_recyclerView{
     public void guardarOrden() {
         JSONArray grupos = json.getmJSONArrayTodosLosGrupos();
         JSONutils.setHijosGrupo2(grupos, galeriaPictos2.getmArrayPictos(), button);
-        if (!json.guardarJson(Constants.Grupos))
+        if (!json.guardarJson(Constants.Groups))
             Log.e(TAG, "Error al guardar los grupos guardarOrden: ");
     }
 }

@@ -36,7 +36,7 @@ import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.RecyclerViews.Game_Recyler_View;
 import com.stonefacesoft.ottaa.Viewpagers.ViewPager_Game_Grupo;
 import com.stonefacesoft.ottaa.Views.MatchPictograms;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.GameControl;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.scrollActions.ScrollFuntionGames;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
@@ -77,7 +77,7 @@ public class GameSelector extends AppCompatActivity implements View.OnClickListe
     private ViewPager_Game_Grupo grupo_viewPager;
     private Game_Recyler_View game_recycler_view;
     private SharedPreferences sharedPrefsDefault;
-    private BarridoPantalla barridoPantalla;
+    private ScreenScroll screenScroll;
     private Button btnBarrido;
     private ScrollFuntionGames function_scroll;
     private GameControl gameControl;
@@ -185,17 +185,17 @@ public class GameSelector extends AppCompatActivity implements View.OnClickListe
                 grupo_viewPager.OnClickItem();
                 break;
             case R.id.btnBarrido:
-                    onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+                    onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
                 break;
         }
     }
 
     @Override
     public void OnClickBarrido() {
-        if(function_scroll.isClickEnabled()&&barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+        if(function_scroll.isClickEnabled()&& screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         else if(!function_scroll.isClickEnabled()){
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
 
@@ -226,7 +226,7 @@ public class GameSelector extends AppCompatActivity implements View.OnClickListe
             json = Json.getInstance();
 
             try {
-                mJsonArrayTodosLosGrupos = json.readJSONArrayFromFile(Constants.ARCHIVO_GRUPOS);
+                mJsonArrayTodosLosGrupos = json.readJSONArrayFromFile(Constants.GROUPS_FILE);
             } catch (JSONException | FiveMbException e) {
                 e.printStackTrace();
             }
@@ -338,8 +338,8 @@ public class GameSelector extends AppCompatActivity implements View.OnClickListe
 
 
         //  listadoObjetosBarrido.add(editButton);
-        barridoPantalla = new BarridoPantalla(this, listadoObjetosBarrido);
-        if (barridoPantalla.isBarridoActivado() && barridoPantalla.devolverpago()) {
+        screenScroll = new ScreenScroll(this, listadoObjetosBarrido);
+        if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
 
                 @Override
@@ -361,16 +361,16 @@ public class GameSelector extends AppCompatActivity implements View.OnClickListe
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
 
-                    if(barridoPantalla.isScrollMode()||barridoPantalla.isScrollModeClicker()){
+                    if(screenScroll.isScrollMode()|| screenScroll.isScrollModeClicker()){
                         if(event.getAxisValue(MotionEvent.AXIS_VSCROLL)<0.0f){
-                            if(barridoPantalla.isScrollMode())
+                            if(screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.avanzarBarrido();
+                            screenScroll.avanzarBarrido();
                         }
                         else{
-                            if(barridoPantalla.isScrollMode())
+                            if(screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.volverAtrasBarrido();
+                            screenScroll.volverAtrasBarrido();
 
                         }
                     }
@@ -385,13 +385,13 @@ public class GameSelector extends AppCompatActivity implements View.OnClickListe
     public boolean onTouch(View v, MotionEvent event) {
         return gameControl.makeClick(event);
     }
-    public BarridoPantalla getBarridoPantalla() {
-        return barridoPantalla;
+    public ScreenScroll getBarridoPantalla() {
+        return screenScroll;
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (barridoPantalla.isBarridoActivado()) {
+        if (screenScroll.isBarridoActivado()) {
             if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
                 event.startTracking();
                 return true;
@@ -407,7 +407,7 @@ public class GameSelector extends AppCompatActivity implements View.OnClickListe
             }
             if(keyCode == KeyEvent.KEYCODE_BACK){
                 if(event.getSource() == InputDevice.SOURCE_MOUSE)
-                    barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                    screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 else
                     onBackPressed();
                 return true;

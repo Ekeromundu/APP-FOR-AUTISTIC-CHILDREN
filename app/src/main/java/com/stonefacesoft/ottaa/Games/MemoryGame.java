@@ -128,7 +128,7 @@ public class MemoryGame extends GameViewSelectPictograms {
                 sharedPrefsDefault.edit().putBoolean("muteSound", gamesSettings.isSoundOn()).apply();
               break;
             case R.id.btnBarrido:
-                onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+                onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
 
@@ -418,7 +418,7 @@ public class MemoryGame extends GameViewSelectPictograms {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (barridoPantalla.isBarridoActivado()) {
+        if (screenScroll.isBarridoActivado()) {
             if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
                 event.startTracking();
                 return true;
@@ -434,7 +434,7 @@ public class MemoryGame extends GameViewSelectPictograms {
             }
             if(keyCode == KeyEvent.KEYCODE_BACK){
                 if(event.getSource() == InputDevice.SOURCE_MOUSE)
-                    barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                    screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 else
                     onBackPressed();
                 return true;

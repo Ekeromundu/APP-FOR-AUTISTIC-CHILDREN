@@ -12,11 +12,7 @@ import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.NLG;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
-import com.stonefacesoft.ottaa.utils.ConnectionDetector;
 import com.stonefacesoft.ottaa.utils.JSONutils;
-import com.stonefacesoft.ottaa.utils.RemoteConfigUtils;
-import com.stonefacesoft.ottaa.utils.preferences.DataUser;
-import com.stonefacesoft.ottaa.utils.preferences.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,7 +103,7 @@ public class Historial {
 
         for (int i = 0; i < listOfPictograms.size(); i++) {
             try {
-                String srcAux = JSONutils.getNombre(listOfPictograms.get(i),ConfigurarIdioma.getLanguaje()).toLowerCase();
+                String srcAux = JSONutils.getName(listOfPictograms.get(i),ConfigurarIdioma.getLanguaje()).toLowerCase();
                 text.append(srcAux+" ");
                 word.put(i,srcAux);
             } catch (JSONException e) {

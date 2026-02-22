@@ -77,11 +77,11 @@ public class AsignTags {
                 "{\"id\":668,\"texto\":{\"en\":\"Hospital\",\"es\":\"" + Posicion.HOSPITAL + "\"},\"tipo\":\"" + Constants.UBICACION + "\",\"imagen\":{\"picto\":\"hospital\"}}," +
                 "{\"id\":662,\"texto\":{\"en\":\"School\",\"es\":\"" + Posicion.ESCUELA + "\"},\"tipo\":\"" + Constants.UBICACION + "\",\"imagen\":{\"picto\":\"ic_escuela\"}}," +
                 "{\"id\":611,\"texto\":{\"en\":\"Transportation\",\"es\":\"" + Posicion.ESTACIONDEBUS + "\"},\"tipo\":\"" + Constants.UBICACION + "\",\"imagen\":{\"picto\":\"transportes\"}}," +
-                "{\"id\":1033,\"texto\":{\"en\":\"Woman\",\"es\":\"" + Sexo.FEMENINO + "\"},\"tipo\":\"" + Constants.SEXO + "\",\"imagen\":{\"picto\":\"mujer\"}}," +
-                 "{\"id\":1035,\"texto\":{\"en\":\"Man\",\"es\":\"" + Sexo.MASCULINO + "\"},\"tipo\":\"" + Constants.SEXO + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
-                 "{\"id\":1036,\"texto\":{\"en\":\"Binary\",\"es\":\"" + Sexo.BINARIO + "\"},\"tipo\":\"" + Constants.SEXO + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
-                 "{\"id\":1037,\"texto\":{\"en\":\"Fluid\",\"es\":\"" + Sexo.FLUIDO + "\"},\"tipo\":\"" + Constants.SEXO + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
-                "{\"id\":1038,\"texto\":{\"en\":\"Others\",\"es\":\"" + Sexo.OTRO + "\"},\"tipo\":\"" + Constants.SEXO + "\",\"imagen\":{\"picto\":\"hombre\"}}]\n";
+                "{\"id\":1033,\"texto\":{\"en\":\"Woman\",\"es\":\"" + Sexo.FEMENINO + "\"},\"tipo\":\"" + Constants.SEX + "\",\"imagen\":{\"picto\":\"mujer\"}}," +
+                 "{\"id\":1035,\"texto\":{\"en\":\"Man\",\"es\":\"" + Sexo.MASCULINO + "\"},\"tipo\":\"" + Constants.SEX + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
+                 "{\"id\":1036,\"texto\":{\"en\":\"Binary\",\"es\":\"" + Sexo.BINARIO + "\"},\"tipo\":\"" + Constants.SEX + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
+                 "{\"id\":1037,\"texto\":{\"en\":\"Fluid\",\"es\":\"" + Sexo.FLUIDO + "\"},\"tipo\":\"" + Constants.SEX + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
+                "{\"id\":1038,\"texto\":{\"en\":\"Others\",\"es\":\"" + Sexo.OTRO + "\"},\"tipo\":\"" + Constants.SEX + "\",\"imagen\":{\"picto\":\"hombre\"}}]\n";
 
         arrayListTodosLosTags = JSONutils.stringToArrayList(tags);
 
@@ -194,7 +194,7 @@ public class AsignTags {
             grupo.remove("tags");
         JSONArray todosLosPictos = null;
         try {
-            todosLosPictos = json.readJSONArrayFromFile(Constants.ARCHIVO_PICTOS);
+            todosLosPictos = json.readJSONArrayFromFile(Constants.PICTOS_FILE);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -218,7 +218,7 @@ public class AsignTags {
                     }
                 }
 
-            if (!json.guardarJson(Constants.ARCHIVO_PICTOS))
+            if (!json.guardarJson(Constants.PICTOS_FILE))
                 Log.e(TAG, "Error al guardar el json");
 
 
@@ -318,7 +318,7 @@ public class AsignTags {
             ArrayList<String> tagNames = new ArrayList<>();
             tagNames.add(Constants.HORA);
             tagNames.add(Constants.EDAD);
-            tagNames.add(Constants.SEXO);
+            tagNames.add(Constants.SEX);
             tagNames.add(Constants.UBICACION);
             for (int i = 0; i < tagNames.size(); i++) {
                 String tagPorPos = tagNames.get(i);
@@ -348,8 +348,8 @@ public class AsignTags {
                 picto.remove(Constants.EDAD);
             if (tieneTag(Constants.UBICACION, picto))
                 picto.remove(Constants.UBICACION);
-            if (tieneTag(Constants.SEXO, picto))
-                picto.remove(Constants.SEXO);
+            if (tieneTag(Constants.SEX, picto))
+                picto.remove(Constants.SEX);
           setTagsToPictogram(picto);
         }
 

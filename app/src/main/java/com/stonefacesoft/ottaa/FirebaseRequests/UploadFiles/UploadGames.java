@@ -19,7 +19,7 @@ public class UploadGames extends UploadFile{
     @Override
     protected void openFile() {
         try {
-            fis = mContext.openFileInput(Constants.ARCHIVO_JUEGO);
+            fis = mContext.openFileInput(Constants.GAME_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

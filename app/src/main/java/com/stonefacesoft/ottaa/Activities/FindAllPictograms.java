@@ -9,10 +9,9 @@ import androidx.appcompat.widget.SearchView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.perf.metrics.AddTrace;
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.RecyclerViews.FindAllPictograms_Recycler_View;
 import com.stonefacesoft.ottaa.utils.preferences.User;
@@ -25,7 +24,7 @@ public class FindAllPictograms extends AppCompatActivity {
     private SearchView searchView;
     private SharedPreferences sharedPrefsDefault;
     private textToSpeech myTTS;
-    private SubirArchivosFirebase uploadFile;
+    private UploadFilesToFirebase uploadFile;
     private FirebaseUtils firebaseUtils;
 
     @AddTrace(name = "FindAllPictograms", enabled = true /* optional */)
@@ -44,7 +43,7 @@ public class FindAllPictograms extends AppCompatActivity {
         myTTS = textToSpeech.getInstance(this);
         firebaseUtils=FirebaseUtils.getInstance();
        // //firebaseUtils.setmContext(this);
-        uploadFile=new SubirArchivosFirebase(this);
+        uploadFile=new UploadFilesToFirebase(this);
         setUpFindAllPictograms();
     }
 
@@ -62,7 +61,7 @@ public class FindAllPictograms extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        findAllPictograms_recycler_view.getProgress_dialog_options().destruirDialogo();
+        findAllPictograms_recycler_view.getProgress_dialog_options().destroyDialog();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class UploadingPictos extends UploadFile{
     @Override
     protected void openFile() {
         try {
-            fis = mContext.openFileInput(Constants.ARCHIVO_PICTOS);
+            fis = mContext.openFileInput(Constants.PICTOS_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

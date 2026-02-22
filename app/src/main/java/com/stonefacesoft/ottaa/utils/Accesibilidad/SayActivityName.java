@@ -25,7 +25,7 @@ public class SayActivityName {
     }
     public void sayTitle(String title){
         if(isEnabled)
-            myTTS.hablar(title);
+            myTTS.speak(title);
     }
 
 }

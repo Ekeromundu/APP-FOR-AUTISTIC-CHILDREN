@@ -99,7 +99,7 @@ public class CustomFavoritePhrases {
     public void saveFavoritePhrases(){
         FileOutputStream outputStream;
         try {
-            outputStream = mContext.openFileOutput(Constants.ARCHIVO_FRASES_FAVORITAS, Context.MODE_PRIVATE);
+            outputStream = mContext.openFileOutput(Constants.FAVORITE_PHRASES_FILE, Context.MODE_PRIVATE);
             outputStream.write(favoritePhrases.toString().getBytes());
             outputStream.close();
         } catch (IOException e) {

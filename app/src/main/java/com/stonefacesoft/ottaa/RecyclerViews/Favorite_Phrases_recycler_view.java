@@ -1,6 +1,5 @@
 package com.stonefacesoft.ottaa.RecyclerViews;
 
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -79,7 +78,7 @@ public class Favorite_Phrases_recycler_view extends Custom_recyclerView {
     public void talkAtPosition() {
         try {
             if(createReturnPositionItem())
-                adapter.getMyTTs().hablar(adapter.getPhrases().getPhrases().getJSONObject(getPositionItem.getPosition()).getString("frase"));
+                adapter.getMyTTs().speak(adapter.getPhrases().getPhrases().getJSONObject(getPositionItem.getPosition()).getString("frase"));
         } catch (Exception e) {
             e.printStackTrace();
             myTTS.mostrarAlerta(mActivity.getResources().getString(R.string.str_favorite_phrases_empty));

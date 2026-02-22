@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
@@ -35,7 +35,7 @@ public class GaleriaJuegosAdapter extends RecyclerView.Adapter <GaleriaJuegosAda
     private final Context mContext;
     private final int layoutID;
     private Json json;
-    private final SubirArchivosFirebase uploadFirebaseFile;
+    private final UploadFilesToFirebase uploadFirebaseFile;
     private final FirebaseAuth mAuth;
     private static final String TAG = "GaleriaGruposAdapter";
     private final int id;
@@ -46,7 +46,7 @@ public class GaleriaJuegosAdapter extends RecyclerView.Adapter <GaleriaJuegosAda
         this.layoutID = layoutID;
         json=Json.getInstance();
         json.setmContext(this.mContext);
-        this.uploadFirebaseFile = new SubirArchivosFirebase(mContext);
+        this.uploadFirebaseFile = new UploadFilesToFirebase(mContext);
         this.mAuth = mAuth;
         this.id=id;
         glideAttatcher=new GlideAttatcher(this.mContext);

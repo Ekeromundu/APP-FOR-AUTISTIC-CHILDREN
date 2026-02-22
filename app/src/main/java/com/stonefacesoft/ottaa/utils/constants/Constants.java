@@ -56,19 +56,19 @@ public final class Constants {
 
 
     //Constantes de descarga
-    public static final int PICTOS_DESCARGADOS = 121;
-    public static final int GRUPOS_DESCARGADOS = 122;
+    public static final int PICTOS_DOWNLOADED = 121;
+    public static final int GROUPS_DOWNLOADED = 122;
     public static final int FRASES_DESCARGADOS = 123;
     public static final int FRASESJUEGOS_DESCARGADOS=100;
     public static final int TIEMPO_SUBIDO = 250;
-    public static final String ARCHIVO_PICTOS_DATABASE = "pictosDatabase_es.txt";
-    public static final String ARCHIVO_FOTO_BACKUP = "fotosborradas.txt";
+    public static final String PICTOS_DATABASE_FILE = "pictosDatabase_es.txt";
+    public static final String PHOTO_BACKUP_FILE = "deletedPhotos.txt";
 
     //Constantes de datos enontrados
     public static final int PICTOS_ENCONTRADOS = 244;
     public static final int GRUPOS_ENCONTRADOS = 245;
     public static final int FRASES_ENCONTRADOS = 246;
-    public static final int TODO_ENCONTRADO = 735;
+    public static final int ALL_FOUND = 735;
     public static int FOTOS_DESCARGADOS = 124;
 
     public static final int FOTOS_YA_DESCARGADAS = -1;
@@ -77,15 +77,15 @@ public final class Constants {
 
 
     //Nombres de Archivos
-    public static final String ARCHIVO_PICTOS = "pictos.txt";
-    public static final String ARCHIVO_GRUPOS = "grupos.txt";
-    public static final String ARCHIVO_FRASES = "frases.txt";
-    public static final String ARCHIVO_FRASES_FAVORITAS = "favoritePhrases.txt";
-    public static final String ARCHIVO_FRASES_JUEGOS = "frasesjuegos.txt";
-    public static final String ARCHIVO_JUEGO="juegos.txt";
-    public static final String ARCHIVO_JUEGO_DESCRIPCION="juegos_desc.txt";
+    public static final String PICTOS_FILE = "pictos.txt";
+    public static final String GROUPS_FILE = "grupos.txt";
+    public static final String PHRASES_FILE = "phrases.txt";
+    public static final String FAVORITE_PHRASES_FILE = "favoritePhrases.txt";
+    public static final String GAME_PHRASES_FILE = "gamePhrases.txt";
+    public static final String GAME_FILE ="games.txt";
+    public static final String GAME_DESCRIPTION_FILE ="gameDescription.txt";
 
-    public static int TODO_DESCARGADO = 366;
+    public static int ALL_DOWNLOADED = 366;
     public static int VUELTAS_CARRETE = 5;
 
     //Tipo de tags
@@ -94,36 +94,36 @@ public final class Constants {
     public static final String CALENDARIO = "calendario";
     public static final String EDAD = "edad";
     public static final String CLIMA = "clima";
-    public static final String SEXO = "sexo";
+    public static final String SEX = "sex";
 
     //NombresBaseDatosHijos
-    public static final String PICTOS = "Pictos";
-    public static final String Grupos = "Grupos";
-    public static final String Frases = "Frases";
-    public static final String FrasesFavoritas = "FrasesFavoritas";
+    public static final String Pictures = "Pictos";
+    public static final String Groups = "Groups";
+    public static final String Phrases = "Phrases";
+    public static final String FavoritePhrases = "FavoritePhrases";
 
     //Datos del usuario
-    public static final String JUEGOS = "Juegos";
-    public static final String PAGO = "Pago";
-    public static final String GENERO = "pref_sexo";
+    public static final String GAMES = "Games";
+    public static final String PAYMENT = "Payment";
+    public static final String GENDER = "pref_sexo";
     public static final String SKILLHAND = "skillHand";
-    public static final String FECHACUMPLE = "birth_date";
-    public static final String FECHAPAGO = "FechaPago";
-    public static final String FECHAVENCIMIENTO="FechaVencimiento";
+    public static final String BIRTH_DATE = "birth_date";
+    public static final String PAYMENT_DATE = "payment_date";
+    public static final String EXPIRATION_DATE ="expiration_date";
     public static final String PREMIUM = "premium";
     public static final String BARRIDO_BOOL = "bool_barrido";
-    public static final String SUGERENCIA_BOOL="bool_sugerencias";
-    public static final String PRIMERAULTIMACONEXION = "PrimeraUltimaConexion";
+    public static final String SCANNING_ENABLED ="bool_sugerencias";
+    public static final String FIRST_LAST_CONNECTION = "FirstLastConnection";
     public static final String PRIMERACONEXION = "PConexion";
-    public static final String UCONEXION = "UConexion";
+    public static final String LAST_CONNECTION = "UConexion";
 
     public static final String BACKUP = "BackUp";
     public static final String PRIMERUSO = "PrimerUso";
-    public static final String FOTOSUSUARIO = "FotosUsuario";
-    public static final String FOTOS = "Fotos";
-    public static final String USUARIOS = "Usuarios";
+    public static final String USER_PHOTOS = "UserPhotos";
+    public static final String PHOTOS = "Photos";
+    public static final String USERS = "Users";
     public static final String EDADUSUARIO = "EdadUsuario";
-    public static final String NOMBRE = "Nombre";
+    public static final String NAME = "Name";
     public static final String AVATAR = "Avatar";
     //Constants ubicacion places
 

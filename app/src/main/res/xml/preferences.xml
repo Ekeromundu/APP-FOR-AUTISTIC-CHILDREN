@@ -27,15 +27,15 @@
                     android:defaultValue="1" />
 
             </PreferenceCategory>
-            <PreferenceCategory android:title="@string/borrar_talk">
+            <PreferenceCategory android:title="@string/talk_and_clear">
                 <com.stonefacesoft.ottaa.utils.preferences.PersonalSwitchPreferences
                     android:defaultValue="true"
                     android:key="@string/talk_erase"
-                    android:summary="@string/borrartalk"
+                    android:summary="@string/talk_clear_description"
                     android:switchTextOff="@string/pref_desactivado"
                     android:switchTextOn="@string/pref_activado"
                     android:outlineSpotShadowColor="@color/NaranjaOTTAA"
-                    android:title="@string/borrar_talk" />
+                    android:title="@string/talk_and_clear" />
 
 
             </PreferenceCategory>
@@ -175,7 +175,7 @@
                         android:switchTextOn="@string/pref_activado"
                         android:trackTint="@color/NaranjaOTTAA"
                         android:thumbTint="@color/Gray"
-                        android:title="@string/str_avanzar_aceptar" />
+                        android:title="@string/advance_and_confirm" />
                     <com.stonefacesoft.ottaa.utils.preferences.PersonalSwitchPreferences
                         android:defaultValue="false"
                         android:dependency="@string/bool_barrido"
@@ -185,7 +185,7 @@
                         android:switchTextOn="@string/pref_activado"
                         android:trackTint="@color/NaranjaOTTAA"
                         android:thumbTint="@color/Gray"
-                        android:title="@string/str_use_scroll" />
+                        android:title="@string/scroll_function" />
                     <com.stonefacesoft.ottaa.utils.preferences.PersonalSwitchPreferences
                         android:defaultValue="false"
                         android:dependency="@string/bool_barrido"
@@ -195,7 +195,7 @@
                         android:switchTextOn="@string/pref_activado"
                         android:trackTint="@color/NaranjaOTTAA"
                         android:thumbTint="@color/Gray"
-                        android:title="@string/str_use_scroll_click" />
+                        android:title="@string/scroll_function_with_tap" />
                     <com.stonefacesoft.ottaa.utils.preferences.PersonalSwitchPreferences
                         android:defaultValue="false"
                         android:dependency="@string/bool_barrido"
@@ -248,18 +248,18 @@
 
             </PreferenceCategory>
             <PreferenceCategory
-                android:title="@string/str_controlFacial"
+                android:title="@string/facial_control_title"
                 android:key="category_8">
                 <com.stonefacesoft.ottaa.utils.preferences.PersonalSwitchPreferences
                     android:defaultValue="false"
                     android:key="control_facial"
-                    android:summary="@string/str_controlfacial"
+                    android:summary="@string/facial_control_description"
                     android:switchTextOff="@string/pref_desactivado"
                     android:switchTextOn="@string/pref_activado"
                     android:outlineSpotShadowColor="@color/NaranjaOTTAA"
 
 
-                    android:title="@string/str_controlFacial" />
+                    android:title="@string/facial_control_title" />
             </PreferenceCategory>
         </PreferenceScreen>
         <PreferenceScreen

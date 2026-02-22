@@ -24,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -35,7 +34,7 @@ import com.google.firebase.storage.StorageReference;
 import com.stonefacesoft.ottaa.Activities.FindAllPictograms;
 import com.stonefacesoft.ottaa.Dialogos.DialogUtils.Progress_dialog_options;
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.Interfaces.FallanDatosDelUsuario;
 import com.stonefacesoft.ottaa.Interfaces.FirebaseSuccessListener;
 import com.stonefacesoft.ottaa.JSONutils.Json;
@@ -52,7 +51,6 @@ import com.stonefacesoft.ottaa.utils.IntentCode;
 import com.stonefacesoft.ottaa.utils.Pictures.DownloadFirebasePictures;
 import com.stonefacesoft.ottaa.utils.constants.ConstantsGroupGalery;
 import com.stonefacesoft.ottaa.utils.constants.ConstantsMainActivity;
-import com.stonefacesoft.ottaa.utils.textToSpeech;
 
 import org.json.JSONArray;
 
@@ -74,7 +72,7 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
     private static Context mContext;
     int mPermission = 0; //variable para saber si el permiso esta activado o no
     private static boolean updateAdapter;
-    protected static SubirArchivosFirebase uploadFirebaseFile;
+    protected static UploadFilesToFirebase uploadFirebaseFile;
     private Json json;
     private JSONArray mJSONArrayBackupFotos;
     private TextView mTextViewCargandoGrupos;
@@ -138,7 +136,7 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
                 showViewPager = false;
         }
         //Sacamos el de bajarJsonFirebase que tardaba para entrar a grupo y no se estaba usando en ningun lado
-        uploadFirebaseFile = new SubirArchivosFirebase(mContext);
+        uploadFirebaseFile = new UploadFilesToFirebase(mContext);
         downloadDialog = new Progress_dialog_options(this);
         downloadDialog.setTitle(getApplicationContext().getResources().getString(R.string.downloadingFoto));
         downloadDialog.setMessage(getApplicationContext().getResources().getString(R.string.downLoadFotos));
@@ -257,7 +255,7 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
         }
 
 
-/*        if (requestCode == IntentCode.EDITARPICTO.getCode()||requestCode==IntentCode.ORDENAR.getCode()|| resultCode == IntentCode.SEARCH_ALL_PICTOGRAMS.getCode()) {
+/*        if (requestCode == IntentCode.EDIT_PICTO.getCode()||requestCode==IntentCode.ORDENAR.getCode()|| resultCode == IntentCode.SEARCH_ALL_PICTOGRAMS.getCode()) {
             if(recycler_view_grupo!=null){
                 recycler_view_grupo.sincronizeData();
                 recycler_view_grupo.changeData();
@@ -381,33 +379,33 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
 
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ACHIEVEMENT_ID, "Bajar pictogramas");
-                analyticsFirebase.customEvents("Touch", "Galeria Grupos", "Download Pictograms");
+                analyticsFirebase.customEvents("Touch", "Galeria Groups", "Download Pictograms");
                 accionBajarFoto();
                 // subirTodasLasFotos();
                 return true;
 
             case R.id.nuevo:
-                analyticsFirebase.customEvents("Touch", "Galeria Grupos", "add Group");
+                analyticsFirebase.customEvents("Touch", "Galeria Groups", "add Group");
                 if(editarPicto){
                   if (sharedPrefsDefault.getInt("premium", 0) == 1) {
                       /*Aca vamos a editar picto visual que maneja tanto para grupos como para pictos*/
-                      Intent intent = new Intent(GaleriaGrupos2.this, Edit_Picto_Visual.class);
+                      Intent intent = new Intent(GaleriaGrupos2.this, Edit_Visual_Picto.class);
                       intent.putExtra("esNuevo", true);
                       intent.putExtra("Padre", boton);
                       intent.putExtra("esGrupo", true);
                       intent.putExtra("Texto","");
-                      myTTS.hablar(getString(R.string.add_grupo));
+                      myTTS.speak(getString(R.string.add_grupo));
                       Log.d(TAG, "onOptionsItemSelected: Creating new Group");
-                      startActivityForResult(intent, IntentCode.EDITARPICTO.getCode());
+                      startActivityForResult(intent, IntentCode.EDIT_PICTO.getCode());
                   } else {
-                      Intent i = new Intent(GaleriaGrupos2.this, LicenciaExpirada.class);
+                      Intent i = new Intent(GaleriaGrupos2.this, LicenseExpired.class);
                       startActivity(i);
                   }
                 }
                 return true;
 
             case R.id.tipe_view:
-                analyticsFirebase.customEvents("Touch","Galeria Grupos","Change view");
+                analyticsFirebase.customEvents("Touch","Galeria Groups","Change view");
                 showViewPager=!showViewPager;
                 if(!showViewPager)
                     item.setIcon(R.drawable.ic_baseline_view_carousel_white_24);
@@ -420,7 +418,7 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
                // showView(editButton,showViewPager);
                 break;
             case R.id.order_items:
-                analyticsFirebase.customEvents("Touch","Galeria Grupos","Sort Groups");
+                analyticsFirebase.customEvents("Touch","Galeria Groups","Sort Groups");
                 Intent intent=new Intent(GaleriaGrupos2.this,GaleriaGrupos2.class);
                 intent.putExtra("esOrdenar",true);
                 startActivityForResult(intent,IntentCode.ORDENAR.getCode());
@@ -445,7 +443,7 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
     protected void onDestroy() {
         super.onDestroy();
        if(downloadDialog !=null)
-           downloadDialog.destruirDialogo();
+           downloadDialog.destroyDialog();
         // subirTodasLasFotos();
     }
 
@@ -460,18 +458,18 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
 
 
     @Override
-    public void onDescargaCompleta(int descargaCompleta) {
+    public void onDownloadComplete(int descargaCompleta) {
 
     }
 
     @Override
-    public void onDatosEncontrados(int datosEncontrados) {
+    public void onDataFound(int datosEncontrados) {
 
     }
 
 
     @Override
-    public void onFotoDescargada(int fotosDescargadas) {
+    public void onPhotoDownloaded(int fotosDescargadas) {
         progresoDeDescarga++;
         switch (fotosDescargadas) {
             case Constants.FOTO_DESCARGADA:
@@ -487,12 +485,12 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
     }
 
     @Override
-    public void onArchivosSubidos(boolean subidos) {
+    public void onFilesUploaded(boolean subidos) {
 
     }
 
     @Override
-    public void onPictosSugeridosBajados(boolean descargado) {
+    public void onSuggestedPictosDownloaded(boolean descargado) {
 
     }
 
@@ -568,8 +566,8 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
                 navigateButtonAction(true,"Next Button" );
                 break;
             case R.id.back_button:
-                if(barridoPantalla.isBarridoActivado()){
-                    analyticsFirebase.customEvents("Accessibility","Galeria Grupos","Close Galery Groups");
+                if(screenScroll.isBarridoActivado()){
+                    analyticsFirebase.customEvents("Accessibility","Galeria Groups","Close Galery Groups");
                 }
                     onBackPressed();
 
@@ -577,7 +575,7 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
             case R.id.edit_button:
                 if(!isOrdenar){
                     if(showViewPager){
-                        analyticsFirebase.customEvents("Touch","Galeria Grupos","Edit Group");
+                        analyticsFirebase.customEvents("Touch","Galeria Groups","Edit Group");
                         if(editarPicto)
                             viewpager.editItem(sharedPrefsDefault.getInt("premium", 0) == 1);
                         else
@@ -597,18 +595,18 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
                 break;
             case R.id.btnTalk:
                 if(showViewPager){
-                    if(barridoPantalla.isBarridoActivado())
-                        analyticsFirebase.customEvents("Accessibility","Galeria Grupos","Select Group");
+                    if(screenScroll.isBarridoActivado())
+                        analyticsFirebase.customEvents("Accessibility","Galeria Groups","Select Group");
                     viewpager.OnClickItem();
                 }
                 break;
             case R.id.btnBarrido:
-                if (barridoPantalla.isBarridoActivado() && barridoPantalla.isAvanzarYAceptar()) {
+                if (screenScroll.isBarridoActivado() && screenScroll.isAvanzarYAceptar()) {
                     Log.d(TAG, "onClick() returned: Barrido Pantalla");
-                } else if (barridoPantalla.isBarridoActivado() && !barridoPantalla.isAvanzarYAceptar()) {
-                    int posicion = barridoPantalla.getPosicionBarrido();
+                } else if (screenScroll.isBarridoActivado() && !screenScroll.isAvanzarYAceptar()) {
+                    int posicion = screenScroll.getPosicionBarrido();
                     if (posicion != -1)
-                        barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                        screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 }
                 break;
             default:
@@ -621,8 +619,8 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
             viewpager.scrollPosition(next);
         else  if(recycler_view_grupo!=null&&!showViewPager)
             recycler_view_grupo.scrollTo(next);
-        if(barridoPantalla.isBarridoActivado()){
-            analyticsFirebase.customEvents("Accessibility","Galeria Grupos",actionName);
+        if(screenScroll.isBarridoActivado()){
+            analyticsFirebase.customEvents("Accessibility","Galeria Groups",actionName);
         }
     }
 
@@ -631,7 +629,7 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
         return updateAdapter = b;
     }
 
-    public static SubirArchivosFirebase subirArchivos() {
+    public static UploadFilesToFirebase subirArchivos() {
         return uploadFirebaseFile;
     }
 
@@ -659,10 +657,10 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
 
     @Override
     public void OnClickBarrido() {
-        if(function_scroll.isClickEnabled()&&barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+        if(function_scroll.isClickEnabled()&& screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         else if(!function_scroll.isClickEnabled()){
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
 
@@ -765,7 +763,7 @@ public class GaleriaGrupos2 extends GroupGalleryNavigator implements  FirebaseSu
         switch (show){
             case 0:
                 if(downloadDialog.isShowing())
-                    downloadDialog.destruirDialogo();
+                    downloadDialog.destroyDialog();
                 break;
             case 1:
                 downloadDialog.mostrarDialogo();

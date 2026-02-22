@@ -2,10 +2,8 @@ package com.stonefacesoft.ottaa;
 
 import android.util.Log;
 
-import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.utils.JSONutils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import simplenlg.features.Feature;
@@ -82,7 +80,7 @@ public class NLG {
     //Se carga cada palabra y se analiza que parte forma de una oracion simple, y se prepara para ser
     // procesada por el NLG, cuando se necesite la frase lista se llama a ArmarFrase que la frase lista.
     public boolean CargarFrase (JSONObject opcion, int tipo) {
-        String pictogramName = JSONutils.getNombre(opcion,"en");
+        String pictogramName = JSONutils.getName(opcion,"en");
             if (opcion == null) {
                 return false;
             }

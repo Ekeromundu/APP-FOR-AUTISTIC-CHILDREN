@@ -6,11 +6,11 @@ import androidx.annotation.NonNull;
 
 public class TimeToChange extends android.os.Handler {
     public static final int CHANGE_BUTTON=0;
-    private final BarridoPantalla barridoPantalla;
+    private final ScreenScroll screenScroll;
     private final int tiempo;
 
-    public TimeToChange(BarridoPantalla barridoPantalla,int tiempo){
-        this.barridoPantalla=barridoPantalla;
+    public TimeToChange(ScreenScroll screenScroll, int tiempo){
+        this.screenScroll = screenScroll;
         this.tiempo=tiempo;
     }
 
@@ -25,14 +25,14 @@ public class TimeToChange extends android.os.Handler {
     public void handleMessage(@NonNull Message msg) {
         switch (msg.what){
             case CHANGE_BUTTON:
-                barridoPantalla.recorrerBarridoAutomatico();
+                screenScroll.recorrerBarridoAutomatico();
                 break;
         }
     }
 
     public void cambiarBoton(){
         removeAllMessages();
-        if(barridoPantalla.isBarridoPantalla())
+        if(screenScroll.isBarridoPantalla())
         super.sendMessageDelayed(getHandler().obtainMessage(CHANGE_BUTTON),tiempo*1000);
     }
     public android.os.Handler getHandler()

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.stonefacesoft.ottaa.Adapters.GaleriaPictosAdapter;
 import com.stonefacesoft.ottaa.Dialogos.DialogUtils.Yes_noDialogs;
-import com.stonefacesoft.ottaa.Edit_Picto_Visual;
+import com.stonefacesoft.ottaa.Edit_Visual_Picto;
 import com.stonefacesoft.ottaa.Helper.RecyclerItemClickListener;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.R;
@@ -95,7 +95,7 @@ public class Picto_Recycler_view extends Custom_recyclerView {
                     int idPicto=json.getId(galeriaPictos2.getmArrayPictos().getJSONObject(position));
                     if(id!=idPicto){
                         id=idPicto;
-                      myTTS.hablar(JSONutils.getNombre(galeriaPictos2.getmArrayPictos().getJSONObject(position),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+                      myTTS.speak(JSONutils.getName(galeriaPictos2.getmArrayPictos().getJSONObject(position),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
                     }
                     else {
                         Intent databack = new Intent();
@@ -124,7 +124,7 @@ public class Picto_Recycler_view extends Custom_recyclerView {
                         idPicto = json.getId(galeriaPictos2.getmArrayPictos().getJSONObject(position));
                         if (id != idPicto) {
                             id = idPicto;
-                            myTTS.hablar(JSONutils.getNombre(galeriaPictos2.getmArrayPictos().getJSONObject(position), sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+                            myTTS.speak(JSONutils.getName(galeriaPictos2.getmArrayPictos().getJSONObject(position), sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
                             ShowpopMenu(view, position);
                         }
                     } catch (JSONException e) {
@@ -150,7 +150,7 @@ public class Picto_Recycler_view extends Custom_recyclerView {
                             analyticsFirebase.customEvents("Touch","Galeria Pictos","Edit Pictogram");
                             if (id != -1) {
                                 if(User.getInstance(mActivity).isPremium()){
-                                    mActivity.startActivityForResult(startEditAction(position), IntentCode.EDITARPICTO.getCode());
+                                    mActivity.startActivityForResult(startEditAction(position), IntentCode.EDIT_PICTO.getCode());
                                 }else {
                                     mActivity.startActivity(startExpiredLicense());
                                 }
@@ -184,21 +184,21 @@ public class Picto_Recycler_view extends Custom_recyclerView {
                     galeriaPictos2.setmArrayPictos(array);
                     galeriaPictos2.notifyDataSetChanged();
                     json.setmJSONArrayTodosLosGrupos(pictosGrupos);
-                    if (!json.guardarJson(Constants.ARCHIVO_GRUPOS))
+                    if (!json.guardarJson(Constants.GROUPS_FILE))
                         Log.e(TAG, "Error al guardar el json");
                     subirGrupos();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                dialogo1.cancelarDialogo();
+                dialogo1.cancelDialog();
 
             }
         });
         dialogo1.setOnClick(dialogo1.getObject(R.id.no_button), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogo1.cancelarDialogo();
+                dialogo1.cancelDialog();
 
             }
         });
@@ -209,7 +209,7 @@ public class Picto_Recycler_view extends Custom_recyclerView {
         JSONArray pictosGrupos = json.getmJSONArrayTodosLosGrupos();
         JSONutils.setHijosGrupo2(pictosGrupos, array, button);
         json.setmJSONArrayTodosLosGrupos(pictosGrupos);
-        if (!json.guardarJson(Constants.ARCHIVO_GRUPOS))
+        if (!json.guardarJson(Constants.GROUPS_FILE))
             Log.e(TAG, "Error al guardar el json");
         subirGrupos();
     }
@@ -228,7 +228,7 @@ public class Picto_Recycler_view extends Custom_recyclerView {
         }
         JSONutils.setHijosGrupo2(pictosGrupos, aux, button);
         json.setmJSONArrayTodosLosGrupos(pictosGrupos);
-        if (!json.guardarJson(Constants.ARCHIVO_GRUPOS))
+        if (!json.guardarJson(Constants.GROUPS_FILE))
             Log.e(TAG, "Error al guardar el json");
         subirGrupos();
     }
@@ -236,11 +236,11 @@ public class Picto_Recycler_view extends Custom_recyclerView {
 
     @Override
     protected Intent startEditAction(int position) {
-        Intent intent = new Intent(mActivity, Edit_Picto_Visual.class);
+        Intent intent = new Intent(mActivity, Edit_Visual_Picto.class);
         loadPictogramsValue(intent,position);
-        myTTS.hablar(mActivity.getString(R.string.editar_pictogram));
+        myTTS.speak(mActivity.getString(R.string.editar_pictogram));
         json.setmJSONArrayTodosLosGrupos(json.getmJSONArrayTodosLosGrupos());
-        if (!json.guardarJson(Constants.ARCHIVO_GRUPOS)) {
+        if (!json.guardarJson(Constants.GROUPS_FILE)) {
             Log.i(TAG, "onMenuItemClick: no se pudo guardar el mensaje");
         }
         return intent;
@@ -252,7 +252,7 @@ public class Picto_Recycler_view extends Custom_recyclerView {
         intent.putExtra("PictoID", id);
 
         try {
-            intent.putExtra("Texto", JSONutils.getNombre(galeriaPictos2.getmArrayPictos().getJSONObject(position),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+            intent.putExtra("Texto", JSONutils.getName(galeriaPictos2.getmArrayPictos().getJSONObject(position),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
         } catch (JSONException e) {
             e.printStackTrace();
         }

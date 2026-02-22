@@ -70,7 +70,7 @@ public class textToSpeech {
 
 
 
-    public void hablar(String frase) {
+    public void speak(String frase) {
         Log.e("texToSpeech_hablar", "Hablar");
         this.oracion = frase;
         prepare.hablarConDialogo(oracion);
@@ -82,7 +82,7 @@ public class textToSpeech {
         prepare.hablar(oracion);
     }
 
-    public void hablar(String frase, AnalyticsFirebase mTracker) {
+    public void speak(String frase, AnalyticsFirebase mTracker) {
         Log.e("texToSpeech_hablar", "Hablar con Tracker");
         this.oracion = frase;
         prepare.hablarConDialogo(frase);

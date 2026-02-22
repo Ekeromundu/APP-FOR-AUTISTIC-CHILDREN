@@ -11,14 +11,14 @@ import androidx.annotation.NonNull;
 
 import com.stonefacesoft.ottaa.GaleriaGrupos2;
 import com.stonefacesoft.ottaa.R;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 
 
 public class ScrollFunction  extends android.os.Handler {
     private int cantMovimientos;
     private Activity mActivity;
     private MotionEvent event;
-    private BarridoPantalla barridoPantalla;
+    private ScreenScroll screenScroll;
     private final int position=0;
     private boolean clickEnabled;
     private long tiempo;

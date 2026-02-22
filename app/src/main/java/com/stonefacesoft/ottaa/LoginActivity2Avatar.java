@@ -1,6 +1,5 @@
 package com.stonefacesoft.ottaa;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -42,7 +41,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.stonefacesoft.ottaa.Activities.Pictures.AvatarPictureCropper;
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
-import com.stonefacesoft.ottaa.utils.ActivityUtilsEstatus;
 import com.stonefacesoft.ottaa.utils.AvatarPackage.SelectedAvatar;
 import com.stonefacesoft.ottaa.utils.ConnectionDetector;
 import com.stonefacesoft.ottaa.utils.Firebase.AnalyticsFirebase;

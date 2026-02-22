@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import com.stonefacesoft.ottaa.Dialogos.Dialog_abstract_class;
 import com.stonefacesoft.ottaa.R;
-import com.stonefacesoft.ottaa.utils.ActivityUtilsEstatus;
+import com.stonefacesoft.ottaa.utils.ActivityUtilsStatus;
 import com.stonefacesoft.ottaa.utils.Custom_button;
 import com.stonefacesoft.pictogramslibrary.utils.ValidateContext;
 
 public class DialogUtils extends Dialog_abstract_class {
     protected Context mContext;
     protected Dialog dialog;
-    protected ActivityUtilsEstatus activityUtilsEstatus;
+    protected ActivityUtilsStatus activityUtilsStatus;
     protected int max;
     protected Custom_button unknow_option,yes_button,no_button;
     protected ProgressBar bar_progress;
@@ -48,13 +48,13 @@ public class DialogUtils extends Dialog_abstract_class {
 
     }
 
-    public void destruirDialogo(){
-        if(activityUtilsEstatus.isValidContext(mContext)&&dialog.isShowing()&&dialog!=null){
+    public void destroyDialog(){
+        if(activityUtilsStatus.isValidContext(mContext)&&dialog.isShowing()&&dialog!=null){
             dialog.dismiss();
         }
     }
-    public void cancelarDialogo(){
-        if(activityUtilsEstatus.isValidContext(mContext)&&dialog!=null){
+    public void cancelDialog(){
+        if(activityUtilsStatus.isValidContext(mContext)&&dialog!=null){
             dialog.cancel();
         }
 
@@ -63,13 +63,13 @@ public class DialogUtils extends Dialog_abstract_class {
 
 
     public boolean isShowing(){
-        if(dialog!=null&&activityUtilsEstatus.isValidContext(mContext))
+        if(dialog!=null&& activityUtilsStatus.isValidContext(mContext))
             return dialog.isShowing();
         return false;
     }
 
     public void setProgressStyle(int progressStyle){
-        if(activityUtilsEstatus.isValidContext(mContext)&&dialog!=null&&bar_progress!=null)
+        if(activityUtilsStatus.isValidContext(mContext)&&dialog!=null&&bar_progress!=null)
            bar_progress.setProgress(progressStyle);
     }
 
@@ -78,7 +78,7 @@ public class DialogUtils extends Dialog_abstract_class {
     }
 
     public void setProgress(int value){
-        if(activityUtilsEstatus.isValidContext(mContext)){
+        if(activityUtilsStatus.isValidContext(mContext)){
             if(dialog!=null&&bar_progress.getProgress()<100){
                 if(max!=0){
                     int value1=(value*100)/max;
@@ -88,7 +88,7 @@ public class DialogUtils extends Dialog_abstract_class {
                     bar_progress.setProgress(value);
                 }
             }else{
-            destruirDialogo();
+            destroyDialog();
             }
         }
     }
@@ -209,7 +209,7 @@ public class DialogUtils extends Dialog_abstract_class {
         setLayout(layout);
         if(layout==R.layout.dialog_yes_no_cancel)
         prepareDataDialog();
-        activityUtilsEstatus=new ActivityUtilsEstatus();
+        activityUtilsStatus =new ActivityUtilsStatus();
     }
 
     @Override
@@ -222,7 +222,7 @@ public class DialogUtils extends Dialog_abstract_class {
 
     @Override
     public Dialog_abstract_class  setCancelable(boolean isCancelable){
-        if(dialog!=null&&activityUtilsEstatus.isValidContext(mContext))
+        if(dialog!=null&& activityUtilsStatus.isValidContext(mContext))
             dialog.setCancelable(isCancelable);
         return this;
     }

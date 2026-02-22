@@ -23,7 +23,7 @@ public class DownloadPredictionsPictograms extends DownloadFile{
     }
 
     public void downloadPictograms(FirebaseSuccessListener successListener){
-        File pictosDatabaseFile = new File(rootPath, Constants.ARCHIVO_PICTOS_DATABASE);
+        File pictosDatabaseFile = new File(rootPath, Constants.PICTOS_DATABASE_FILE);
         mStorageReference.getFile(pictosDatabaseFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -33,16 +33,16 @@ public class DownloadPredictionsPictograms extends DownloadFile{
                 try {
                     if (!getStringFromFile(pictosDatabaseFile.getAbsolutePath()).equals("[]") && pictosDatabaseFile.length() > 0) {
                         Log.e("prueba", getStringFromFile(pictosDatabaseFile.getAbsolutePath()));
-                        json.setmJSONArrayPictosSugeridos(json.readJSONArrayFromFile(pictosDatabaseFile.getAbsolutePath()));
+                        json.setSuggestedPictosJSONArray(json.readJSONArrayFromFile(pictosDatabaseFile.getAbsolutePath()));
                         Log.e("pruebSsa", "Code reaches this part");
-                        if (!json.guardarJson(Constants.ARCHIVO_PICTOS_DATABASE))
+                        if (!json.guardarJson(Constants.PICTOS_DATABASE_FILE))
                             Log.e(TAG, "Error al guardar Json");
-                        successListener.onPictosSugeridosBajados(true);
+                        successListener.onSuggestedPictosDownloaded(true);
                     }
 
                 } catch (Exception e1) {
                     e1.printStackTrace();
-                    successListener.onPictosSugeridosBajados(true);
+                    successListener.onSuggestedPictosDownloaded(true);
                 }
 
             }
@@ -50,7 +50,7 @@ public class DownloadPredictionsPictograms extends DownloadFile{
         }).addOnCanceledListener(new OnCanceledListener() {
             @Override
             public void onCanceled() {
-                successListener.onPictosSugeridosBajados(true);
+                successListener.onSuggestedPictosDownloaded(true);
             }
         });
     }

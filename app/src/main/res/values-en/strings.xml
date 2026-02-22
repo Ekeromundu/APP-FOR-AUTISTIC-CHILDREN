@@ -83,7 +83,7 @@
     <string name="pref_step4_tuto">Touch the reset icon, or press the back key, to create a new sentence.</string>
     <string name="pref_title6_tuto">Not finding\nwhat you need?</string>
     <string name="pref_step6_tuto">Touch the spinner to\nfind more related pictos.</string>
-    <string name="pref_title5_tuto">Need even more options?</string>
+    <string name="tutorial_options_title">Need even more options?</string>
     <string name="pref_step5_tuto">Removes one or all pictograms from phrase ,use the short click to remove one pictogram or use the long click to remove all pictograms from phrase</string>
     <string name="tuto_title1_galeriaPictos">Choose a picto</string>
     <string name="tuto_step1_galeriaPictos">You can choose the picto you want by clicking it.\n
@@ -340,16 +340,16 @@
     <string name="download_photos_explicit">This function allows you to synchronize images</string>
     <string name="download_photos">Download Photos</string>
 
-    <string name="string_sugerencias_dialog">Now you will find suggested pictograms as transparent pictos, use them to create images with more ease.</string>
+    <string name="suggestions_dialog_text">Now you will find suggested pictograms as transparent pictos, use them to create images with more ease.</string>
     <string name="scanning_resources">Scanning speed</string>
     <string name="translating_languaje">Translating…</string>
-    <string name="pref_stept9_tuto">Choose one phrase and talk</string>
-    <string name="pref_stept8_tuto">Quickly choose among your most used phrases</string>
-    <string name="borrartalk">This function delete the text after speak</string>
-    <string name="pref_step10_tuto">Here you will find all the pictos sorted by categories.</string>
-    <string name="tutorial_frases">MORE USED PHRASES</string>
+    <string name="tutorial_step9_text">Choose one phrase and talk</string>
+    <string name="tutorial_step8_text">Quickly choose among your most used phrases</string>
+    <string name="talk_clear_description">This function delete the text after speak</string>
+    <string name="tutorial_step10_text">Here you will find all the pictos sorted by categories.</string>
+    <string name="tutorial_favorite_phrases_title">MORE USED PHRASES</string>
     <string name="tutorial_shared2">Share on your social media with audio or an image</string>
-    <string name="str_avanzar_aceptar">Advance and accept</string>
+    <string name="advance_and_confirm">Advance and accept</string>
     <string name="str_edit_text">Text</string>
     <string name="str_edit_frame">Frame</string>
     <string name="str_edit_tags">Tags</string>
@@ -362,9 +362,9 @@
     <string name="str_choose_a_tag">Choose a TAG</string>
     <string name="str_fiztgerald_key">Fitzgerald Key</string>
     <string name="str_personas">People</string>
-    <string name="borrar_talk">Talk and erase</string>
-    <string name="str_controlFacial">Facial Control</string>
-    <string name="str_controlfacial">This function allows controlling the application using the face</string>
+    <string name="talk_and_clear">Talk and erase</string>
+    <string name="facial_control_title">Facial Control</string>
+    <string name="facial_control_description">This function allows controlling the application using the face</string>
     <string name="estamos_cargando_sus_grupos">Loading groups ...</string>
     <string name="estamos_cargando_sus_pictos">Loading pictograms ...</string>
     <string name="str_seleccionar_edad_usuario">Select the user\'s age</string>
@@ -435,8 +435,8 @@
     <string name="joining_pictograms">Now we are going to join the pictograms</string>
     <string name="screen_scanning_operation">Select the operation of on-screen scanning</string>
     <string name="scroll_speed_description">Use scroll speed</string>
-    <string name="str_use_scroll">" Scroll Function"</string>
-    <string name="str_use_scroll_click">" Scroll Function With Click"</string>
+    <string name="scroll_function">" Scroll Function"</string>
+    <string name="scroll_function_with_tap">" Scroll Function With Click"</string>
     <string name="system_exit">Close Application</string>
     <string name="obtain_ottaa_project">Use OTTAA Project with screen scanning, connect accessible buttons and much more.</string>
     <string name="test_game_vocabulary">Get access to educational games that allow you to evaluate vocabulary in a fun way</string>
@@ -449,7 +449,7 @@
     <string name="select_device_version">select your devices version</string>
     <string name="suggested_pictograms">Suggested Pictograms</string>
     <string name="screen_scanning_mode">screen-scanning mode</string>
-    <string name="favorite_phrases">Favorite Phrases</string>
+    <string name="favorite_phrases_title">Favorite Phrases</string>
     <string name="memory_game">Memory Game</string>
     <string name="memory_game_string">Test Your Memory</string>
     <string name="vamos_a_pedirte_cierta_informaci_n_para_nmejorar_tu_experiencia_con_ottaa">We will ask you for certain information\nto improve your experience with OTTAA.</string>

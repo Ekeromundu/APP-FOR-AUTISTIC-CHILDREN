@@ -10,7 +10,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.RecyclerViews.PhrasesRecyclerView;
 import com.stonefacesoft.ottaa.Views.Phrases.PhrasesView;
@@ -20,7 +20,7 @@ import com.stonefacesoft.ottaa.utils.IntentCode;
 public class VincularFrases extends PhrasesView {
 
     private PhrasesRecyclerView recyclerView;
-    private SubirArchivosFirebase subirArchivos;
+    private UploadFilesToFirebase subirArchivos;
     private int fileIsSaved = 0;
 
 
@@ -35,10 +35,10 @@ public class VincularFrases extends PhrasesView {
         super.initComponents();
         Intent intent = getIntent();
         this.setTitle(getString(R.string.selectPhavoritePhrases));
-        subirArchivos=new SubirArchivosFirebase(this);
+        subirArchivos=new UploadFilesToFirebase(this);
         recyclerView=new PhrasesRecyclerView(this,firebaseUser.getmAuth());
         btnEditar.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.ic_baseline_save_white_24));
-        if(barridoPantalla.isBarridoActivado())
+        if(screenScroll.isBarridoActivado())
             recyclerView.setScrollVertical(false);
     }
 
@@ -60,7 +60,7 @@ public class VincularFrases extends PhrasesView {
             case R.id.edit_button:
                 mAnalyticsFirebase.customEvents("Touch","VincularFrases","SaveFavoritePhrases");
                 recyclerView.savePhrases();
-                subirArchivos.uploadFavoritePhrases(subirArchivos.getmDatabase(firebaseUser.getmAuth(), Constants.FrasesFavoritas),subirArchivos.getmStorageRef(firebaseUser.getmAuth(),Constants.FrasesFavoritas));
+                subirArchivos.uploadFavoritePhrases(subirArchivos.getmDatabase(firebaseUser.getmAuth(), Constants.FavoritePhrases),subirArchivos.getmStorageRef(firebaseUser.getmAuth(),Constants.FavoritePhrases));
                 fileIsSaved = 1;
                 onBackPressed();
                 break;

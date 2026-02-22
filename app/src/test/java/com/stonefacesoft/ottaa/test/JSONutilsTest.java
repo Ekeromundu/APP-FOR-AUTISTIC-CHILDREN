@@ -47,11 +47,11 @@ public class JSONutilsTest {
     }
 
     @Test
-    public void getNombreTest() {
+    public void getNameTest() {
         JSONObject jsonObject = createPictograms(474,"es","manzana","apple",2);
-        assertEquals("apple",JSONutils.getNombre(jsonObject,"en"));
-        assertEquals("manzana",JSONutils.getNombre(jsonObject,"es"));
-        assertEquals("",JSONutils.getNombre(jsonObject,"ec"));
+        assertEquals("apple",JSONutils.getName(jsonObject,"en"));
+        assertEquals("manzana",JSONutils.getName(jsonObject,"es"));
+        assertEquals("",JSONutils.getName(jsonObject,"ec"));
 
     }
 
@@ -110,7 +110,7 @@ public class JSONutilsTest {
         JSONObject jsonObject = createPictograms(474,"es","manzana","apple",2);
         JSONutils.setNombre(jsonObject,"Manzana Rica","Mela rica","es","it");
 
-        assertEquals("Mela rica",JSONutils.getNombre(jsonObject,"it"));
+        assertEquals("Mela rica",JSONutils.getName(jsonObject,"it"));
     }
 
     @Test
@@ -202,13 +202,13 @@ public class JSONutilsTest {
         JSONObject jsonObject = createPictograms(474,"es","manzana","apple",2);
         JSONutils.setSexo(jsonObject, Sexo.MASCULINO);
         try {
-            assertEquals(Sexo.MASCULINO,jsonObject.getJSONArray(Constants.SEXO).get(0));
+            assertEquals(Sexo.MASCULINO,jsonObject.getJSONArray(Constants.SEX).get(0));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         JSONutils.setSexo(jsonObject, Sexo.BINARIO);
         try {
-            assertEquals(Sexo.BINARIO,jsonObject.getJSONArray(Constants.SEXO).get(1));
+            assertEquals(Sexo.BINARIO,jsonObject.getJSONArray(Constants.SEX).get(1));
         } catch (JSONException e) {
             e.printStackTrace();
         }

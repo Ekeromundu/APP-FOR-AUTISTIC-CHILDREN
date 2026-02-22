@@ -29,8 +29,6 @@ import com.stonefacesoft.ottaa.utils.ConnectionDetector;
 import com.stonefacesoft.ottaa.utils.IntentCode;
 import com.stonefacesoft.ottaa.utils.JSONutils;
 import com.stonefacesoft.ottaa.utils.Pictures.DownloadArasaac;
-import com.stonefacesoft.ottaa.utils.Pictures.DownloadTask;
-import com.stonefacesoft.ottaa.utils.StringFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -180,7 +178,7 @@ public class GaleriaArasaac extends AppCompatActivity implements SearchView.OnQu
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IntentCode.EDITARPICTO.getCode()) {
+        if (requestCode == IntentCode.EDIT_PICTO.getCode()) {
             openIntent();
         }
     }

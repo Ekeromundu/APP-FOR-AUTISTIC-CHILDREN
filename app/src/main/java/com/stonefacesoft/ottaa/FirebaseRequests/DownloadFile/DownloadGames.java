@@ -15,12 +15,10 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
-import com.stonefacesoft.ottaa.FirebaseRequests.BajarJsonFirebase;
 import com.stonefacesoft.ottaa.utils.ObservableInteger;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
 
 import java.io.File;
-import java.util.Locale;
 
 public class DownloadGames extends DownloadFile{
     public DownloadGames(Context mContext, DatabaseReference mDatabase, StorageReference mStorageReference, SharedPreferences sharedPreferences, ObservableInteger observableInteger, String locale) {
@@ -32,21 +30,21 @@ public class DownloadGames extends DownloadFile{
     public void downloadGame() {
         Log.e(TAG, "Download game");
 
-        mDatabase.child(Constants.JUEGOS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.GAMES).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String child = "URL_" + Constants.JUEGOS.toLowerCase() + "_" + locale;
+                String child = "URL_" + Constants.GAMES.toLowerCase() + "_" + locale;
                 if (dataSnapshot.hasChild(child)) {
                     Log.e(TAG, "Game exists");
-                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.JUEGOS).child(Constants.JUEGOS.toLowerCase() + "_" + email + "_" + locale + "." + "txt");
+                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.GAMES).child(Constants.GAMES.toLowerCase() + "_" + email + "_" + locale + "." + "txt");
 
-                    final File juegosUsuariosFile = new File(rootPath, Constants.ARCHIVO_JUEGO);
+                    final File juegosUsuariosFile = new File(rootPath, Constants.GAME_FILE);
                     mStorageReference.getFile(juegosUsuariosFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             try {
                                 json.setmJSonArrayJuegos(json.readJSONArrayFromFile(juegosUsuariosFile.getAbsolutePath()));
-                                if (!json.guardarJson(Constants.ARCHIVO_JUEGO)) {
+                                if (!json.guardarJson(Constants.GAME_FILE)) {
                                     Log.e(TAG, "Fallo al guardar json");
                                 } else
                                     Log.e(TAG, "Pictos Usuarios json");

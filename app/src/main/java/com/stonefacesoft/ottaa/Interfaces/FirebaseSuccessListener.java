@@ -2,11 +2,11 @@ package com.stonefacesoft.ottaa.Interfaces;
 
 public interface FirebaseSuccessListener {
 
-        void onDescargaCompleta(int descargaCompleta);
-        void onDatosEncontrados(int datosEncontrados);
-        void onFotoDescargada(int fotosDescargadas);
-        void onArchivosSubidos(boolean subidos);
-        void onPictosSugeridosBajados(boolean descargado);
+        void onDownloadComplete(int descargaCompleta);
+        void onDataFound(int datosEncontrados);
+        void onPhotoDownloaded(int fotosDescargadas);
+        void onFilesUploaded(boolean subidos);
+        void onSuggestedPictosDownloaded(boolean descargado);
 
 
 

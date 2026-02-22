@@ -1,15 +1,7 @@
 package com.stonefacesoft.ottaa.utils.Pictures;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.PowerManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,12 +14,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.stonefacesoft.ottaa.Bitmap.UriFiles;
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
 import com.stonefacesoft.ottaa.Interfaces.FindAllPictogramsInterface;
-import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
-import com.stonefacesoft.ottaa.utils.IntentCode;
 import com.stonefacesoft.ottaa.utils.JSONutils;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
 import com.stonefacesoft.pictogramslibrary.Classes.Pictogram;
@@ -35,18 +24,8 @@ import com.stonefacesoft.pictogramslibrary.Classes.Pictogram;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class DownloadPictogram extends DownloadTask {
     private final String TAG ="DownloadPictogram";
@@ -105,8 +84,8 @@ public class DownloadPictogram extends DownloadTask {
                     fotosUsuario.put("nombre_foto", mImageName);
                     fotosUsuario.put("texto_picto", pictogram.getName());
                     fotosUsuario.put("url_foto", urlFotoUpload);
-                    mDatabase.child(Constants.FOTOSUSUARIO).child(mAuth.getCurrentUser().getUid()).child(pushKey).setValue(pushKey);
-                    mDatabase.child(Constants.FOTOS).child(pushKey).updateChildren(fotosUsuario);
+                    mDatabase.child(Constants.USER_PHOTOS).child(mAuth.getCurrentUser().getUid()).child(pushKey).setValue(pushKey);
+                    mDatabase.child(Constants.PHOTOS).child(pushKey).updateChildren(fotosUsuario);
                     // pd.dismiss();
                     JSONutils.setImagen(object,path,urlFotoUpload,pushKey);
                     pictogram = new Pictogram(object,ConfigurarIdioma.getLanguaje());

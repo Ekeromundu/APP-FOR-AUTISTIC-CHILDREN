@@ -36,15 +36,15 @@ public class UploadPhrase extends UploadFile{
                         mDatabase.setValue(urlFrasesUpload, (databaseError, referenciaGrupos) -> {
                             if (referenciaGrupos != null) {
                                 closeFile();
-                                Log.d("SAF_SFF_TAG", "Se guardo correctamente url Frases");
+                                Log.d("SAF_SFF_TAG", "Se guardo correctamente url Phrases");
                             } else {
-                                Log.d("SAF_SFF_TAG", "Error al subir url Frases");
+                                Log.d("SAF_SFF_TAG", "Error al subir url Phrases");
                             }
 
                         });
 
                     } else {
-                        Log.d("SAF_SFF_TAG", "Error al subir url Frases");
+                        Log.d("SAF_SFF_TAG", "Error al subir url Phrases");
                         // Toast.makeText(MainActivity.this, "upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -61,7 +61,7 @@ public class UploadPhrase extends UploadFile{
     @Override
     protected void openFile() {
         try {
-            fis = mContext.openFileInput(Constants.ARCHIVO_FRASES);
+            fis = mContext.openFileInput(Constants.PHRASES_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

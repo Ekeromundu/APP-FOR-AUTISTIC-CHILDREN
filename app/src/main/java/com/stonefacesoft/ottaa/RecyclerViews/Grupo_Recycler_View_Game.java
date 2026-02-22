@@ -1,7 +1,6 @@
 package com.stonefacesoft.ottaa.RecyclerViews;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.stonefacesoft.ottaa.Adapters.GaleriaGruposAdapter;
-import com.stonefacesoft.ottaa.GaleriaPictos3;
 import com.stonefacesoft.ottaa.Helper.RecyclerItemClickListener;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.Views.PictogramsGalleryGames;
@@ -17,7 +15,6 @@ import com.stonefacesoft.ottaa.utils.Firebase.CrashlyticsUtils;
 import com.stonefacesoft.ottaa.utils.Games.TellAStoryUtils;
 import com.stonefacesoft.ottaa.utils.IntentCode;
 import com.stonefacesoft.ottaa.utils.JSONutils;
-import com.stonefacesoft.ottaa.utils.constants.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,8 +61,8 @@ public class Grupo_Recycler_View_Game extends Custom_recyclerView implements Vie
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            intent2.putExtra("Nombre", JSONutils.getNombre(object, sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
-                            CrashlyticsUtils.getInstance().getCrashlytics().setCustomKey("Grupo Usado", JSONutils.getNombre(object, sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+                            intent2.putExtra("Nombre", JSONutils.getName(object, sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+                            CrashlyticsUtils.getInstance().getCrashlytics().setCustomKey("Grupo Usado", JSONutils.getName(object, sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
                         }
                         mActivity.startActivityForResult(intent2, IntentCode.GALERIA_PICTOS.getCode());
                         //NOTA: hay  que tener en cuenta que cuando se hace de manera local esto funciona de una ,para la sincronizacion esto puede pisar los datos cuando sea en simultaneo

@@ -21,9 +21,6 @@ import com.stonefacesoft.ottaa.Interfaces.FirebaseSuccessListener;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class bajarFotos {
@@ -44,12 +41,12 @@ public class bajarFotos {
 
     }
 
-    // Setter para el listener de la clase BajarJsonFirebase
+    // Setter para el listener de la clase DownloadJsonFromDatabase
     public void setFileDirectory(File dir){
         this.dir=dir;
     }
 
-    // Setter para el listener de la clase BajarJsonFirebase
+    // Setter para el listener de la clase DownloadJsonFromDatabase
     public void setInterfaz(FirebaseSuccessListener interfaz){
         this.mFbSuccessListenerInterfaz = interfaz;
     }
@@ -58,7 +55,7 @@ public class bajarFotos {
     public void bajarFoto(String uid,boolean isThelast,FirebaseUtils firebaseUtils) {
         this.isThelast=isThelast;
         DatabaseReference mDatabase =firebaseUtils.getmDatabase();
-        mDatabase.child(Constants.FOTOS).child(uid.replace(" ","")).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.PHOTOS).child(uid.replace(" ","")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot!= null){
@@ -90,7 +87,7 @@ public class bajarFotos {
             if(!pictosUsuarioFile.exists()){
                 downloadFile(mReference,pictosUsuarioFile);
             }else{
-                mFbSuccessListenerInterfaz.onFotoDescargada(Constants.FOTOS_YA_DESCARGADAS);
+                mFbSuccessListenerInterfaz.onPhotoDownloaded(Constants.FOTOS_YA_DESCARGADAS);
                 if(isThelast)
                     GaleriaGrupos2.showDismissDialog.sendMessage(0);
             }
@@ -123,7 +120,7 @@ public class bajarFotos {
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 if(taskSnapshot.getTask().isComplete()) {
                     if(mFbSuccessListenerInterfaz!=null)
-                        mFbSuccessListenerInterfaz.onFotoDescargada(Constants.FOTO_DESCARGADA);
+                        mFbSuccessListenerInterfaz.onPhotoDownloaded(Constants.FOTO_DESCARGADA);
                     if(isThelast)
                         GaleriaGrupos2.showDismissDialog.sendMessage(0);
                 }

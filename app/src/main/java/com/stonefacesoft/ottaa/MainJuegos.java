@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.InputDevice;
@@ -12,30 +11,24 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowInsets;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.perf.metrics.AddTrace;
 import com.stonefacesoft.ottaa.Games.GameCard;
-import com.stonefacesoft.ottaa.Games.GameSelector;
 import com.stonefacesoft.ottaa.Interfaces.Make_Click_At_Time;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.Viewpagers.viewpager_galeria_juegos;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
 import com.stonefacesoft.ottaa.idioma.myContextWrapper;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.GameControl;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.scrollActions.ScrollFuntionGames;
 import com.stonefacesoft.ottaa.utils.Firebase.AnalyticsFirebase;
@@ -64,7 +57,7 @@ public class MainJuegos extends AppCompatActivity implements View.OnClickListene
     private Toolbar toolbar;
     private InmersiveMode inmersiveMode;
     private SharedPreferences sharedPrefsDefault;
-    private BarridoPantalla barridoPantalla;
+    private ScreenScroll screenScroll;
     private Button btnBarrido;
     private GameControl gameControl;
 
@@ -113,7 +106,7 @@ public class MainJuegos extends AppCompatActivity implements View.OnClickListene
                 view_game.actionClick();
                 break;
             case R.id.btnBarrido:
-                onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+                onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
                 break;
             case R.id.back_button:
                     onBackPressed();
@@ -201,8 +194,8 @@ public class MainJuegos extends AppCompatActivity implements View.OnClickListene
         listadoObjetosBarrido.add(findViewById(R.id.down_button));
         listadoObjetosBarrido.add(findViewById(R.id.back_button));
         //  listadoObjetosBarrido.add(editButton);
-        barridoPantalla = new BarridoPantalla(this, listadoObjetosBarrido);
-        if (barridoPantalla.isBarridoActivado() && barridoPantalla.devolverpago()) {
+        screenScroll = new ScreenScroll(this, listadoObjetosBarrido);
+        if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
 
                 @Override
@@ -218,10 +211,10 @@ public class MainJuegos extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void OnClickBarrido() {
-        if(function_scroll.isClickEnabled()&&barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+        if(function_scroll.isClickEnabled()&& screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         else if(!function_scroll.isClickEnabled()){
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
 
@@ -231,16 +224,16 @@ public class MainJuegos extends AppCompatActivity implements View.OnClickListene
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
 
-                    if(barridoPantalla.isScrollMode()||barridoPantalla.isScrollModeClicker()){
+                    if(screenScroll.isScrollMode()|| screenScroll.isScrollModeClicker()){
                         if(event.getAxisValue(MotionEvent.AXIS_VSCROLL)<0.0f){
-                            if(barridoPantalla.isScrollMode())
+                            if(screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.avanzarBarrido();
+                            screenScroll.avanzarBarrido();
                         }
                         else{
-                            if(barridoPantalla.isScrollMode())
+                            if(screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.volverAtrasBarrido();
+                            screenScroll.volverAtrasBarrido();
                         }
                     }
                     return true;
@@ -255,8 +248,8 @@ public class MainJuegos extends AppCompatActivity implements View.OnClickListene
     }
 
 
-    public BarridoPantalla getBarridoPantalla() {
-        return barridoPantalla;
+    public ScreenScroll getBarridoPantalla() {
+        return screenScroll;
     }
 
     public ScrollFuntionGames getFunction_scroll() {
@@ -265,7 +258,7 @@ public class MainJuegos extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (barridoPantalla.isBarridoActivado()) {
+        if (screenScroll.isBarridoActivado()) {
 
             if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
                 event.startTracking();
@@ -282,7 +275,7 @@ public class MainJuegos extends AppCompatActivity implements View.OnClickListene
             }
             if(keyCode == KeyEvent.KEYCODE_BACK){
                 if(event.getSource() == InputDevice.SOURCE_MOUSE)
-                    barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                    screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 else
                     onBackPressed();
                 return true;

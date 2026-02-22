@@ -74,7 +74,7 @@ public class JsonTest {
         Json json = Json.getInstance();
         JSONObject object = createPictogramJSONArray();
         try {
-            json.setmJSONArrayPictosSugeridos(object.getJSONArray("array"));
+            json.setSuggestedPictosJSONArray(object.getJSONArray("array"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -82,11 +82,11 @@ public class JsonTest {
     }
 
     @Test
-    public void setmJSONArrayPictosSugeridos() {
+    public void setSuggestedPictosJSONArray() {
         Json json = Json.getInstance();
         JSONObject object = createPictogramJSONArray();
         try {
-            json.setmJSONArrayPictosSugeridos(object.getJSONArray("array"));
+            json.setSuggestedPictosJSONArray(object.getJSONArray("array"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -223,7 +223,7 @@ public class JsonTest {
     public void tieneSexo() {
         Json json = Json.getInstance();
         JSONObject object = createGroupWithTag();
-        Assert.assertTrue(json.tieneTag(object,Constants.SEXO));
+        Assert.assertTrue(json.tieneTag(object,Constants.SEX));
     }
     @Test
     public void tienePosicion() {
@@ -1014,11 +1014,11 @@ public class JsonTest {
                 "{\"id\":668,\"texto\":{\"en\":\"hospital\",\"es\":\"" + Posicion.HOSPITAL + "\"},\"tipo\":\"" + Constants.UBICACION + "\",\"imagen\":{\"picto\":\"hospital\"}}," +
                 "{\"id\":662,\"texto\":{\"en\":\"school\",\"es\":\"" + Posicion.ESCUELA + "\"},\"tipo\":\"" + Constants.UBICACION + "\",\"imagen\":{\"picto\":\"ic_escuela\"}}," +
                 "{\"id\":611,\"texto\":{\"en\":\"transportation\",\"es\":\"" + Posicion.ESTACIONDEBUS + "\"},\"tipo\":\"" + Constants.UBICACION + "\",\"imagen\":{\"picto\":\"transportes\"}}," +
-                "{\"id\":1033,\"texto\":{\"en\":\"woman\",\"es\":\"" + Sexo.FEMENINO + "\"},\"tipo\":\"" + Constants.SEXO + "\",\"imagen\":{\"picto\":\"mujer\"}}," +
-                "{\"id\":1035,\"texto\":{\"en\":\"man\",\"es\":\"" + Sexo.MASCULINO + "\"},\"tipo\":\"" + Constants.SEXO + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
-                "{\"id\":1036,\"texto\":{\"en\":\"binary\",\"es\":\"" + Sexo.BINARIO + "\"},\"tipo\":\"" + Constants.SEXO + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
-                "{\"id\":1037,\"texto\":{\"en\":\"fluid\",\"es\":\"" + Sexo.FLUIDO + "\"},\"tipo\":\"" + Constants.SEXO + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
-                "{\"id\":1038,\"texto\":{\"en\":\"others\",\"es\":\"" + Sexo.OTRO + "\"},\"tipo\":\"" + Constants.SEXO + "\",\"imagen\":{\"picto\":\"hombre\"}}]\n";
+                "{\"id\":1033,\"texto\":{\"en\":\"woman\",\"es\":\"" + Sexo.FEMENINO + "\"},\"tipo\":\"" + Constants.SEX + "\",\"imagen\":{\"picto\":\"mujer\"}}," +
+                "{\"id\":1035,\"texto\":{\"en\":\"man\",\"es\":\"" + Sexo.MASCULINO + "\"},\"tipo\":\"" + Constants.SEX + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
+                "{\"id\":1036,\"texto\":{\"en\":\"binary\",\"es\":\"" + Sexo.BINARIO + "\"},\"tipo\":\"" + Constants.SEX + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
+                "{\"id\":1037,\"texto\":{\"en\":\"fluid\",\"es\":\"" + Sexo.FLUIDO + "\"},\"tipo\":\"" + Constants.SEX + "\",\"imagen\":{\"picto\":\"hombre\"}}," +
+                "{\"id\":1038,\"texto\":{\"en\":\"others\",\"es\":\"" + Sexo.OTRO + "\"},\"tipo\":\"" + Constants.SEX + "\",\"imagen\":{\"picto\":\"hombre\"}}]\n";
         return JSONutils.stringToArrayList(tags);
     }
 }

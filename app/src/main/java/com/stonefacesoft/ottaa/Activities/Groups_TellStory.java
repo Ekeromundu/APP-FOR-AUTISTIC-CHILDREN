@@ -1,10 +1,8 @@
 package com.stonefacesoft.ottaa.Activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -14,19 +12,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-import com.stonefacesoft.ottaa.Edit_Picto_Visual;
-import com.stonefacesoft.ottaa.GaleriaGrupos2;
-import com.stonefacesoft.ottaa.LicenciaExpirada;
 import com.stonefacesoft.ottaa.LoginActivity2;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.RecyclerViews.Grupo_Recycler_View_Game;
 import com.stonefacesoft.ottaa.Viewpagers.viewpager_game_filter_view;
 import com.stonefacesoft.ottaa.Views.GroupGalleryNavigator;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.GaleriaGruposControls;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.GaleriaPictosControls;
-import com.stonefacesoft.ottaa.utils.Games.TellAStoryUtils;
 import com.stonefacesoft.ottaa.utils.IntentCode;
 import com.stonefacesoft.ottaa.utils.constants.ConstantsGroupGalery;
 
@@ -91,8 +83,8 @@ public class Groups_TellStory extends GroupGalleryNavigator {
             viewpager.scrollPosition(next);
         else  if(recycler_view_grupo!=null&&!showViewPager)
             recycler_view_grupo.scrollTo(next);
-    /*    if(barridoPantalla.isBarridoActivado()){
-            analyticsFirebase.customEvents("Accessibility","Galeria Grupos",actionName);
+    /*    if(screenScroll.isBarridoActivado()){
+            analyticsFirebase.customEvents("Accessibility","Galeria Groups",actionName);
         }*/
     }
 
@@ -107,8 +99,8 @@ public class Groups_TellStory extends GroupGalleryNavigator {
                 navigateButtonAction(true,"Next Button" );
                 break;
             case R.id.back_button:
-            /*    if(barridoPantalla.isBarridoActivado()){
-                    analyticsFirebase.customEvents("Accessibility","Galeria Grupos","Close Galery Groups");
+            /*    if(screenScroll.isBarridoActivado()){
+                    analyticsFirebase.customEvents("Accessibility","Galeria Groups","Close Galery Groups");
                 }*/
                 onBackPressed();
 
@@ -118,18 +110,18 @@ public class Groups_TellStory extends GroupGalleryNavigator {
                 break;
             case R.id.btnTalk:
                 if(showViewPager){
-                   /* if(barridoPantalla.isBarridoActivado())
-                        analyticsFirebase.customEvents("Accessibility","Galeria Grupos","Select Group");*/
+                   /* if(screenScroll.isBarridoActivado())
+                        analyticsFirebase.customEvents("Accessibility","Galeria Groups","Select Group");*/
                     viewpager.OnClickItem();
                 }
                 break;
             case R.id.btnBarrido:
-                if (barridoPantalla.isBarridoActivado() && barridoPantalla.isAvanzarYAceptar()) {
+                if (screenScroll.isBarridoActivado() && screenScroll.isAvanzarYAceptar()) {
                     // Log.d(TAG, "onClick() returned: Barrido Pantalla");
-                } else if (barridoPantalla.isBarridoActivado() && !barridoPantalla.isAvanzarYAceptar()) {
-                    int posicion = barridoPantalla.getPosicionBarrido();
+                } else if (screenScroll.isBarridoActivado() && !screenScroll.isAvanzarYAceptar()) {
+                    int posicion = screenScroll.getPosicionBarrido();
                     if (posicion != -1)
-                        barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                        screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 }
                 break;
             default:

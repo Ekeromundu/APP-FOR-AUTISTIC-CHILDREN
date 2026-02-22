@@ -16,10 +16,9 @@ import androidx.annotation.Nullable;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.RecyclerViews.Favorite_Phrases_recycler_view;
 import com.stonefacesoft.ottaa.Views.Phrases.PhrasesView;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.SayActivityName;
 import com.stonefacesoft.ottaa.utils.IntentCode;
-import com.stonefacesoft.ottaa.utils.constants.Constants;
 import com.stonefacesoft.ottaa.utils.textToSpeech;
 
 import java.util.ArrayList;
@@ -42,8 +41,8 @@ public class FavoritePhrases extends PhrasesView {
         if(favorite_phrases_recycler_view.getArray().length()==0){
             favorite_phrases_recycler_view.talkAtPosition();
         }
-        this.setTitle(getResources().getString(R.string.favorite_phrases));
-        if(barridoPantalla.isBarridoActivado())
+        this.setTitle(getResources().getString(R.string.favorite_phrases_title));
+        if(screenScroll.isBarridoActivado())
             favorite_phrases_recycler_view.setScrollVertical(false);
   //      most_used_recycler_view = new MostUsedPhrases_Recycler_View(this,firebaseUser.getmAuth());
 
@@ -134,8 +133,8 @@ public class FavoritePhrases extends PhrasesView {
         listadoObjetosBarrido.add(btnTalk);
         listadoObjetosBarrido.add(foward);
         btnBarrido = findViewById(R.id.btnBarrido);
-        barridoPantalla = new BarridoPantalla(this, listadoObjetosBarrido);
-        if (barridoPantalla.isBarridoActivado() && barridoPantalla.devolverpago()) {
+        screenScroll = new ScreenScroll(this, listadoObjetosBarrido);
+        if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
 
                 @Override
@@ -143,8 +142,8 @@ public class FavoritePhrases extends PhrasesView {
                     // Stuff that updates the UI
 
                     btnBarrido.setVisibility(View.VISIBLE);
-                    if(barridoPantalla.isBarridoActivado())
-                        barridoPantalla.changeButtonVisibility();
+                    if(screenScroll.isBarridoActivado())
+                        screenScroll.changeButtonVisibility();
                 }
             });
         }else{

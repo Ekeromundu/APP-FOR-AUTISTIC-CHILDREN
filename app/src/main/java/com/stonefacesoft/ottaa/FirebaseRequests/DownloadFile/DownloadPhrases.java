@@ -14,10 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.stonefacesoft.ottaa.FirebaseRequests.BajarJsonFirebase;
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
-import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.utils.ObservableInteger;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
 import com.stonefacesoft.ottaa.utils.exceptions.FiveMbException;
@@ -34,14 +31,14 @@ public class DownloadPhrases extends DownloadFile{
     }
 
     public void syncPhrases(){
-        mDatabase.child(Constants.Frases).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.Phrases).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String child = "URL_frases_" + locale;
                 if(snapshot.hasChild(child)){
                     Log.e(TAG, "bajarFrases: "+ child );
 
-                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.Frases).child(Constants.Frases.toLowerCase() + "_" + email + "_" + locale + "." + "txt");
+                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.Phrases).child(Constants.Phrases.toLowerCase() + "_" + email + "_" + locale + "." + "txt");
                     final File frasesUsuarioFile = new File(rootPath, "frases.txt");
                     mStorageReference.getFile(frasesUsuarioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
@@ -49,7 +46,7 @@ public class DownloadPhrases extends DownloadFile{
                             Log.e(TAG, "bajarFrases: "+ child );
                             boolean areTheSameFile = false;
                             try{
-                                 areTheSameFile = json.verifyFiles(Constants.ARCHIVO_FRASES,frasesUsuarioFile);
+                                 areTheSameFile = json.verifyFiles(Constants.PHRASES_FILE,frasesUsuarioFile);
                             }catch (Exception ex){
 
                             }
@@ -58,7 +55,7 @@ public class DownloadPhrases extends DownloadFile{
                                     if (!getStringFromFile(frasesUsuarioFile.getAbsolutePath()).equals("[]") && frasesUsuarioFile.length() > 0) {
 
                                         json.setmJSONArrayTodasLasFrases(json.readJSONArrayFromFile(frasesUsuarioFile.getAbsolutePath()));
-                                        json.guardarJson(Constants.ARCHIVO_FRASES);
+                                        json.guardarJson(Constants.PHRASES_FILE);
                                     }
                                 } catch (JSONException | FiveMbException e) {
                                     e.printStackTrace();
@@ -88,7 +85,7 @@ public class DownloadPhrases extends DownloadFile{
 //        Log.e(TAG, "================ downloadPhrases() START ================");
 //
 //        // 1️⃣ Basic sanity checks
-//        Log.e(TAG, "Constants.Frases = " + Constants.Frases);
+//        Log.e(TAG, "Constants.Phrases = " + Constants.Phrases);
 //        Log.e(TAG, "Locale = " + locale);
 //        Log.d(TAG, "UID = " + uid);
 //        Log.d(TAG, "Email = " + email);
@@ -133,11 +130,11 @@ public class DownloadPhrases extends DownloadFile{
 //        });
 //
 //        // 3️⃣ Log exact path we are about to read
-//        String dbPath = Constants.Frases + "/" + uid;
+//        String dbPath = Constants.Phrases + "/" + uid;
 //        Log.d(TAG, "➡️ Reading path: /" + dbPath);
 //
 //        DatabaseReference frasesRef =
-//                mDatabase.child(Constants.Frases).child(uid);
+//                mDatabase.child(Constants.Phrases).child(uid);
 //
 //        // 4️⃣ Attach listener
 //        frasesRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -175,14 +172,14 @@ public class DownloadPhrases extends DownloadFile{
 //                mStorageReference = FirebaseStorage.getInstance()
 //                        .getReference()
 //                        .child("Archivos_Usuarios")
-//                        .child(Constants.Frases)
-//                        .child(Constants.Frases.toLowerCase()
+//                        .child(Constants.Phrases)
+//                        .child(Constants.Phrases.toLowerCase()
 //                                + "_" + email + "_" + locale + ".txt");
 //
 //                Log.d(TAG, "Storage reference = " + mStorageReference.getPath());
 //
 //                final File frasesUsuario =
-//                        new File(rootPath, Constants.ARCHIVO_FRASES);
+//                        new File(rootPath, Constants.PHRASES_FILE);
 //
 //                Log.d(TAG, "Local file path = " + frasesUsuario.getAbsolutePath());
 //
@@ -201,7 +198,7 @@ public class DownloadPhrases extends DownloadFile{
 //                                        )
 //                                );
 //
-//                                if (json.guardarJson(Constants.ARCHIVO_FRASES)) {
+//                                if (json.guardarJson(Constants.PHRASES_FILE)) {
 //                                    Log.e(TAG, "✅ Phrases JSON SAVED");
 //                                } else {
 //                                    Log.e(TAG, "❌ Failed to save JSON");
@@ -232,12 +229,12 @@ public class DownloadPhrases extends DownloadFile{
 
     public void downloadPhrases(){
         Log.e(TAG, "bajarDownloadFrases: " );
-        Log.e(TAG, "Frases" + Constants.Frases );
+        Log.e(TAG, "Phrases" + Constants.Phrases);
         Log.e(TAG, "Database" + mDatabase );
         Log.d(TAG, "mDatabase root: " + mDatabase.toString());
         Log.d(TAG, "UID: " + uid);
         Log.d(TAG, "Locale detected: " + locale);
-        Log.d(TAG, "Attaching listener at: " + Constants.Frases + "/" + uid);
+        Log.d(TAG, "Attaching listener at: " + Constants.Phrases + "/" + uid);
         Log.d(TAG, "Database URL: " + FirebaseUtils.getInstance().database().getReference().toString());
 
 //        FirebaseUtils.getInstance().database() .getReference("Frasess") .child(uid) .setValue("test phrase");
@@ -255,11 +252,11 @@ public class DownloadPhrases extends DownloadFile{
 //                });
 
 
-//        FirebaseUtils.getInstance().database().getReference("Frases")
+//        FirebaseUtils.getInstance().database().getReference("Phrases")
 //                .addListenerForSingleValueEvent(new ValueEventListener() {
 //                    @Override
 //                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        Log.d(TAG, "Frases root fired. Children: " + snapshot.getChildrenCount());
+//                        Log.d(TAG, "Phrases root fired. Children: " + snapshot.getChildrenCount());
 //                    }
 //                    @Override
 //                    public void onCancelled(@NonNull DatabaseError error) {
@@ -268,7 +265,7 @@ public class DownloadPhrases extends DownloadFile{
 //                });
 
 
-//        mDatabase.child(Constants.Frases).child(uid)
+//        mDatabase.child(Constants.Phrases).child(uid)
 //                .addListenerForSingleValueEvent(new ValueEventListener() {
 //                    @Override
 //                    public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -280,23 +277,23 @@ public class DownloadPhrases extends DownloadFile{
 //                    }
 //                });
 
-        mDatabase.child(Constants.Frases).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.Phrases).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String child = "URL_" + Constants.Frases.toLowerCase() + "_" + locale;
+                String child = "URL_" + Constants.Phrases.toLowerCase() + "_" + locale;
                 Log.e(TAG, "URL_: " + child);
                 if (dataSnapshot.hasChild(child)) {
                     Log.e(TAG, "Has Child Frase");
-                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.Frases).child(Constants.Frases.toLowerCase() + "_" + email + "_" + locale + "." + "txt");
+                    mStorageReference = FirebaseStorage.getInstance().getReference().child("Archivos_Usuarios").child(Constants.Phrases).child(Constants.Phrases.toLowerCase() + "_" + email + "_" + locale + "." + "txt");
                     Log.e(TAG, "Storage Reference: " + mStorageReference);
-                    final File frasesUsuario = new File(rootPath, Constants.ARCHIVO_FRASES);
+                    final File frasesUsuario = new File(rootPath, Constants.PHRASES_FILE);
                     Log.e(TAG, "frasesUsuario: " + frasesUsuario);
                     mStorageReference.getFile(frasesUsuario).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             try {
                                 json.setmJSONArrayTodasLasFrases(json.readJSONArrayFromFile(frasesUsuario.getAbsolutePath()));
-                                if (!json.guardarJson(Constants.ARCHIVO_FRASES)) {
+                                if (!json.guardarJson(Constants.PHRASES_FILE)) {
                                     Log.e(TAG, "Fallo al guardar json");
                                 }
                                 else {
@@ -317,7 +314,7 @@ public class DownloadPhrases extends DownloadFile{
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e(TAG, "onCancelled: "+ databaseError.getMessage() );
-                Log.e(TAG, "bajar Frases: failure" );
+                Log.e(TAG, "bajar Phrases: failure" );
             }
         });
     }

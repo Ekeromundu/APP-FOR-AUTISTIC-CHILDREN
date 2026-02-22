@@ -99,7 +99,7 @@ public class LicenciaUsuario {
                     Date startDate = df.parse(dateStr);
                     dateStr = String.valueOf(startDate.getTime() / 1000);
                     Long horaActual = java.lang.Long.parseLong(dateStr);
-                        databaseReference.child(Constants.PAGO).addListenerForSingleValueEvent(new ValueEventListener() {
+                        databaseReference.child(Constants.PAYMENT).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 User user = User.getInstance();
@@ -147,11 +147,11 @@ public class LicenciaUsuario {
         }
     }
     private void processDataSnapshot(DataSnapshot dataSnapshot,Long date){
-        if (!dataSnapshot.hasChild(Constants.FECHAPAGO)) {
+        if (!dataSnapshot.hasChild(Constants.PAYMENT_DATE)) {
             snapshotIsEmpty(date);
-        } else if (dataSnapshot.hasChild(Constants.FECHAVENCIMIENTO)) {
+        } else if (dataSnapshot.hasChild(Constants.EXPIRATION_DATE)) {
             snapShotWithExpiredDate(dataSnapshot,date);
-        } else if (dataSnapshot.hasChild(Constants.FECHAPAGO)) {
+        } else if (dataSnapshot.hasChild(Constants.PAYMENT_DATE)) {
             snapshotWithPaymentDate(dataSnapshot,date);
         }
     }
@@ -169,7 +169,7 @@ public class LicenciaUsuario {
                                 Long primeraConexion = Long.parseLong(snapshot.child(Constants.PRIMERACONEXION).getValue().toString());
                                 if (date.compareTo(primeraConexion) > 0) {
                                     changePremiumState(0 + "");
-                                    databaseReference.child(Constants.PAGO).child(mAuth.getCurrentUser().getUid()).child(Constants.PAGO).getRef().setValue(0);
+                                    databaseReference.child(Constants.PAYMENT).child(mAuth.getCurrentUser().getUid()).child(Constants.PAYMENT).getRef().setValue(0);
                                 }
                             }
                         }
@@ -191,22 +191,22 @@ public class LicenciaUsuario {
     }
 
     private void snapShotWithExpiredDate(DataSnapshot dataSnapshot,Long date){
-        Long tiempoPago = Long.parseLong(dataSnapshot.child(Constants.FECHAVENCIMIENTO).getValue().toString());
+        Long tiempoPago = Long.parseLong(dataSnapshot.child(Constants.EXPIRATION_DATE).getValue().toString());
         dataSnapshot.getRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 int result = date.compareTo(tiempoPago);
-                if(dataSnapshot.hasChild(Constants.PAGO)){
-                    if(result >0 || dataSnapshot.child(Constants.PAGO).getValue().toString().contains("0")){
-                        dataSnapshot.child(Constants.PAGO).getRef().setValue(0);
+                if(dataSnapshot.hasChild(Constants.PAYMENT)){
+                    if(result >0 || dataSnapshot.child(Constants.PAYMENT).getValue().toString().contains("0")){
+                        dataSnapshot.child(Constants.PAYMENT).getRef().setValue(0);
                         changePremiumState(0+"");
                     }
-                    else if(dataSnapshot.child(Constants.PAGO).getValue().toString().contains("1")){
+                    else if(dataSnapshot.child(Constants.PAYMENT).getValue().toString().contains("1")){
                         changePremiumState(1+"");
                     }
                 }else{
-                    dataSnapshot.child(Constants.PAGO).getRef().setValue(0);
+                    dataSnapshot.child(Constants.PAYMENT).getRef().setValue(0);
                     changePremiumState(0+"");
                 }
             }
@@ -219,21 +219,21 @@ public class LicenciaUsuario {
     }
 
     private void snapshotWithPaymentDate(DataSnapshot dataSnapshot,Long date){
-        Long tiempoPago = Long.parseLong(dataSnapshot.child(Constants.FECHAPAGO).getValue().toString());
+        Long tiempoPago = Long.parseLong(dataSnapshot.child(Constants.PAYMENT_DATE).getValue().toString());
         dataSnapshot.getRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 int result = date.compareTo(tiempoPago + Constants.UN_ANIO);
-                if(dataSnapshot.hasChild(Constants.PAGO)){
-                    if (result > 0 || dataSnapshot.child(Constants.PAGO).getValue().toString().contains("0")) {
-                        dataSnapshot.child(Constants.PAGO).getRef().setValue(0);
+                if(dataSnapshot.hasChild(Constants.PAYMENT)){
+                    if (result > 0 || dataSnapshot.child(Constants.PAYMENT).getValue().toString().contains("0")) {
+                        dataSnapshot.child(Constants.PAYMENT).getRef().setValue(0);
                         changePremiumState(0 + "");
-                    } else if (dataSnapshot.child(Constants.PAGO).getValue().toString().contains("1")) {
+                    } else if (dataSnapshot.child(Constants.PAYMENT).getValue().toString().contains("1")) {
                         changePremiumState(1 + "");
                     }
                 }else{
-                    dataSnapshot.child(Constants.PAGO).getRef().setValue(0);
+                    dataSnapshot.child(Constants.PAYMENT).getRef().setValue(0);
                     changePremiumState(0+"");
                 }
             }

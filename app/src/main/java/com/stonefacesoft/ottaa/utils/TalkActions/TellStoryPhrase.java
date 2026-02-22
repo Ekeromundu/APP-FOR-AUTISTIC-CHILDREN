@@ -17,7 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class TellStoryPhrase {
-    private static final String TAG = "TraducirFrase";
+    private static final String TAG = "TranslatePhrase";
 
     private final int option;
     private TalkChatGPT talkChatGPT;

@@ -53,7 +53,7 @@ public class ScoreListItem extends RecyclerView.Adapter<ScoreListItem.ScoreViewH
         try {
             holder.imagenFav.setImageDrawable(json.getIcono(json.getmJSONArrayTodosLosGrupos().getJSONObject(position)));
             SharedPreferences sharedPrefsDefault = PreferenceManager.getDefaultSharedPreferences(mContext);
-            holder.title.setText(JSONutils.getNombre(json.getmJSONArrayTodosLosGrupos().getJSONObject(position), ConfigurarIdioma.getLanguaje()));
+            holder.title.setText(JSONutils.getName(json.getmJSONArrayTodosLosGrupos().getJSONObject(position), ConfigurarIdioma.getLanguaje()));
 
         } catch (JSONException e) {
             e.printStackTrace();

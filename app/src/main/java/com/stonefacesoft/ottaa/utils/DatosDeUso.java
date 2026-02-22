@@ -60,7 +60,7 @@ public class DatosDeUso {
     private void ordenarFrasesPorFrecuencia() {
 
         try {
-            frasesOrdenadas = json.readJSONArrayFromFile(Constants.ARCHIVO_FRASES);
+            frasesOrdenadas = json.readJSONArrayFromFile(Constants.PHRASES_FILE);
 
             Log.e(TAG, "ordenarFrasesPorFrecuencia: " + frasesOrdenadas.toString());
         } catch (JSONException e) {
@@ -110,7 +110,7 @@ public class DatosDeUso {
     private void ordenarGruposPorFrecuencia() throws FiveMbException {
 
         try {
-            gruposOrdenados = json.readJSONArrayFromFile(Constants.ARCHIVO_GRUPOS);
+            gruposOrdenados = json.readJSONArrayFromFile(Constants.GROUPS_FILE);
         } catch (JSONException e) {
             e.printStackTrace();
         }

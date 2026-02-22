@@ -2,7 +2,6 @@ package com.stonefacesoft.ottaa.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.stonefacesoft.ottaa.Bitmap.CombineImages;
 import com.stonefacesoft.ottaa.Bitmap.GestionarBitmap;
 import com.stonefacesoft.ottaa.FavModel;
 import com.stonefacesoft.ottaa.Interfaces.LoadOnlinePictograms;
@@ -148,7 +146,7 @@ public class CustomFavoritePhrasesAdapter extends RecyclerView.Adapter<CustomFav
             holder.img.setOnClickListener(v -> {
                 if(phrase!=null) {
                     try {
-                        myTTs.hablar(phrase.getString("frase"));
+                        myTTs.speak(phrase.getString("frase"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

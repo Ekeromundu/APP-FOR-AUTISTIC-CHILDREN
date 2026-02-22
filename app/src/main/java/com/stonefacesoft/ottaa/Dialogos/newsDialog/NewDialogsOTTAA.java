@@ -38,7 +38,7 @@ import com.stonefacesoft.ottaa.Adapters.SelectFavoritePhrasesAdapter;
 import com.stonefacesoft.ottaa.AsignTags;
 import com.stonefacesoft.ottaa.Bitmap.GestionarBitmap;
 import com.stonefacesoft.ottaa.FavModel;
-import com.stonefacesoft.ottaa.FirebaseRequests.BajarJsonFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.DownloadJsonFromDatabase;
 import com.stonefacesoft.ottaa.Interfaces.FirebaseSuccessListener;
 import com.stonefacesoft.ottaa.Interfaces.LoadOnlinePictograms;
 import com.stonefacesoft.ottaa.Interfaces.ProgressBarListener;
@@ -71,7 +71,7 @@ public class NewDialogsOTTAA implements FirebaseSuccessListener {
     private TextView textViewNoData;
     private ProgressBar progressBar;
     private AsignTags asignTags;
-    private BajarJsonFirebase bajarJsonFirebase;
+    private DownloadJsonFromDatabase downloadJsonFromDatabase;
     private int position;
     private ReturnPositionItem positionItemAdapter;
 
@@ -109,7 +109,7 @@ public class NewDialogsOTTAA implements FirebaseSuccessListener {
 
 
     //Mostramos las sugerencias cuando es la primera vez de uso o se actualiza a >= 54
-    public void showSugerenciasDialog(String msg) {
+    public void showSuggestionsDialog(String msg) {
 
         //usamos esto para inicializar los dialogos y no repetir codigo en todos los metodos
         initDialog(R.layout.dialog_new_features, false);
@@ -158,8 +158,8 @@ public class NewDialogsOTTAA implements FirebaseSuccessListener {
         ageDescription.setText(dialog.getContext().getResources().getString(R.string.str_seleccionar_edad_usuario));
         RadioGroup ageOptions = dialog.findViewById(R.id.age_preference);
         SharedPreferences mDefaultSharedPref = PreferenceManager.getDefaultSharedPreferences(mActivity);
-        bajarJsonFirebase = new BajarJsonFirebase(mDefaultSharedPref, FirebaseAuth.getInstance(), mActivity);
-        bajarJsonFirebase.setInterfaz(this);
+        downloadJsonFromDatabase = new DownloadJsonFromDatabase(mDefaultSharedPref, FirebaseAuth.getInstance(), mActivity);
+        downloadJsonFromDatabase.setInterfaz(this);
         ageOptions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -203,7 +203,7 @@ public class NewDialogsOTTAA implements FirebaseSuccessListener {
                 String sexo = mDefaultSharedPref.getString("prefSexo", "FEMENINO");
                 String edad = mDefaultSharedPref.getString("prefEdad", "JOVEN");
                 StorageReference mPredictionRef = reference.child("Archivos_Sugerencias").child("pictos_" + sexo + "_" + edad + ".txt");
-                bajarJsonFirebase.descargarPictosDatabase(mPredictionRef);
+                downloadJsonFromDatabase.descargarPictosDatabase(mPredictionRef);
             }
         });
         dialog.show();
@@ -460,27 +460,27 @@ public class NewDialogsOTTAA implements FirebaseSuccessListener {
     // interfaces
 
     @Override
-    public void onDescargaCompleta(int descargaCompleta) {
+    public void onDownloadComplete(int descargaCompleta) {
 
     }
 
     @Override
-    public void onDatosEncontrados(int datosEncontrados) {
+    public void onDataFound(int datosEncontrados) {
 
     }
 
     @Override
-    public void onFotoDescargada(int fotosDescargadas) {
+    public void onPhotoDownloaded(int fotosDescargadas) {
 
     }
 
     @Override
-    public void onArchivosSubidos(boolean subidos) {
+    public void onFilesUploaded(boolean subidos) {
 
     }
 
     @Override
-    public void onPictosSugeridosBajados(boolean descargado) {
+    public void onSuggestedPictosDownloaded(boolean descargado) {
         if (descargado)
             dialog.dismiss();
     }

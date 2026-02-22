@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,11 +40,11 @@ public class FirebaseDatabaseRequest {
     }
 
     public void subirNombreUsuario(FirebaseAuth auth) {
-        mDatabase.child(Constants.USUARIOS).child(auth.getCurrentUser().getUid()).child(Constants.NOMBRE).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.USERS).child(auth.getCurrentUser().getUid()).child(Constants.NAME).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(!snapshot.exists())
-                    mDatabase.child(Constants.USUARIOS).child(auth.getCurrentUser().getUid()).child(Constants.NOMBRE).setValue(auth.getCurrentUser().getDisplayName());
+                    mDatabase.child(Constants.USERS).child(auth.getCurrentUser().getUid()).child(Constants.NAME).setValue(auth.getCurrentUser().getDisplayName());
             }
 
             @Override
@@ -64,11 +63,11 @@ public class FirebaseDatabaseRequest {
     }
 
     public void subirPago(FirebaseAuth auth) {
-        mDatabase.child(Constants.PAGO).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.PAYMENT).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChild(auth.getCurrentUser().getUid())) {
-                    dataSnapshot.child(auth.getCurrentUser().getUid()).child(Constants.PAGO).getRef().setValue("0");
+                    dataSnapshot.child(auth.getCurrentUser().getUid()).child(Constants.PAYMENT).getRef().setValue("0");
                 }
             }
 
@@ -88,9 +87,9 @@ public class FirebaseDatabaseRequest {
     }
 
     public void UploadUserData(DataUser userData){
-        mDatabase.child(Constants.USUARIOS).child(mAuth.getCurrentUser().getUid()).child(Constants.NOMBRE).setValue(userData.getFirstAndLastName());
-        mDatabase.child(Constants.USUARIOS).child(mAuth.getCurrentUser().getUid()).child(Constants.FECHACUMPLE).setValue(userData.getBirthDate());
-        mDatabase.child(Constants.USUARIOS).child(mAuth.getCurrentUser().getUid()).child(Constants.GENERO).setValue(userData.getGender());
+        mDatabase.child(Constants.USERS).child(mAuth.getCurrentUser().getUid()).child(Constants.NAME).setValue(userData.getFirstAndLastName());
+        mDatabase.child(Constants.USERS).child(mAuth.getCurrentUser().getUid()).child(Constants.BIRTH_DATE).setValue(userData.getBirthDate());
+        mDatabase.child(Constants.USERS).child(mAuth.getCurrentUser().getUid()).child(Constants.GENDER).setValue(userData.getGender());
     }
 
    public void uploadUserAvatar(String name){
@@ -110,16 +109,16 @@ public class FirebaseDatabaseRequest {
             uid = "";
         }
         if(!uid.isEmpty())
-            mDatabase.child(Constants.USUARIOS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            mDatabase.child(Constants.USERS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.hasChildren()){
-                      if(snapshot.hasChild(Constants.NOMBRE))
-                        user.setFirstAndLastName(String.valueOf( snapshot.child(Constants.NOMBRE).getValue()));
-                      if(snapshot.hasChild(Constants.FECHACUMPLE))
-                        user.setBirthDate(snapshot.child(Constants.FECHACUMPLE).getValue(Long.class));
-                      if(snapshot.hasChild(Constants.GENERO))
-                        user.setGender(snapshot.child(Constants.GENERO).getValue(String.class));
+                      if(snapshot.hasChild(Constants.NAME))
+                        user.setFirstAndLastName(String.valueOf( snapshot.child(Constants.NAME).getValue()));
+                      if(snapshot.hasChild(Constants.BIRTH_DATE))
+                        user.setBirthDate(snapshot.child(Constants.BIRTH_DATE).getValue(Long.class));
+                      if(snapshot.hasChild(Constants.GENDER))
+                        user.setGender(snapshot.child(Constants.GENDER).getValue(String.class));
                       else
                        user.setGender("");
                     }

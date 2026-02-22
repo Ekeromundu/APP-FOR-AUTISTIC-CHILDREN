@@ -113,7 +113,7 @@ public class MatchPictograms extends GameViewSelectPictograms {
                 sharedPrefsDefault.edit().putBoolean("muteSound", gamesSettings.isSoundOn()).apply();
                 break;
             case R.id.btnBarrido:
-                onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+                onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
 
@@ -130,7 +130,7 @@ public class MatchPictograms extends GameViewSelectPictograms {
             numeros.add(value);
             try {
                 pictogramas[pos] = hijos.getJSONObject(value);
-                if(!JSONutils.getNombre(pictogramas[pos], ConfigurarIdioma.getLanguaje()).equalsIgnoreCase("error"))
+                if(!JSONutils.getName(pictogramas[pos], ConfigurarIdioma.getLanguaje()).equalsIgnoreCase("error"))
                 cargarOpcion(pos);
                 else
                     selectRandomPictogram(pos);
@@ -171,16 +171,16 @@ public class MatchPictograms extends GameViewSelectPictograms {
     protected void cargarTextoBoton(double valor, int pos) {
         switch (pos) {
             case 0:
-                guess1.setCustom_Texto(JSONutils.getNombre(pictogramas[(int) valor],ConfigurarIdioma.getLanguaje()));
+                guess1.setCustom_Texto(JSONutils.getName(pictogramas[(int) valor],ConfigurarIdioma.getLanguaje()));
                 break;
             case 1:
-                guess2.setCustom_Texto(JSONutils.getNombre(pictogramas[(int) valor],ConfigurarIdioma.getLanguaje()));
+                guess2.setCustom_Texto(JSONutils.getName(pictogramas[(int) valor],ConfigurarIdioma.getLanguaje()));
                 break;
             case 2:
-                guess3.setCustom_Texto(JSONutils.getNombre(pictogramas[(int) valor],ConfigurarIdioma.getLanguaje()));
+                guess3.setCustom_Texto(JSONutils.getName(pictogramas[(int) valor],ConfigurarIdioma.getLanguaje()));
                 break;
             case 3:
-                guess4.setCustom_Texto(JSONutils.getNombre(pictogramas[(int) valor],ConfigurarIdioma.getLanguaje()));
+                guess4.setCustom_Texto(JSONutils.getName(pictogramas[(int) valor],ConfigurarIdioma.getLanguaje()));
                 break;
         }
     }
@@ -522,7 +522,7 @@ public class MatchPictograms extends GameViewSelectPictograms {
             int valor = model.elegirGanador();
             if (!numeros.contains(valor)) {
                 numeros.add(valor);
-                name = JSONutils.getNombre(pictogramas[valor],ConfigurarIdioma.getLanguaje());
+                name = JSONutils.getName(pictogramas[valor],ConfigurarIdioma.getLanguaje());
                 mTTS.getUtilsTTS().hablar(name);
             } else {
                 decirPictoAleatorio();
@@ -618,7 +618,7 @@ public class MatchPictograms extends GameViewSelectPictograms {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (barridoPantalla.isBarridoActivado()) {
+        if (screenScroll.isBarridoActivado()) {
             if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
                 event.startTracking();
                 return true;
@@ -634,7 +634,7 @@ public class MatchPictograms extends GameViewSelectPictograms {
             }
             if(keyCode == KeyEvent.KEYCODE_BACK){
                 if(event.getSource() == InputDevice.SOURCE_MOUSE)
-                    barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                    screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 else
                     onBackPressed();
                 return true;

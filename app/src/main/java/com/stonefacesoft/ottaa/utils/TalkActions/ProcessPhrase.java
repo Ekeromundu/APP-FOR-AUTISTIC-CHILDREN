@@ -24,7 +24,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class ProcessPhrase {
-    private static final String TAG = "TraducirFrase";
+    private static final String TAG = "TranslatePhrase";
 
     private final int option;
     private TalkChatGPT talkChatGPT;

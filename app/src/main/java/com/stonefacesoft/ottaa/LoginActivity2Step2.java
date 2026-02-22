@@ -28,13 +28,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.stonefacesoft.ottaa.FirebaseRequests.BajarJsonFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.DownloadJsonFromDatabase;
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseDatabaseRequest;
 import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
 import com.stonefacesoft.ottaa.Interfaces.CalendarChangeEvent;
 import com.stonefacesoft.ottaa.Interfaces.FirebaseSuccessListener;
 import com.stonefacesoft.ottaa.Interfaces.LoadUserInformation;
-import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
 import com.stonefacesoft.ottaa.utils.ConnectionDetector;
 import com.stonefacesoft.ottaa.utils.DateTextWatcher;
 import com.stonefacesoft.ottaa.utils.Firebase.AnalyticsFirebase;
@@ -76,7 +75,7 @@ public class LoginActivity2Step2 extends AppCompatActivity implements View.OnCli
     private AnalyticsFirebase mAnalyticsFirebase;
     private FirebaseUtils firebaseUtils;
     private DateTextWatcher dateTextWatcher;
-    private BajarJsonFirebase mBajarJsonFirebase;
+    private DownloadJsonFromDatabase mDownloadJsonFromDatabase;
 
 
     @Override
@@ -163,15 +162,15 @@ public class LoginActivity2Step2 extends AppCompatActivity implements View.OnCli
             case R.id.nextButton:
                 if (availableUserData()) {
                     setUpUserData();
-                    BajarJsonFirebase bajarJsonFirebase = new BajarJsonFirebase(preferencesUtil.getPreferences(), mAuth, this);
-                    bajarJsonFirebase.setInterfaz(this);
+                    DownloadJsonFromDatabase downloadJsonFromDatabase = new DownloadJsonFromDatabase(preferencesUtil.getPreferences(), mAuth, this);
+                    downloadJsonFromDatabase.setInterfaz(this);
                     if (ConnectionDetector.isNetworkAvailable(this)) {
 
                         final StorageReference mPredictionRef = mStorageRef.child("Archivos_Sugerencias").child("pictos_" + preferencesUtil.getStringValue("prefSexo", "FEMENINO") + "_" + preferencesUtil.getStringValue("prefEdad", "JOVEN") + ".txt");
                         Log.e(TAG, "mPredictionRef " + mPredictionRef);
-                        bajarJsonFirebase.descargarPictosDatabase(mPredictionRef);
+                        downloadJsonFromDatabase.descargarPictosDatabase(mPredictionRef);
                     }else{
-                        onPictosSugeridosBajados(true);
+                        onSuggestedPictosDownloaded(true);
                     }
 
                 } else {
@@ -277,8 +276,8 @@ public class LoginActivity2Step2 extends AppCompatActivity implements View.OnCli
         userData.setFirstAndLastName(editTextName.getText().toString());
         preferencesUtil.applyStringValue("name", userData.getFirstAndLastName());
         userData.setGender(gender);
-        preferencesUtil.applyStringValue(Constants.GENERO, userData.getGender());
-        preferencesUtil.applyLongValue(Constants.FECHACUMPLE, userData.getBirthDate());
+        preferencesUtil.applyStringValue(Constants.GENDER, userData.getGender());
+        preferencesUtil.applyLongValue(Constants.BIRTH_DATE, userData.getBirthDate());
         databaseRequest.UploadUserData(userData);
         setUserAgePrediction();
     }
@@ -300,7 +299,7 @@ public class LoginActivity2Step2 extends AppCompatActivity implements View.OnCli
             gender = genderSelector.getSelectedItem().toString();
         else {
             try {
-                gender = preferencesUtil.getStringValue(Constants.GENERO, genderSelector.getItemAtPosition(position + 1).toString());
+                gender = preferencesUtil.getStringValue(Constants.GENDER, genderSelector.getItemAtPosition(position + 1).toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -355,27 +354,27 @@ public class LoginActivity2Step2 extends AppCompatActivity implements View.OnCli
     }
 
     @Override
-    public void onDescargaCompleta(int descargaCompleta) {
+    public void onDownloadComplete(int descargaCompleta) {
 
     }
 
     @Override
-    public void onDatosEncontrados(int datosEncontrados) {
+    public void onDataFound(int datosEncontrados) {
 
     }
 
     @Override
-    public void onFotoDescargada(int fotosDescargadas) {
+    public void onPhotoDownloaded(int fotosDescargadas) {
 
     }
 
     @Override
-    public void onArchivosSubidos(boolean subidos) {
+    public void onFilesUploaded(boolean subidos) {
 
     }
 
     @Override
-    public void onPictosSugeridosBajados(boolean descargado) {
+    public void onSuggestedPictosDownloaded(boolean descargado) {
         downloadFiles();
     }
 
@@ -407,8 +406,8 @@ public class LoginActivity2Step2 extends AppCompatActivity implements View.OnCli
         if (!rootPath.exists()) {
             rootPath.mkdirs();//si no existe el directorio lo creamos
         }
-        if(mBajarJsonFirebase == null)
-            mBajarJsonFirebase = new BajarJsonFirebase(preferencesUtil.getPreferences(),mAuth,this);
+        if(mDownloadJsonFromDatabase == null)
+            mDownloadJsonFromDatabase = new DownloadJsonFromDatabase(preferencesUtil.getPreferences(),mAuth,this);
         ObservableInteger observableInteger = new ObservableInteger();
         observableInteger.setOnIntegerChangeListener(new ObservableInteger.OnIntegerChangeListener() {
             @Override
@@ -421,7 +420,7 @@ public class LoginActivity2Step2 extends AppCompatActivity implements View.OnCli
                 }
             }
         });
-        mBajarJsonFirebase.bajarPictos(locale, observableInteger);
+        mDownloadJsonFromDatabase.bajarPictos(locale, observableInteger);
 
 
     }

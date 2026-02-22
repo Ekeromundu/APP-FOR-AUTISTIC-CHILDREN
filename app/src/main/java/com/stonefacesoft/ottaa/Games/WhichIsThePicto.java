@@ -1,10 +1,8 @@
 package com.stonefacesoft.ottaa.Games;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
@@ -20,17 +18,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.perf.metrics.AddTrace;
@@ -39,21 +31,16 @@ import com.stonefacesoft.ottaa.Views.Games.GameViewSelectPictogramsFourOptions;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
 import com.stonefacesoft.ottaa.utils.Games.GamesSettings;
 import com.stonefacesoft.ottaa.Games.Model.WhichIsThePictoModel;
-import com.stonefacesoft.ottaa.Interfaces.Lock_Unlocked_Pictograms;
-import com.stonefacesoft.ottaa.Interfaces.Make_Click_At_Time;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.R;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.GameControl;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.scrollActions.ScrollFuntionGames;
-import com.stonefacesoft.ottaa.utils.Audio.MediaPlayerAudio;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
 import com.stonefacesoft.ottaa.utils.CustomToast;
-import com.stonefacesoft.ottaa.utils.Firebase.AnalyticsFirebase;
 import com.stonefacesoft.ottaa.utils.Games.AnimGameScore;
 import com.stonefacesoft.ottaa.utils.Games.Juego;
 import com.stonefacesoft.ottaa.utils.JSONutils;
-import com.stonefacesoft.ottaa.utils.Ttsutils.UtilsGamesTTS;
 import com.stonefacesoft.ottaa.utils.exceptions.FiveMbException;
 import com.stonefacesoft.ottaa.utils.textToSpeech;
 import com.stonefacesoft.pictogramslibrary.Classes.Pictogram;
@@ -187,9 +174,9 @@ public class WhichIsThePicto extends GameViewSelectPictogramsFourOptions {
         json = Json.getInstance();
 
         try {
-            mJsonArrayTodosLosGrupos = json.readJSONArrayFromFile(Constants.ARCHIVO_GRUPOS);
+            mJsonArrayTodosLosGrupos = json.readJSONArrayFromFile(Constants.GROUPS_FILE);
             int id = json.getId(mJsonArrayTodosLosGrupos.getJSONObject(mPositionPadre));
-            analitycsFirebase.levelNameGame(TAG + "_" + JSONutils.getNombre(mJsonArrayTodosLosGrupos.getJSONObject(mPositionPadre),sharedPrefsDefault.getString(getString(R.string.str_idioma), "en")));
+            analitycsFirebase.levelNameGame(TAG + "_" + JSONutils.getName(mJsonArrayTodosLosGrupos.getJSONObject(mPositionPadre),sharedPrefsDefault.getString(getString(R.string.str_idioma), "en")));
 
             setUpGame(0,id);
             game.setGamelevel(sharedPrefsDefault.getInt("whichIsThePictoLevel",0));
@@ -228,7 +215,7 @@ public class WhichIsThePicto extends GameViewSelectPictogramsFourOptions {
 
         //la variable temporal galeria grupos se la usa para modificar puntaje
         json.setmJSONArrayTodosLosGrupos(mJsonArrayTodosLosGrupos);
-        if (!json.guardarJson(Constants.ARCHIVO_GRUPOS))
+        if (!json.guardarJson(Constants.GROUPS_FILE))
             Log.e(TAG, "onBackPressed: Error al guardar grupos ");
 
         game.endUseTime();
@@ -363,7 +350,7 @@ public class WhichIsThePicto extends GameViewSelectPictogramsFourOptions {
                 }
                 break;
             case R.id.btnBarrido:
-                onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+                onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
                 break;
         }
     }
@@ -496,7 +483,7 @@ public class WhichIsThePicto extends GameViewSelectPictogramsFourOptions {
     private void cargarDatosOpcion(int position, PictoView option, int pos) {
         try {
             if (mJsonArrayTodosLosPictos.getJSONObject(position) != null) {
-                if (!JSONutils.getNombre(mJsonArrayTodosLosPictos.getJSONObject(position),sharedPrefsDefault.getString(getString(R.string.str_idioma), "en")).equals("")) {
+                if (!JSONutils.getName(mJsonArrayTodosLosPictos.getJSONObject(position),sharedPrefsDefault.getString(getString(R.string.str_idioma), "en")).equals("")) {
                     option.setUpContext(this);
                     option.setUpGlideAttatcher(this);
                     option.setPictogramsLibraryPictogram(new Pictogram(mJsonArrayTodosLosPictos.getJSONObject(position), ConfigurarIdioma.getLanguaje()));
@@ -617,8 +604,8 @@ public class WhichIsThePicto extends GameViewSelectPictogramsFourOptions {
         listadoObjetosBarrido.add(Opcion4);
 
         //  listadoObjetosBarrido.add(editButton);
-        barridoPantalla = new BarridoPantalla(this, listadoObjetosBarrido);
-        if (barridoPantalla.isBarridoActivado() && barridoPantalla.devolverpago()) {
+        screenScroll = new ScreenScroll(this, listadoObjetosBarrido);
+        if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
 
                 @Override
@@ -636,10 +623,10 @@ public class WhichIsThePicto extends GameViewSelectPictogramsFourOptions {
 
     @Override
     public void OnClickBarrido() {
-        if (function_scroll.isClickEnabled() && barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).getId() == R.id.btnTodosLosPictos)
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+        if (function_scroll.isClickEnabled() && screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).getId() == R.id.btnTodosLosPictos)
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         else if (!function_scroll.isClickEnabled()) {
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
 
@@ -656,15 +643,15 @@ public class WhichIsThePicto extends GameViewSelectPictogramsFourOptions {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
 
-                    if (barridoPantalla.isScrollMode() || barridoPantalla.isScrollModeClicker()) {
+                    if (screenScroll.isScrollMode() || screenScroll.isScrollModeClicker()) {
                         if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f) {
-                            if (barridoPantalla.isScrollMode())
+                            if (screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.avanzarBarrido();
+                            screenScroll.avanzarBarrido();
                         } else {
-                            if (barridoPantalla.isScrollMode())
+                            if (screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.volverAtrasBarrido();
+                            screenScroll.volverAtrasBarrido();
 
                         }
                     }
@@ -734,7 +721,7 @@ public class WhichIsThePicto extends GameViewSelectPictogramsFourOptions {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (barridoPantalla.isBarridoActivado()) {
+        if (screenScroll.isBarridoActivado()) {
 
             if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
                 event.startTracking();
@@ -751,7 +738,7 @@ public class WhichIsThePicto extends GameViewSelectPictogramsFourOptions {
             }
             if(keyCode == KeyEvent.KEYCODE_BACK){
                 if(event.getSource() == InputDevice.SOURCE_MOUSE)
-                    barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                    screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 else
                     onBackPressed();
                 return true;

@@ -19,7 +19,7 @@ public class UploadingGroups extends UploadFile{
     @Override
     protected void openFile() {
         try {
-            fis = mContext.openFileInput(Constants.ARCHIVO_GRUPOS);
+            fis = mContext.openFileInput(Constants.GROUPS_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -44,10 +44,10 @@ public class UploadingGroups extends UploadFile{
                         Log.e("SAF_SGF__down", "" + urlGrupoUpload);
                         mDatabase.setValue(urlGrupoUpload, (databaseError, referenciaGrupos1) -> {
                             if (referenciaGrupos1 != null) {
-                                Log.d("SAF_SGF_TAG", "Se guardo correctamente url Grupos");
+                                Log.d("SAF_SGF_TAG", "Se guardo correctamente url Groups");
                                 closeFile();
                             } else {
-                                Log.d("SAF_SGF_TAG", "Error al subir url Grupos");
+                                Log.d("SAF_SGF_TAG", "Error al subir url Groups");
                             }
 
                         });

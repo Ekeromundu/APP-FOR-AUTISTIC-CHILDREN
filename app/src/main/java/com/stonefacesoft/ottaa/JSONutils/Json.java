@@ -15,7 +15,6 @@ import android.util.Log;
 import android.util.Size;
 
 import com.google.android.libraries.places.api.model.Place;
-import com.stonefacesoft.ottaa.BuildConfig;
 import com.stonefacesoft.ottaa.DrawableManager;
 import com.stonefacesoft.ottaa.Interfaces.DrawableInterface;
 import com.stonefacesoft.ottaa.Interfaces.SortPictogramsInterface;
@@ -154,7 +153,7 @@ public class Json  {
     public void initJsonArrays() {
         //Cargo por unica vez los archivos al array
         try {
-            mJSONArrayTodosLosPictos = readJSONArrayFromFile(Constants.ARCHIVO_PICTOS);
+            mJSONArrayTodosLosPictos = readJSONArrayFromFile(Constants.PICTOS_FILE);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (FiveMbException e) {
@@ -166,7 +165,7 @@ public class Json  {
             e.printStackTrace();
         }
         try {
-            mJSONArrayTodosLosGrupos = readJSONArrayFromFile(Constants.ARCHIVO_GRUPOS);
+            mJSONArrayTodosLosGrupos = readJSONArrayFromFile(Constants.GROUPS_FILE);
             GroupManagerClass.getInstance().setmGroup(mJSONArrayTodosLosGrupos);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -174,28 +173,28 @@ public class Json  {
             e.printStackTrace();
         }
         try {
-            mJSONArrayTodasLasFrases = readJSONArrayFromFile(Constants.ARCHIVO_FRASES);
+            mJSONArrayTodasLasFrases = readJSONArrayFromFile(Constants.PHRASES_FILE);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (FiveMbException e) {
             e.printStackTrace();
         }
         try {
-            mJSONArrayPictosSugeridos = readJSONArrayFromFile(Constants.ARCHIVO_PICTOS_DATABASE);
+            mJSONArrayPictosSugeridos = readJSONArrayFromFile(Constants.PICTOS_DATABASE_FILE);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (FiveMbException e) {
             e.printStackTrace();
         }
         try {
-            mJSonArrayFrasesFavoritas = readJSONArrayFromFile(Constants.ARCHIVO_FRASES_FAVORITAS);
+            mJSonArrayFrasesFavoritas = readJSONArrayFromFile(Constants.FAVORITE_PHRASES_FILE);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (FiveMbException e) {
             e.printStackTrace();
         }
         try {
-            mJSonArrayJuegos = readJSONArrayFromFile(Constants.ARCHIVO_JUEGO);
+            mJSonArrayJuegos = readJSONArrayFromFile(Constants.GAME_FILE);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (FiveMbException e) {
@@ -232,7 +231,7 @@ public class Json  {
         return mJSONArrayPictosSugeridos;
     }
 
-    public void setmJSONArrayPictosSugeridos(JSONArray mJSONArrayPictosSugeridos) {
+    public void setSuggestedPictosJSONArray(JSONArray mJSONArrayPictosSugeridos) {
         this.mJSONArrayPictosSugeridos = mJSONArrayPictosSugeridos;
         try {
             new SortPictograms().quickSort(mJSONArrayPictosSugeridos,0,mJSONArrayPictosSugeridos.length()-1);
@@ -304,7 +303,7 @@ public class Json  {
 
     public ArrayList<JSONObject> getmArrayListTodasLasFotosBackup() throws FiveMbException {
         mArrayListTodasLasFotosBackup.clear();
-        String textoFotosBackup = readFromFile(Constants.ARCHIVO_FOTO_BACKUP);
+        String textoFotosBackup = readFromFile(Constants.PHOTO_BACKUP_FILE);
         if (textoFotosBackup != null) {
             try {
                 JSONArray array = new JSONArray(textoFotosBackup);
@@ -443,7 +442,7 @@ public class Json  {
             e.printStackTrace();
         }
         try {
-            arrayAgenda.put(arrayAgenda.length(), JSONutils.getNombre(ob, ConfigurarIdioma.getLanguaje()).toUpperCase());
+            arrayAgenda.put(arrayAgenda.length(), JSONutils.getName(ob, ConfigurarIdioma.getLanguaje()).toUpperCase());
             ob.put(Constants.CALENDARIO, arrayAgenda);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -498,7 +497,7 @@ public class Json  {
             case Constants.CLIMA:
                 enumTag = Arrays.toString(Clima.values());
                 break;
-            case Constants.SEXO:
+            case Constants.SEX:
                 enumTag = Arrays.toString(Sexo.values());
                 break;
 
@@ -723,22 +722,22 @@ public class Json  {
     public synchronized boolean guardarJson(String archivo) {
         JSONArray jsonArrayAGuardar = new JSONArray();
         switch (archivo) {
-            case Constants.ARCHIVO_PICTOS:
+            case Constants.PICTOS_FILE:
                 jsonArrayAGuardar = mJSONArrayTodosLosPictos;
                 break;
-            case Constants.ARCHIVO_GRUPOS:
+            case Constants.GROUPS_FILE:
                 jsonArrayAGuardar = GroupManagerClass.getInstance().getmGroup();
                 break;
-            case Constants.ARCHIVO_FRASES:
+            case Constants.PHRASES_FILE:
                 jsonArrayAGuardar = mJSONArrayTodasLasFrases;
                 break;
-            case Constants.ARCHIVO_PICTOS_DATABASE:
+            case Constants.PICTOS_DATABASE_FILE:
                 jsonArrayAGuardar = mJSONArrayPictosSugeridos;
                 break;
-            case Constants.ARCHIVO_JUEGO:
+            case Constants.GAME_FILE:
                 jsonArrayAGuardar = mJSonArrayJuegos;
                 break;
-            case Constants.ARCHIVO_FRASES_FAVORITAS:
+            case Constants.FAVORITE_PHRASES_FILE:
                 jsonArrayAGuardar = mJSonArrayFrasesFavoritas;
                 break;
 
@@ -865,7 +864,7 @@ public class Json  {
             StringBuilder builder = new StringBuilder();
             FileInputStream fis;
             try {
-                if (fileName.equals(Constants.ARCHIVO_PICTOS) || fileName.equals(Constants.ARCHIVO_GRUPOS) || fileName.equals(Constants.ARCHIVO_FRASES) || fileName.equals(Constants.ARCHIVO_PICTOS_DATABASE) || fileName.equals(Constants.ARCHIVO_FRASES_JUEGOS) || fileName.equals(Constants.ARCHIVO_JUEGO) || fileName.equals(Constants.ARCHIVO_JUEGO_DESCRIPCION) || fileName.equals(Constants.ARCHIVO_FRASES_FAVORITAS))
+                if (fileName.equals(Constants.PICTOS_FILE) || fileName.equals(Constants.GROUPS_FILE) || fileName.equals(Constants.PHRASES_FILE) || fileName.equals(Constants.PICTOS_DATABASE_FILE) || fileName.equals(Constants.FAVORITE_PHRASES_FILE) || fileName.equals(Constants.GAME_FILE) || fileName.equals(Constants.GAME_DESCRIPTION_FILE) || fileName.equals(Constants.FAVORITE_PHRASES_FILE))
                     fis = mContext.openFileInput(fileName);
                 else
                     fis = new FileInputStream(new File(fileName));
@@ -902,7 +901,7 @@ public class Json  {
         try {
             FileInputStream fis;
 
-            if (fileName.equals(Constants.ARCHIVO_PICTOS) || fileName.equals(Constants.ARCHIVO_GRUPOS) || fileName.equals(Constants.ARCHIVO_FRASES) || fileName.equals(Constants.ARCHIVO_PICTOS_DATABASE) || fileName.equals(Constants.ARCHIVO_FRASES_JUEGOS) || fileName.equals(Constants.ARCHIVO_JUEGO) || fileName.equals(Constants.ARCHIVO_JUEGO_DESCRIPCION) || fileName.equals(Constants.ARCHIVO_FRASES_FAVORITAS))
+            if (fileName.equals(Constants.PICTOS_FILE) || fileName.equals(Constants.GROUPS_FILE) || fileName.equals(Constants.PHRASES_FILE) || fileName.equals(Constants.PICTOS_DATABASE_FILE) || fileName.equals(Constants.FAVORITE_PHRASES_FILE) || fileName.equals(Constants.GAME_FILE) || fileName.equals(Constants.GAME_DESCRIPTION_FILE) || fileName.equals(Constants.FAVORITE_PHRASES_FILE))
                 fis = mContext.openFileInput(fileName);
             else
                 fis = new FileInputStream(new File(fileName));
@@ -1114,7 +1113,7 @@ public class Json  {
      * */
     public void cargarOpciones(JSONObject padre, int cuentaMasPictos, SortPictogramsInterface sortPictograms) {
         Log.e(TAG, "cargarOpciones");
-        //mJSONArrayTodosLosPictos = readJSONArrayFromFile(Constants.ARCHIVO_PICTOS);// leo los pictos
+        //mJSONArrayTodosLosPictos = readJSONArrayFromFile(Constants.PICTOS_FILE);// leo los pictos
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -1171,8 +1170,8 @@ public class Json  {
     public void cargarPictosSugeridosJson() {
         Log.e(TAG, "cargarPictosSugeridosJson ");
         try {
-            mJSONArrayPictosSugeridos = readJSONArrayFromFile(Constants.ARCHIVO_PICTOS_DATABASE);
-            Log.e(TAG, "Able to read from  ARCHIVO_PICTOS_DATABASE");
+            mJSONArrayPictosSugeridos = readJSONArrayFromFile(Constants.PICTOS_DATABASE_FILE);
+            Log.e(TAG, "Able to read from  PICTOS_DATABASE_FILE");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1191,7 +1190,7 @@ public class Json  {
                 }
                 if (!mJSONArrayTodasLasFrases.getJSONObject(pos).has("locale"))
                     mJSONArrayTodasLasFrases.getJSONObject(pos).put("locale", ConfigurarIdioma.getLanguaje());
-                guardarJson(Constants.ARCHIVO_FRASES);
+                guardarJson(Constants.PHRASES_FILE);
             } else {
                 JSONObject nuevaFrase = new JSONObject();
                 nuevaFrase.put("frase", frase);
@@ -1202,7 +1201,7 @@ public class Json  {
                 int id = getThePhraseLastId() + 1;
                 nuevaFrase.put("id", id);
                 mJSONArrayTodasLasFrases.put(nuevaFrase);
-                guardarJson(Constants.ARCHIVO_FRASES);
+                guardarJson(Constants.PHRASES_FILE);
             }
         }
     }

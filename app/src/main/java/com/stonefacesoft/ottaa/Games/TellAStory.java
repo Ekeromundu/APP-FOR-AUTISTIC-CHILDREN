@@ -2,27 +2,16 @@ package com.stonefacesoft.ottaa.Games;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.exoplayer2.transformer.Transformer;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.stonefacesoft.ottaa.Activities.Groups_TellStory;
 import com.stonefacesoft.ottaa.CompartirArchivos;
-import com.stonefacesoft.ottaa.Dialogos.DialogUtils.DialogGameProgressInform;
-import com.stonefacesoft.ottaa.FirebaseRequests.FirebaseUtils;
 import com.stonefacesoft.ottaa.Interfaces.AudioTransformationListener;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.R;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.InputDevice;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,24 +22,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.stonefacesoft.ottaa.Views.Games.GameViewSelectPictogramsFourOptions;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
-import com.stonefacesoft.ottaa.utils.Accesibilidad.BarridoPantalla;
+import com.stonefacesoft.ottaa.utils.Accesibilidad.ScreenScroll;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.devices.GameControl;
 import com.stonefacesoft.ottaa.utils.Accesibilidad.scrollActions.ScrollFuntionGames;
 import com.stonefacesoft.ottaa.utils.Audio.FileEncoder;
-import com.stonefacesoft.ottaa.utils.CustomToast;
 import com.stonefacesoft.ottaa.utils.Games.TellAStoryUtils;
-import com.stonefacesoft.ottaa.utils.Handlers.HandlerComunicationClass;
 import com.stonefacesoft.ottaa.utils.Handlers.HandlerUtils;
 import com.stonefacesoft.ottaa.utils.IntentCode;
 import com.stonefacesoft.ottaa.utils.RemoteConfigUtils;
-import com.stonefacesoft.ottaa.utils.TalkActions.ProcessPhrase;
 import com.stonefacesoft.ottaa.utils.TalkActions.TellStoryPhrase;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
 import com.stonefacesoft.ottaa.utils.textToSpeech;
@@ -162,12 +147,12 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
                     shareAStory();
                 break;
             case R.id.btnBarrido:
-                if (barridoPantalla.isBarridoActivado() && barridoPantalla.isAvanzarYAceptar()) {
-                    onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
-                } else if (barridoPantalla.isBarridoActivado() && !barridoPantalla.isAvanzarYAceptar()) {
-                    int posicion = barridoPantalla.getPosicionBarrido();
+                if (screenScroll.isBarridoActivado() && screenScroll.isAvanzarYAceptar()) {
+                    onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
+                } else if (screenScroll.isBarridoActivado() && !screenScroll.isAvanzarYAceptar()) {
+                    int posicion = screenScroll.getPosicionBarrido();
                     if (posicion != -1)
-                        barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).callOnClick();
+                        screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).callOnClick();
                 }
                 break;
         }
@@ -265,7 +250,7 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
 
     public void talkAction(){
         if(!story.isEmpty())
-            myTTS.hablar(story);
+            myTTS.speak(story);
     }
 
     public void setStory(String story) {
@@ -361,7 +346,7 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
 
         setIcon(mMenu.getItem(3),false, R.drawable.baseline_wallpaper_24, R.drawable.baseline_text_snippet_24);
         setIcon(mMenu.getItem(1),false, R.drawable.ic_share_black_24dp, R.drawable.ic_share_black_24dp);
-        if(barridoPantalla!=null&&barridoPantalla.isBarridoActivado()){
+        if(screenScroll !=null&& screenScroll.isBarridoActivado()){
             mMenu.getItem(1).setVisible(false);
         }
 
@@ -417,8 +402,8 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
         listadoObjetosBarrido.add(Opcion4);
 
         //  listadoObjetosBarrido.add(editButton);
-        barridoPantalla = new BarridoPantalla(this, listadoObjetosBarrido);
-        if (barridoPantalla.isBarridoActivado() && barridoPantalla.devolverpago()) {
+        screenScroll = new ScreenScroll(this, listadoObjetosBarrido);
+        if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
 
                 @Override
@@ -448,10 +433,10 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
 
     @Override
     public void OnClickBarrido() {
-      if(function_scroll.isClickEnabled()&&barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+      if(function_scroll.isClickEnabled()&& screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         else if(!function_scroll.isClickEnabled()){
-            onClick(barridoPantalla.getmListadoVistas().get(barridoPantalla.getPosicionBarrido()));
+            onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
 
@@ -461,15 +446,15 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
 
-                    if (barridoPantalla.isScrollMode() || barridoPantalla.isScrollModeClicker()) {
+                    if (screenScroll.isScrollMode() || screenScroll.isScrollModeClicker()) {
                         if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f) {
-                            if (barridoPantalla.isScrollMode())
+                            if (screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.avanzarBarrido();
+                            screenScroll.avanzarBarrido();
                         } else {
-                            if (barridoPantalla.isScrollMode())
+                            if (screenScroll.isScrollMode())
                                 function_scroll.HacerClickEnTiempo();
-                            barridoPantalla.volverAtrasBarrido();
+                            screenScroll.volverAtrasBarrido();
 
                         }
                     }

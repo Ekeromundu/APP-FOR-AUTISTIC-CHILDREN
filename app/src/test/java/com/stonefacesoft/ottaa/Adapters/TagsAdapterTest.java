@@ -85,7 +85,7 @@ public class TagsAdapterTest {
 
             asignTags.cargarTags(Constants.EDAD);
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(0));
-            asignTags.cargarTags(Constants.SEXO);
+            asignTags.cargarTags(Constants.SEX);
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(2));
             selectedTags.add(asignTags.getmArrayListTagsPorTipo().get(0));
             asignTags.cargarTags(Constants.UBICACION);
@@ -94,7 +94,7 @@ public class TagsAdapterTest {
             asignTags.setmArrayListSelectedTAGS(selectedTags);
             asignTags.setTagsToPicto(object);
             Json json =Json.getInstance();
-            assertTrue(object.has(Constants.SEXO)&&object.has(Constants.EDAD)&&object.has(Constants.UBICACION));
+            assertTrue(object.has(Constants.SEX)&&object.has(Constants.EDAD)&&object.has(Constants.UBICACION));
         } catch (JSONException e) {
             e.printStackTrace();
         }

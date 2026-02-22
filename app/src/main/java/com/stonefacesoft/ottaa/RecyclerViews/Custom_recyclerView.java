@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -16,11 +15,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.Helper.SimpleItemTouchHelperCallback;
 import com.stonefacesoft.ottaa.Interfaces.interface_search;
 import com.stonefacesoft.ottaa.JSONutils.Json;
-import com.stonefacesoft.ottaa.LicenciaExpirada;
+import com.stonefacesoft.ottaa.LicenseExpired;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
 import com.stonefacesoft.ottaa.utils.Firebase.AnalyticsFirebase;
@@ -45,7 +44,7 @@ public abstract class Custom_recyclerView implements SearchView.OnQueryTextListe
     protected textToSpeech myTTS;
     protected SharedPreferences sharedPrefsDefault;
     protected PopupMenu popupMenu;
-    protected SubirArchivosFirebase uploadFirebaseFile;
+    protected UploadFilesToFirebase uploadFirebaseFile;
     protected PopupMenu.OnMenuItemClickListener menuClickListener;
     protected SimpleItemTouchHelperCallback itemTouchHelperCallback;
     protected ReturnPositionItem getPositionItem;
@@ -94,7 +93,7 @@ public abstract class Custom_recyclerView implements SearchView.OnQueryTextListe
         this.sharedPrefsDefault = sharedPrefsDefault;
     }
 
-    public void setUploadFirebaseFile(SubirArchivosFirebase uploadFirebaseFile) {
+    public void setUploadFirebaseFile(UploadFilesToFirebase uploadFirebaseFile) {
         this.uploadFirebaseFile = uploadFirebaseFile;
     }
 
@@ -140,7 +139,7 @@ public abstract class Custom_recyclerView implements SearchView.OnQueryTextListe
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        analyticsFirebase.customEvents("Touch","Editar Grupos","Search Pictogram");
+        analyticsFirebase.customEvents("Touch","Editar Groups","Search Pictogram");
         if (mSearchView.getQuery().length() > 0) {
             mSearchView.setIconified(true);
             arrayAux=new JSONArray();
@@ -200,12 +199,12 @@ public abstract class Custom_recyclerView implements SearchView.OnQueryTextListe
     * Upload the group
     * */
     public void subirGrupos(){
-        uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Grupos), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Grupos));
+        uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Groups), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Groups));
 
     }
 
     public void subirPictos(){
-        uploadFirebaseFile.subirPictosFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.PICTOS), uploadFirebaseFile.getmStorageRef(mAuth, Constants.PICTOS));
+        uploadFirebaseFile.subirPictosFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Pictures), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Pictures));
 
     }
 
@@ -318,7 +317,7 @@ public abstract class Custom_recyclerView implements SearchView.OnQueryTextListe
 
 
     protected Intent startExpiredLicense(){
-        return new Intent(mActivity, LicenciaExpirada.class);
+        return new Intent(mActivity, LicenseExpired.class);
     }
 
     protected Intent startEditAction(){
@@ -335,7 +334,7 @@ public abstract class Custom_recyclerView implements SearchView.OnQueryTextListe
         try {
             if (myTTS != null && array.getJSONObject(position).getJSONObject("texto").getString((sharedPrefsDefault.getString(mActivity.getString(R.string
                     .str_idioma), "en"))) != null) {
-                myTTS.hablar(array.getJSONObject(position).getJSONObject("texto").getString((sharedPrefsDefault.getString(mActivity.getString(R.string
+                myTTS.speak(array.getJSONObject(position).getJSONObject("texto").getString((sharedPrefsDefault.getString(mActivity.getString(R.string
                         .str_idioma), "en"))));
             }
         } catch (JSONException e) {

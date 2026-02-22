@@ -18,9 +18,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.stonefacesoft.ottaa.Edit_Picto_Visual;
+import com.stonefacesoft.ottaa.Edit_Visual_Picto;
 import com.stonefacesoft.ottaa.JSONutils.Json;
-import com.stonefacesoft.ottaa.LicenciaExpirada;
+import com.stonefacesoft.ottaa.LicenseExpired;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.idioma.ConfigurarIdioma;
 import com.stonefacesoft.ottaa.utils.IntentCode;
@@ -143,7 +143,7 @@ public class viewpager_galeria_pictos {
 
     public void editItem(boolean isPremium) {
         if (isPremium) {
-            Intent intent = new Intent(mActivity, Edit_Picto_Visual.class);
+            Intent intent = new Intent(mActivity, Edit_Visual_Picto.class);
             intent.putExtra("PositionPadre", parent_button);
             intent.putExtra("PositionHijo", viewPager.getCurrentItem());
             try {
@@ -153,16 +153,16 @@ public class viewpager_galeria_pictos {
                 Log.e(TAG, "editItem: Error: " + e.getMessage());
             }
             try {
-                intent.putExtra("Texto", JSONutils.getNombre(array.getJSONObject(viewPager.getCurrentItem()),ConfigurarIdioma.getLanguaje()));
+                intent.putExtra("Texto", JSONutils.getName(array.getJSONObject(viewPager.getCurrentItem()),ConfigurarIdioma.getLanguaje()));
             } catch (JSONException e) {
                 Log.e(TAG, "editItem: Error: " + e.getMessage());
             }
             intent.putExtra("esGrupo", false);
-            myTTS.hablar(mActivity.getString(R.string.editar_pictogram));
-            mActivity.startActivityForResult(intent, IntentCode.EDITARPICTO.getCode());
+            myTTS.speak(mActivity.getString(R.string.editar_pictogram));
+            mActivity.startActivityForResult(intent, IntentCode.EDIT_PICTO.getCode());
 
         } else {
-            Intent i = new Intent(mActivity, LicenciaExpirada.class);
+            Intent i = new Intent(mActivity, LicenseExpired.class);
             mActivity.startActivity(i);
         }
 
@@ -196,11 +196,11 @@ public class viewpager_galeria_pictos {
     public void sayName(int position){
         String name = "";
         try {
-            name = JSONutils.getNombre(array.getJSONObject(position),ConfigurarIdioma.getLanguaje());
+            name = JSONutils.getName(array.getJSONObject(position),ConfigurarIdioma.getLanguaje());
         } catch (JSONException e) {
             Log.e(TAG, "OnClickItem: Error: " + e.getMessage());
         }
-        myTTS.hablar(name);
+        myTTS.speak(name);
     }
 
     public static class fragmentPicto extends Fragment {
@@ -305,7 +305,7 @@ public class viewpager_galeria_pictos {
                             mActivity.finish();
                         }else{
                             custom_picto.setClicked(true);
-                            myTTS.hablar(custom_picto.getCustom_Texto());
+                            myTTS.speak(custom_picto.getCustom_Texto());
                         }
                     }
                 });

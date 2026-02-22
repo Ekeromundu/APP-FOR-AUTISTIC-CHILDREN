@@ -27,7 +27,7 @@ public class Devices_Version_Dialog extends DialogUtils {
         w1.setImageDrawable(mContext.getResources().getDrawable(R.drawable.press20));
         w2.setImageDrawable(mContext.getResources().getDrawable(R.drawable.worm1));
         w3.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sippandpuff));
-        tv1.setText(mContext.getResources().getText(R.string.str_avanzar_aceptar));
+        tv1.setText(mContext.getResources().getText(R.string.advance_and_confirm));
         tv2.setText("Worms");
         tv3.setText("Sip & puff");
     }

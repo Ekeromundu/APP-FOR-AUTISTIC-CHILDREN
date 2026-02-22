@@ -37,7 +37,7 @@ public class MostUsedPhrases extends PhrasesView {
         most_used_recycler_view.setMyTTS(myTTS);
         most_used_recycler_view.setOnClickListener();
         btnEditar.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
-        if(barridoPantalla.isBarridoActivado())
+        if(screenScroll.isBarridoActivado())
             most_used_recycler_view.setScrollVertical(false);
         //      most_used_recycler_view = new MostUsedPhrases_Recycler_View(this,firebaseUser.getmAuth());
     }
@@ -95,7 +95,7 @@ public class MostUsedPhrases extends PhrasesView {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.vincular){
             SharedPreferences defaultSharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
-            SayActivityName.getInstance(this).sayTitle(getResources().getString(R.string.favorite_phrases));
+            SayActivityName.getInstance(this).sayTitle(getResources().getString(R.string.favorite_phrases_title));
             defaultSharedPreferences.edit().putInt("favoritePhrase",1).apply();
             startActivity(new Intent(this,FavoritePhrases.class));
             finish();

@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.Helper.ItemTouchHelperAdapter;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.R;
@@ -36,7 +36,7 @@ public class GaleriaGruposAdapter extends RecyclerView.Adapter<GaleriaGruposAdap
     private final int layoutID;
     private JSONArray mArrayGrupos;
     private Json json;
-    private final SubirArchivosFirebase uploadFirebaseFile;
+    private final UploadFilesToFirebase uploadFirebaseFile;
     private final FirebaseAuth mAuth;
     private static final String TAG = "GaleriaGruposAdapter";
     private final GlideAttatcher glideAttatcher; // esto se encarga de adjuntar el glide
@@ -45,7 +45,7 @@ public class GaleriaGruposAdapter extends RecyclerView.Adapter<GaleriaGruposAdap
     public GaleriaGruposAdapter(Context mContext, int layoutID, JSONArray mArrayGrupos, FirebaseAuth mAuth) {
         this.mContext = mContext;
         this.layoutID = layoutID;
-        this.uploadFirebaseFile = new SubirArchivosFirebase(mContext);
+        this.uploadFirebaseFile = new UploadFilesToFirebase(mContext);
         this.mArrayGrupos = mArrayGrupos;
         this.mAuth = mAuth;
         glideAttatcher=new GlideAttatcher(this.mContext);
@@ -53,7 +53,7 @@ public class GaleriaGruposAdapter extends RecyclerView.Adapter<GaleriaGruposAdap
     public GaleriaGruposAdapter(Context mContext, int layoutID, FirebaseAuth mAuth) {
         this.mContext = mContext;
         this.layoutID = layoutID;
-        this.uploadFirebaseFile = new SubirArchivosFirebase(mContext);
+        this.uploadFirebaseFile = new UploadFilesToFirebase(mContext);
         this.mAuth = mAuth;
         glideAttatcher=new GlideAttatcher(this.mContext);
         json = Json.getInstance();
@@ -179,7 +179,7 @@ public class GaleriaGruposAdapter extends RecyclerView.Adapter<GaleriaGruposAdap
                         if(aux.has("imagen")&&!aux.isNull("imagen")) {
                             mHolder.groupView.setPictogramsLibraryGroup(new Group(aux, ConfigurarIdioma.getLanguaje()));
                             mHolder.groupView.loadAgeIcon(json.tieneTag(aux, Constants.EDAD));
-                            mHolder.groupView.loadGenderIcon(json.tieneTag(aux, Constants.SEXO));
+                            mHolder.groupView.loadGenderIcon(json.tieneTag(aux, Constants.SEX));
                             mHolder.groupView.loadLocationIcon(json.tieneTag(aux, Constants.UBICACION));
                             mHolder.groupView.loadHourIcon(json.tieneTag(aux, Constants.HORA));
                         }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import com.stonefacesoft.ottaa.FirebaseRequests.SubirArchivosFirebase;
+import com.stonefacesoft.ottaa.FirebaseRequests.UploadFilesToFirebase;
 import com.stonefacesoft.ottaa.JSONutils.Json;
 import com.stonefacesoft.ottaa.R;
 import com.stonefacesoft.ottaa.utils.constants.Constants;
@@ -47,7 +47,7 @@ public class Juego {
     private final Reloj chronometer;
     private final Json json;
     private User user;
-    private SubirArchivosFirebase subirArchivosFirebase;
+    private UploadFilesToFirebase uploadFilesToFirebase;
     private JSONObject object = new JSONObject();
     private int maxStreak;
     private int maxLevel;
@@ -264,14 +264,14 @@ public class Juego {
     public void uploadFirebaseGameData(){
        if(user == null)
            createUser();
-       if(subirArchivosFirebase==null)
-           this.subirArchivosFirebase=new SubirArchivosFirebase(this.mContext);
-        subirArchivosFirebase.subirJuegos(subirArchivosFirebase.getmDatabase(user.getmAuth(),Constants.JUEGOS),subirArchivosFirebase.getmStorageRef(user.getmAuth(),Constants.JUEGOS));
+       if(uploadFilesToFirebase ==null)
+           this.uploadFilesToFirebase =new UploadFilesToFirebase(this.mContext);
+        uploadFilesToFirebase.subirJuegos(uploadFilesToFirebase.getmDatabase(user.getmAuth(),Constants.GAMES), uploadFilesToFirebase.getmStorageRef(user.getmAuth(),Constants.GAMES));
     }
     public void saveJsonObjects() {
         agregarDatosConsulta();
         json.agregarJuego(object);
-        json.guardarJson(Constants.ARCHIVO_JUEGO);
+        json.guardarJson(Constants.GAME_FILE);
     }
 
     public Json getJson() {

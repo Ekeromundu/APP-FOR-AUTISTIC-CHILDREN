@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.perf.metrics.AddTrace;
 import com.stonefacesoft.ottaa.Adapters.GaleriaGruposAdapter;
 import com.stonefacesoft.ottaa.Dialogos.DialogUtils.Yes_noDialogs;
-import com.stonefacesoft.ottaa.Edit_Picto_Visual;
+import com.stonefacesoft.ottaa.Edit_Visual_Picto;
 import com.stonefacesoft.ottaa.GaleriaPictos3;
 import com.stonefacesoft.ottaa.Helper.RecyclerItemClickListener;
 import com.stonefacesoft.ottaa.JSONutils.Json;
@@ -79,25 +79,25 @@ public class Grupo_Recycler_View extends Custom_recyclerView implements  View.On
                         intent2.putExtra("Boton", position);
 
                         try {
-                            intent2.putExtra("Nombre", JSONutils.getNombre(array.getJSONObject(position),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+                            intent2.putExtra("Nombre", JSONutils.getName(array.getJSONObject(position),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                         try {
-                            CrashlyticsUtils.getInstance().getCrashlytics().setCustomKey("Grupo Usado",JSONutils.getNombre(array.getJSONObject(position),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
+                            CrashlyticsUtils.getInstance().getCrashlytics().setCustomKey("Grupo Usado",JSONutils.getName(array.getJSONObject(position),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         incrementFrecuency(position);
 
                         json.setmJSONArrayTodosLosGrupos(array);
-                        if (!json.guardarJson(Constants.ARCHIVO_GRUPOS)) {
+                        if (!json.guardarJson(Constants.GROUPS_FILE)) {
                             Log.d(TAG, "File warning");
                         }
 
                         //NOTA: hay  que tener en cuenta que cuando se hace de manera local esto funciona de una ,para la sincronizacion esto puede pisar los datos cuando sea en simultaneo
-                        uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Grupos), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Grupos));
+                        uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Groups), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Groups));
 
                         mActivity.startActivityForResult(intent2, IntentCode.GALERIA_PICTOS.getCode());
                     }
@@ -157,16 +157,16 @@ public class Grupo_Recycler_View extends Custom_recyclerView implements  View.On
     private boolean getValue(int id){
         switch (id) {
             case R.id.item_edit:
-                analyticsFirebase.customEvents("Touch","Galeria Grupos","Edit Group");
+                analyticsFirebase.customEvents("Touch","Galeria Groups","Edit Group");
                 if (User.getInstance(mActivity).isPremium()) {
-                    mActivity.startActivityForResult(startEditAction(), IntentCode.EDITARPICTO.getCode());
+                    mActivity.startActivityForResult(startEditAction(), IntentCode.EDIT_PICTO.getCode());
                 }
                 else{
                     mActivity.startActivity(startExpiredLicense());
                 }
                 return true;
             case R.id.item_delete:
-                analyticsFirebase.customEvents("Touch","Galeria Grupos","Delete Group");
+                analyticsFirebase.customEvents("Touch","Galeria Groups","Delete Group");
                 try {
                     if(!(array.getJSONObject(mPosition).getJSONObject("texto").getString("en").equals("ALL") && array.getJSONObject(mPosition).getInt("id") == 24))
                         AlertBorrar();
@@ -224,14 +224,14 @@ public class Grupo_Recycler_View extends Custom_recyclerView implements  View.On
                 try {
                     int mPosition=getmPosition();
                     if(mPosition!=-1) {
-                        if (!(JSONutils.getNombre(array.getJSONObject(mPosition),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")).equalsIgnoreCase("all") &&json.getId(array.getJSONObject(mPosition)) == 24)) {
+                        if (!(JSONutils.getName(array.getJSONObject(mPosition),sharedPrefsDefault.getString(mActivity.getString(R.string.str_idioma), "en")).equalsIgnoreCase("all") &&json.getId(array.getJSONObject(mPosition)) == 24)) {
                             try {
 //                                final String pushKeyFoto = array.getJSONObject(mPosition).getJSONObject("imagen").getString("pushKey");
 //                                File f = new File(array.getJSONObject(mPosition).getJSONObject("imagen").getString("pictoEditado"));
 //                                JSONArray mArrayListFotos;
 //                                mArrayListFotos = json.addFoto2BackUp(mJSONArrayBackupFotos, recycler_view_grupo.getArray().getJSONObject(mPosition).getJSONObject("imagen"));
 //                                json.setmJSONArrayTodasLasFotosBackup(mArrayListFotos);
-//                                if (!json.guardarJson(Constants.ARCHIVO_FOTO_BACKUP))
+//                                if (!json.guardarJson(Constants.PHOTO_BACKUP_FILE))
 //                                    Log.e(TAG, "Error al guardar Json");
 
                                 array.remove(mPosition);
@@ -244,10 +244,10 @@ public class Grupo_Recycler_View extends Custom_recyclerView implements  View.On
 
                             json.setmJSONArrayTodosLosGrupos(array);
 
-                            if (!json.guardarJson(Constants.ARCHIVO_GRUPOS))
+                            if (!json.guardarJson(Constants.GROUPS_FILE))
                                 Log.e(TAG, "Error al guardar Json");
 
-                            uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Grupos), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Grupos));
+                            uploadFirebaseFile.subirGruposFirebase(uploadFirebaseFile.getmDatabase(mAuth, Constants.Groups), uploadFirebaseFile.getmStorageRef(mAuth, Constants.Groups));
                         } else {
                             AlertDialog.Builder dialogo = new AlertDialog.Builder(mActivity);
                             dialogo.setTitle(R.string.warning_del);
@@ -256,7 +256,7 @@ public class Grupo_Recycler_View extends Custom_recyclerView implements  View.On
 
                         }
                         setGrupos();
-                        dialog_yes_no.destruirDialogo();
+                        dialog_yes_no.destroyDialog();
                     }
 
                 } catch (JSONException e) {
@@ -271,7 +271,7 @@ public class Grupo_Recycler_View extends Custom_recyclerView implements  View.On
         dialog_yes_no.setOnClick(dialog_yes_no.getObject(R.id.no_button), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog_yes_no.cancelarDialogo();
+                dialog_yes_no.cancelDialog();
             }
         });
         dialog_yes_no.mostrarDialogo();
@@ -279,14 +279,14 @@ public class Grupo_Recycler_View extends Custom_recyclerView implements  View.On
     }
 
     public void guardarDatosGrupo() {
-        if (!json.guardarJson(Constants.ARCHIVO_GRUPOS))
+        if (!json.guardarJson(Constants.GROUPS_FILE))
             Log.e(TAG, "Error al guardar el json");
         subirGrupos();
     }
 
     @Override
     protected Intent startEditAction() {
-            Intent intent = new Intent(mActivity, Edit_Picto_Visual.class);
+            Intent intent = new Intent(mActivity, Edit_Visual_Picto.class);
             int id = 0;
             try {
                 id = array.getJSONObject(getmPosition()).getInt("id");
@@ -295,7 +295,7 @@ public class Grupo_Recycler_View extends Custom_recyclerView implements  View.On
             }
             loadGroupValue(intent,id);
             Log.e("GalGr_onMenuItemClick", "Editando un picto");
-            myTTS.hablar(mActivity.getResources().getString(R.string.editar_group));
+            myTTS.speak(mActivity.getResources().getString(R.string.editar_group));
             return intent;
     }
 
