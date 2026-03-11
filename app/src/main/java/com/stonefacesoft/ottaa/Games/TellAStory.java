@@ -1,7 +1,7 @@
 package com.stonefacesoft.ottaa.Games;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.android.exoplayer2.transformer.Transformer;
+import androidx.media3.transformer.Transformer;
 import com.stonefacesoft.ottaa.Activities.Groups_TellStory;
 import com.stonefacesoft.ottaa.CompartirArchivos;
 import com.stonefacesoft.ottaa.Interfaces.AudioTransformationListener;
@@ -48,19 +48,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /***
- *  Option one show : People,Animals , food,games
- *  Option two show : Colours,adjetives and feelings
- *  Option three show: Actions
- *  Option four show: Places and Stores
- * */
+ * Option one show : People,Animals , food,games
+ * Option two show : Colours,adjetives and feelings
+ * Option three show: Actions
+ * Option four show: Places and Stores
+ */
 public class TellAStory extends GameViewSelectPictogramsFourOptions implements AudioTransformationListener {
-    private String promptChatGpt ="Act as a kindergarten teacher and tell me a story in {language} for kids using the following words :{option1},{option2},{option3},{option4}. The story should be short, one paragraph, and funny";
-    private String promptChatGptAux ="";
+    private String promptChatGpt = "Act as a kindergarten teacher and tell me a story in {language} for kids using the following words :{option1},{option2},{option3},{option4}. The story should be short, one paragraph, and funny";
+    private String promptChatGptAux = "";
     private int flag;
     private Json json;
     private GlideAttatcher glideAttatcher;
 
-    private String story="";
+    private String story = "";
     private TellStoryPhrase tellStoryPhrase;
 
     private boolean executeChatGPT = true;
@@ -77,19 +77,16 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
 
     private MenuItem scoreItem;
 
-
     private LottieAnimationView lottieAnimationView;
 
     private ArrayList<JSONObject> pictograms;
     private ImageButton shareStory;
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setToolbarName(toolbar,R.string.TellStory);
+        setToolbarName(toolbar, R.string.TellStory);
         initComponents();
         shareStory = findViewById(R.id.shareAction);
         shareStory.setVisibility(View.GONE);
@@ -106,45 +103,45 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
         lottieAnimationView = findViewById(R.id.lottieAnimationView);
         Seleccion1.setVisibility(View.GONE);
         mAnimationWin.setVisibility(View.GONE);
-        tellStoryPhrase = new TellStoryPhrase(this,lottieAnimationView,this,promptChatGpt, HandlerUtils.TRANSLATEDPHRASE);
-        if(json==null) {
+        tellStoryPhrase = new TellStoryPhrase(this, lottieAnimationView, this, promptChatGpt,
+                HandlerUtils.TRANSLATEDPHRASE);
+        if (json == null) {
             json = Json.getInstance();
         }
-       // initUtilsTTS(sharedPrefsDefault);
+        // initUtilsTTS(sharedPrefsDefault);
         json.setmJSONArrayTodosLosPictos(Json.getInstance().getmJSONArrayTodosLosPictos());
         downloadPromt();
         initPictograms();
         function_scroll = new ScrollFuntionGames(this);
         iniciarBarrido();
         gameControl = new GameControl(this);
-        //  hideAllViews();
+        // hideAllViews();
 
     }
 
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.Option1:
-                    showIcon(0);
+                showIcon(0);
                 break;
             case R.id.Option2:
-                    showIcon(1);
+                showIcon(1);
                 break;
             case R.id.Option3:
-                    showIcon(2);
+                showIcon(2);
                 break;
             case R.id.Option4:
-                    showIcon(3);
+                showIcon(3);
                 break;
             case R.id.ttsJuego:
-                    executeChatGpt();
+                executeChatGpt();
                 break;
             case R.id.story:
-                    showOrHidePictograms();
+                showOrHidePictograms();
                 break;
             case R.id.shareAction:
-                    shareAStory();
+                shareAStory();
                 break;
             case R.id.btnBarrido:
                 if (screenScroll.isBarridoActivado() && screenScroll.isAvanzarYAceptar()) {
@@ -164,22 +161,19 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
         Json.getInstance().setmContext(this);
     }
 
-    private void showIcon(int position){
+    private void showIcon(int position) {
         TellAStoryUtils.getInstance().setPictoPosition(position);
         Intent intent = new Intent(this, Groups_TellStory.class);
         startActivityForResult(intent, IntentCode.TELL_A_STORY.getCode());
     }
 
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case Constants.TELL_A_STORY:
                 galeriaGruposResult(data);
-            break;
+                break;
         }
 
     }
@@ -197,59 +191,61 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
         }
     }
 
-    private void loadPictogram(int picto){
+    private void loadPictogram(int picto) {
         executeChatGPT = true;
-        if(glideAttatcher == null)
+        if (glideAttatcher == null)
             glideAttatcher = new GlideAttatcher(getApplicationContext());
-        switch (TellAStoryUtils.getInstance().getPictoPosition()){
+        switch (TellAStoryUtils.getInstance().getPictoPosition()) {
             case 0:
-                loadDataPictoView(picto,Opcion1,false);
+                loadDataPictoView(picto, Opcion1, false);
                 Options.EOPTION1.setOption(Opcion1);
                 break;
             case 1:
-                loadDataPictoView(picto,Opcion2,false);
+                loadDataPictoView(picto, Opcion2, false);
                 Options.EOPTION2.setOption(Opcion2);
                 break;
             case 2:
-                loadDataPictoView(picto,Opcion3,false);
+                loadDataPictoView(picto, Opcion3, false);
                 Options.EOPTION3.setOption(Opcion3);
                 break;
             case 3:
-                loadDataPictoView(picto,Opcion4,false);
+                loadDataPictoView(picto, Opcion4, false);
                 Options.EOPTION4.setOption(Opcion4);
                 break;
         }
     }
 
-    private void loadDataPictoView(int id, PictoView option,boolean group){
+    private void loadDataPictoView(int id, PictoView option, boolean group) {
         option.setUpContext(this);
         option.setUpGlideAttatcher(this);
-        if(group) {
+        if (group) {
             Pictogram pictogram = new Pictogram(Json.getInstance().getGrupoFromId(id), ConfigurarIdioma.getLanguaje());
             option.setCustom_Texto(pictogram.getObjectName());
-        }
-        else{
-            option.setPictogramsLibraryPictogram(new Pictogram(Json.getInstance().getPictoFromId2(id), ConfigurarIdioma.getLanguaje()));
+        } else {
+            option.setPictogramsLibraryPictogram(
+                    new Pictogram(Json.getInstance().getPictoFromId2(id), ConfigurarIdioma.getLanguaje()));
         }
     }
 
-    private void addPictogramAddPosition(int position,int id){
+    private void addPictogramAddPosition(int position, int id) {
         pictograms.add(position, Json.getInstance().getPictoFromId2(id));
 
     }
 
-    public void executeChatGpt(){
-        if(executeChatGPT){
+    public void executeChatGpt() {
+        if (executeChatGPT) {
             executeChatGPT = false;
-            promptChatGptAux = promptChatGpt.replace("{language}",ConfigurarIdioma.getNormalLanguage()).replace("{option1}",Opcion1.getCustom_Texto()).replace("{option2}",Opcion2.getCustom_Texto()).replace("{option3}",Opcion3.getCustom_Texto()).replace("{option4}",Opcion4.getCustom_Texto());
+            promptChatGptAux = promptChatGpt.replace("{language}", ConfigurarIdioma.getNormalLanguage())
+                    .replace("{option1}", Opcion1.getCustom_Texto()).replace("{option2}", Opcion2.getCustom_Texto())
+                    .replace("{option3}", Opcion3.getCustom_Texto()).replace("{option4}", Opcion4.getCustom_Texto());
             tellStoryPhrase.executeChatGpt(promptChatGptAux);
-        }else{
+        } else {
             talkAction();
         }
     }
 
-    public void talkAction(){
-        if(!story.isEmpty())
+    public void talkAction() {
+        if (!story.isEmpty())
             myTTS.speak(story);
     }
 
@@ -257,77 +253,79 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
         this.story = story;
     }
 
-
-
-    private void initPictograms(){
-        loadDataPictoView(17,Opcion1,true);
-        loadDataPictoView(1,Opcion2,true);
-        loadDataPictoView(0,Opcion3,true);
-        loadDataPictoView(21,Opcion4,true);
+    private void initPictograms() {
+        loadDataPictoView(17, Opcion1, true);
+        loadDataPictoView(1, Opcion2, true);
+        loadDataPictoView(0, Opcion3, true);
+        loadDataPictoView(21, Opcion4, true);
     }
 
-    public void downloadPromt(){
+    public void downloadPromt() {
         promptChatGpt = RemoteConfigUtils.getInstance().getmFirebaseRemoteConfig().getString("tellStoryChatGPT");
-        Log.d("ChatGPT", "downloadPromt: "+ promptChatGpt);
-    /*    DatabaseReference ref = FirebaseUtils.getInstance().getmDatabase();
-        ref.child("ChatGPTPrompt").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild(ConfigurarIdioma.getLanguaje())){
-                    snapshot.child(ConfigurarIdioma.getLanguaje()).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            promptChatGpt = snapshot.getValue().toString();
-                            Log.e(TAG, "Download Prompt: "+ chatGPTPrompt );
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
+        Log.d("ChatGPT", "downloadPromt: " + promptChatGpt);
+        /*
+         * DatabaseReference ref = FirebaseUtils.getInstance().getmDatabase();
+         * ref.child("ChatGPTPrompt").addListenerForSingleValueEvent(new
+         * ValueEventListener() {
+         * 
+         * @Override
+         * public void onDataChange(@NonNull DataSnapshot snapshot) {
+         * if(snapshot.hasChild(ConfigurarIdioma.getLanguaje())){
+         * snapshot.child(ConfigurarIdioma.getLanguaje()).getRef().
+         * addListenerForSingleValueEvent(new ValueEventListener() {
+         * 
+         * @Override
+         * public void onDataChange(@NonNull DataSnapshot snapshot) {
+         * promptChatGpt = snapshot.getValue().toString();
+         * Log.e(TAG, "Download Prompt: "+ chatGPTPrompt );
+         * }
+         * 
+         * @Override
+         * public void onCancelled(@NonNull DatabaseError error) {
+         * 
+         * }
+         * });
+         * }
+         * }
+         * 
+         * @Override
+         * public void onCancelled(@NonNull DatabaseError error) {
+         * 
+         * }
+         * });
+         */
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-      myTTS.getTTS().stop();
+        myTTS.getTTS().stop();
     }
 
-    public void setText(){
+    public void setText() {
         textViewStory.setText(story);
 
     }
 
+    private void showOrHidePictograms() {
+        int drawable = R.drawable.baseline_visibility_off_24;
+        int view = menu_game.getVisibility();
+        if (view == View.GONE) {
+            menu_game.setVisibility(View.VISIBLE);
+            hideORShowALLOptions(View.GONE);
+            drawable = R.drawable.baseline_visibility_off_24;
+            gallery_navigator.setVisibility(View.GONE);
+            showStory = true;
+        } else if (view == View.VISIBLE) {
+            menu_game.setVisibility(View.GONE);
+            hideORShowALLOptions(View.VISIBLE);
+            gallery_navigator.setVisibility(View.VISIBLE);
+            drawable = R.drawable.baseline_visibility_24;
+            showStory = false;
 
-    private void showOrHidePictograms(){
-        int drawable= R.drawable.baseline_visibility_off_24;
-        int view =  menu_game.getVisibility();
-            if(view==View.GONE){
-                menu_game.setVisibility(View.VISIBLE);
-                hideORShowALLOptions(View.GONE);
-                drawable = R.drawable.baseline_visibility_off_24;
-                gallery_navigator.setVisibility(View.GONE);
-                showStory = true;
-            }
-            else if(view== View.VISIBLE){
-                menu_game.setVisibility(View.GONE);
-                hideORShowALLOptions(View.VISIBLE);
-                gallery_navigator.setVisibility(View.VISIBLE);
-                drawable = R.drawable.baseline_visibility_24;
-                showStory = false;
+        }
 
-            }
-
-      //  textView.setImageDrawable(getResources().getDrawable(drawable));
+        // textView.setImageDrawable(getResources().getDrawable(drawable));
     }
 
     @Override
@@ -344,52 +342,51 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
         mMenu.getItem(1).setOnMenuItemClickListener(this::onMenuItemClick);
         mMenu.getItem(3).setOnMenuItemClickListener(this::onMenuItemClick);
 
-        setIcon(mMenu.getItem(3),false, R.drawable.baseline_wallpaper_24, R.drawable.baseline_text_snippet_24);
-        setIcon(mMenu.getItem(1),false, R.drawable.ic_share_black_24dp, R.drawable.ic_share_black_24dp);
-        if(screenScroll !=null&& screenScroll.isBarridoActivado()){
+        setIcon(mMenu.getItem(3), false, R.drawable.baseline_wallpaper_24, R.drawable.baseline_text_snippet_24);
+        setIcon(mMenu.getItem(1), false, R.drawable.ic_share_black_24dp, R.drawable.ic_share_black_24dp);
+        if (screenScroll != null && screenScroll.isBarridoActivado()) {
             mMenu.getItem(1).setVisible(false);
         }
 
         return super.onCreateOptionsMenu(menu);
     }
 
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_parar:
-                  showOrHidePictograms();
-                  setIcon(item, showStory, R.drawable.baseline_wallpaper_24, R.drawable.baseline_text_snippet_24);
+                showOrHidePictograms();
+                setIcon(item, showStory, R.drawable.baseline_wallpaper_24, R.drawable.baseline_text_snippet_24);
                 break;
             case R.id.check:
-                    shareAStory();
+                shareAStory();
                 break;
         }
         return false;
     }
 
-    private void shareAStory(){
-        if(!story.isEmpty()) {
+    private void shareAStory() {
+        if (!story.isEmpty()) {
             pictograms = new ArrayList<>();
             for (int i = 0; i < 4; i++) {
-                try{
+                try {
                     int id = Options.values()[i].getOption().getIdPictogram();
-                    addPictogramAddPosition(pictograms.size(),id);
-                }catch (Exception ex){
+                    addPictogramAddPosition(pictograms.size(), id);
+                } catch (Exception ex) {
 
                 }
             }
             CompartirArchivos compartirArchivos = new CompartirArchivos(this, myTTS, this);
             compartirArchivos.setHistorial(pictograms);
             compartirArchivos.seleccionarFormato(story);
-        }else{
+        } else {
             myTTS.mostrarAlerta(getApplicationContext().getString(R.string.createPhrasesAlert));
         }
     }
 
     @Override
     public void startAudioTransformation(Transformer.Listener listener, String filePath, String locationPath) {
-        new FileEncoder(this).encodeAudioFile(listener,filePath,locationPath);
+        new FileEncoder(this).encodeAudioFile(listener, filePath, locationPath);
 
     }
 
@@ -401,7 +398,7 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
         listadoObjetosBarrido.add(Opcion3);
         listadoObjetosBarrido.add(Opcion4);
 
-        //  listadoObjetosBarrido.add(editButton);
+        // listadoObjetosBarrido.add(editButton);
         screenScroll = new ScreenScroll(this, listadoObjetosBarrido);
         if (screenScroll.isBarridoActivado() && screenScroll.devolverpago()) {
             runOnUiThread(new Runnable() {
@@ -417,14 +414,13 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
             btnBarrido.setVisibility(View.GONE);
         }
 
-
     }
 
     public void setExecuteChatGPT(boolean executeChatGPT) {
         this.executeChatGPT = executeChatGPT;
     }
 
-    private void hideORShowALLOptions(int value){
+    private void hideORShowALLOptions(int value) {
         Opcion1.setVisibility(value);
         Opcion2.setVisibility(value);
         Opcion3.setVisibility(value);
@@ -433,9 +429,10 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
 
     @Override
     public void OnClickBarrido() {
-      if(function_scroll.isClickEnabled()&& screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()).getId()==R.id.btnTodosLosPictos)
+        if (function_scroll.isClickEnabled() && screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido())
+                .getId() == R.id.btnTodosLosPictos)
             onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
-        else if(!function_scroll.isClickEnabled()){
+        else if (!function_scroll.isClickEnabled()) {
             onClick(screenScroll.getmListadoVistas().get(screenScroll.getPosicionBarrido()));
         }
     }
@@ -467,15 +464,18 @@ public class TellAStory extends GameViewSelectPictogramsFourOptions implements A
     public boolean onTouch(View v, MotionEvent event) {
         return gameControl.makeClick(event);
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return gameControl.makeClick(event);
     }
 
-    public enum Options{
-        EOPTION1(),EOPTION2(),EOPTION3(),EOPTION4();
+    public enum Options {
+        EOPTION1(), EOPTION2(), EOPTION3(), EOPTION4();
+
         private PictoView Option;
-        private Options(){
+
+        private Options() {
 
         }
 
